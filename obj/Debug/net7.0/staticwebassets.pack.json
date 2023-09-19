@@ -1,10 +1,6 @@
 {
   "Files": [
     {
-      "Id": "D:\\#Reinir\\Code\\CSharp\\forum\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\forum.bundle.scp.css",
-      "PackagePath": "staticwebassets\\forum.bundle.scp.css"
-    },
-    {
       "Id": "D:\\#Reinir\\Code\\CSharp\\forum\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
