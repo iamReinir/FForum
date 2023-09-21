@@ -1,0 +1,32 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model forum.Models.User
+@{
+    ViewData["title"] = "User profile";
+    Layout = "_Layout";
+}
+
+
+
+<body>
+    <link rel="stylesheet" href="~/css/user_profile.css" />
+    <div class="container">
+        <section id="top">
+            <img src="imgs/Self_Hatred (2).png" class="profile_avatar" height="50" width="50"/>
+            <h3>Display name</h3>
+            <h4>User name</h4>
+        </section>
+        <section id="bot">
+            <h3>User profile:</h3>
+            <div>Username : <span> @Model.Username </span> </div>
+            <div>Display name :  <span> @Model.User_Info.Name </span> </div>
+            <div>Email :  <span> @Model.User_Info.Email </span> </div>
+            <div>Phone number :  <span> @Model.User_Info.Telephone </span> </div>
+            <div>Birthday :  <span> @Model.User_Info.Birthdate.ToString() </span> </div>
+            <div>Address :  <span> @Model.User_Info.Address </span> </div>
+            <button>Edit</button>
+        </section>
+    </div>
+</body>
