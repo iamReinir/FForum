@@ -7,6 +7,10 @@ namespace forum.Controllers
         [Route("profile")]
         public IActionResult UserProfile()
         {
+            ISession session = HttpContext.Session;
+            byte[]? username_data = session.Get("username");
+            if (username_data == null)
+                return View("NotFound");
             return View("UserProfile");
         }
     }

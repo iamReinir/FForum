@@ -1,0 +1,61 @@
+﻿@import "colors.css";
+
+body{
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+.container {
+    margin: 2rem;
+    border: 1px solid grey;
+    border-radius: 1rem;
+    box-shadow: 5px 5px 4px grey;
+    overflow:clip;
+}
+
+#top{
+    background-color: #80808080;
+    padding:3rem;
+}
+
+#top .profile_avatar {
+    object-fit: cover;
+    width: 7rem;
+    height: 7rem;
+    border: 1px hidden black;
+    border-radius: 100%;
+    display: block;
+    margin: auto;
+    box-shadow: 5px 5px 4px grey;
+}
+
+#top h3{
+    text-align:center;  
+}
+
+#top h4{
+    text-align:center;
+    color: var(--faded_letter_color);
+}
+
+#bot {
+    padding: 3rem;
+    line-height: 1.5rem;
+}
+
+#bot div{
+    padding:1rem;
+}
+#bot span{
+    display:block;
+    box-sizing:content-box;
+    width:100%;
+    border : 2px solid grey;
+    border-radius : 1rem;
+    padding:0.5rem;
+}
+
+#bot button{
+    display:block;
+    margin:auto;
+    padding: 1rem;
+    font-size:1rem;
+}
