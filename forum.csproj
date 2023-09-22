@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\images\" />    
+    <PackageReference Include="MongoDB.Driver" Version="2.21.0" />
+    <PackageReference Include="MongoDB.Libmongocrypt" Version="1.8.0" />
   </ItemGroup>
 
 </Project>
