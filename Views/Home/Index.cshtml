@@ -1,63 +1,114 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="~/css/register.css">
-    <title>Register</title> 
-</head>
-<style>
-body{
-  background-color: #cccccc;
-}
-</style>
-<body>
-    <form>
-        <div class="container">
-            <h1>FForum Register Section</h1>
-            <p>Fill all information to register.</p>
-            <label for="username"><b>Username</b></label>
-            <input type="text"
-                   placeholder="Enter username"
-                   name="username"
-                   id="username"
-                   required />
-
-            <label for="email"><b>Email</b></label>
-            <input type="text"
-                   placeholder="Enter Email"
-                   name="email"
-                   id="email"
-                   required />
-             
-            <label for="number"><b>Phone Number</b></label>
-            <input type="text"
-                   placeholder="Enter Phone Number"
-                   name="number"
-                   id="number"
-                   required />
-
-            <label for="pwd"><b>Password</b></label>
-            <input type="password"
-                   placeholder="Enter Password"
-                   name="pwd"
-                   id="pwd"
-                   required />
-
-            <label for="pwd-repeat"><b>Repeat Password</b></label>
-            <input type="password"
-                   placeholder="Repeat Password"
-                   name="pwd-repeat"
-                   id="pwd-repeat"
-                   required />
-
-            <button type="submit">Register</button>
+    <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+    <meta name="viewport" contet="width=device-width, initial-scale=1.0" >
+    <title>FForum</title>
+    <link rel="stylesheet" href="~/css/style.css" />
+    </head>
+    <body>
+        <nav>
+            <div class="nav-left">
+            <img src="https://www.shareicon.net/data/2015/05/24/43273_logo_512x512.png" class="logo">
+              <ul>
+                <li><i class="fa-solid fa-bell" style="color: #ffffff;"></i></li>
+                <li><i class="fa-solid fa-user-plus" style="color: #ffffff;"></i></li>
+              </ul>
+            </div>
+            <div class="nav-right">
+                <div class="search-box">
+                <img src="https://cdn-icons-png.flaticon.com/512/122/122932.png" width="30px"/>
+                <input type="text" placeholder="Search"  />
+                </div>
+                <div class="nav-user-icon online" onclick="settingsMenuToggle()">
+                <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
+                </div>
+            </div>
+        <!---------settings-menu--------->
+            <div class="settings-menu">
+        
+                <div class="settings-menu-inner">
+                  <div class="user-profile">
+                    <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
+                    <div>
+                        <p>User Name</p>
+                        <a href="#">See your profile</a>
+                    </div>
+                </div>
+                <hr />
+                  <div class="setting-links">
+                    <img src="https://i.pinimg.com/originals/1e/c0/a4/1ec0a477b6869282c7981e8837ad6fbf.png" class="settings-icon" />
+                    <a href="#">
+                        Edit your profile <i class="fa-solid fa-chevron-right" style="color: #a1a3a5;" width="10px"></i>
+                    </a>
+                  </div>
+                <div class="setting-links">
+                    <img src="https://cdn0.iconfinder.com/data/icons/cyber-security-line-threat-protection/512/Change_password-512.png" class="settings-icon" />
+                    <a href="#">
+                        Change password <i class="fa-solid fa-chevron-right" style="color: #a1a3a5;" width="10px"></i>
+                    </a>
+                </div>
+                <div class="setting-links">
+                    <img src="https://cdn2.iconfinder.com/data/icons/circle-ui-1/512/logout-512.png" class="settings-icon" />
+                    <a href="#">
+                        Log out <i class="fa-solid fa-chevron-right" style="color: #a1a3a5;" width="10px"></i>
+                    </a>
+                </div>
+                </div>
+             </div>
+        </nav>
+        <div class ="container">
+            <!---------left-sidebar--------->
+        <div class="left-sidebar">
+        <div class="imp-links">
+            <a href="#"><i class="fa-solid fa-square-poll-horizontal" style="color: #005eff;"></i>Latest News</a>
+            <a href="#"><i class="fa-solid fa-user-group" style="color: #005eff;"></i>Friends</a>
+            <a href="#"><i class="fa-solid fa-users" style="color: #005eff;"></i>Groups</a>
         </div>
-        <div>
-            <p>Already have an account? <a href="#">Log in</a>.</p>
         </div>
-    </form>
-
-</body>
-</html>
+        <!---------main-content--------->
+        <div class="main-content">
+            <div class="write-post-container">
+                <div class="user-profile">
+                    <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
+                    <div>
+                    <p>User Name</p>
+                    <small>Public</small>
+                    </div>
+                </div>
+                <div class="post-input-container">
+                <textarea row="3" placeholder="What's on your mind?"></textarea>
+                    <div class="add-post-links">
+                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1375/1375106.png"/>Photo</a>
+                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/5190/5190662.png" />Feeling</a>
+                    </div>
+                </div>
+            </div>
+            <div class="post-container">
+                <div class="user-profile">
+                    <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
+                    <div>
+                        <p>User Name</p>
+                        <span>September 21 2023, 18:39</span>
+                    </div>
+                </div>
+                <p class="post-text">Hôm nay là ngày tuyệt vời cùng bạn bè</p>
+                <img src="https://media.discordapp.net/attachments/975638613431840818/990072623721508915/IMG_0173.jpg?width=908&height=681" class="post-img" />
+                <div class="post-row">
+                    <div class="activity-icons">
+                        <div><i class="fa-solid fa-thumbs-up" style="color: #758095;"></i>Like</div>
+                        <div><i class="fa-solid fa-message" style="color: #758095;"></i>Comment</div>
+                        <div><i class="fa-solid fa-share" style="color: #758095;"></i>Share</div>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+        <!---------right-sidebar--------->
+        <div class="right-sidebar"></div>
+        </div>
+    <script src="https://kit.fontawesome.com/eee778a1cd.js" crossorigin="anonymous"></script>
+    <script src="~/js/script.js"></script>
+    </body>
+    </html>
