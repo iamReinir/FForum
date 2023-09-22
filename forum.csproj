@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <None Include="wwwroot\images\logo.jpg" />
+    <PackageReference Include="MongoDB.Driver" Version="2.21.0" />
+    <PackageReference Include="MongoDB.Libmongocrypt" Version="1.8.0" />
   </ItemGroup>
 
 </Project>
