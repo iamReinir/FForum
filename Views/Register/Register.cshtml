@@ -1,0 +1,64 @@
+﻿@page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/register.css">
+    <title>Register</title>
+</head>
+<style>
+    body {
+        background-color: #cccccc;
+    }
+</style>
+<body>
+    <form>
+        <div class="container">
+            <h1>FForum Register Section</h1>
+            <p>Fill all information to register.</p>
+            <label for="username"><b>Username</b></label>
+            <input type="text"
+                   placeholder="Enter username"
+                   name="username"
+                   id="username"
+                   required />
+
+            <label for="email"><b>Email</b></label>
+            <input type="text"
+                   placeholder="Enter Email"
+                   name="email"
+                   id="email"
+                   required />
+
+            <label for="number"><b>Phone Number</b></label>
+            <input type="text"
+                   placeholder="Enter Phone Number"
+                   name="number"
+                   id="number"
+                   required />
+
+            <label for="pwd"><b>Password</b></label>
+            <input type="password"
+                   placeholder="Enter Password"
+                   name="pwd"
+                   id="pwd"
+                   required />
+
+            <label for="pwd-repeat"><b>Repeat Password</b></label>
+            <input type="password"
+                   placeholder="Repeat Password"
+                   name="pwd-repeat"
+                   id="pwd-repeat"
+                   required />
+
+            <button type="submit">Register</button>
+        </div>
+        <div>
+            <p>Already have an account? <a href="#">Log in</a>.</p>
+        </div>
+    </form>
+
+</body>
+</html>
