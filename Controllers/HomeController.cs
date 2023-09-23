@@ -5,9 +5,10 @@ namespace forum.Controllers
     public class HomeController : Controller
     {
         [Route("")]
+        [Route("/index")]
         public IActionResult Index()
         {
-            return View();  
+            return View("Index");  
         }
     }
 }

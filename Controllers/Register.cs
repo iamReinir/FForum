@@ -4,7 +4,7 @@ namespace forum.Controllers
 {
 	public class Register : Controller
 	{
-		[Route("Register")]
+		[Route("register")]
 		public IActionResult Index()
 		{
 			return View("Register");

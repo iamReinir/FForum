@@ -73,13 +73,14 @@ namespace forum.Models
         //public ICollection<Post> Posts {get; } = new List<Post>();
 
         // This is usuable
+        /*
         public User(int id, string username, string password, UserInfo info) {
             this.ID = id;
             this.Username = username;
             this.Password = password;
             //this.User_Info = info;
         }
-
+        */
         public User(int id, string username, string password)
         {
 			this.ID = id;

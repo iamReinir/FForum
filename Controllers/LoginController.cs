@@ -4,10 +4,21 @@ namespace forum.Controllers
 {
 	public class LoginController : Controller
 	{
-		[Route("Login")]
+		[Route("login")]
+		[HttpGet]
 		public IActionResult Index()
 		{
-			return View();
-		}			
+			
+			return View("Index");
+		}
+
+
+		// Deal with login logic
+		[Route("login")]
+		[HttpPost]
+		public IActionResult Login() {
+			
+			return View("NotFound");
+		}
 	}
 }
