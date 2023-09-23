@@ -15,15 +15,13 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 //app.UseRouting();
-
-var uset = new UserSet();
-var uinfo = new UserInfo("Reinir");
-if(uset.GetUser("reinir1") != null)
-{
-    Console.WriteLine("Got him");
-}
-
 app.UseSession();
 app.MapControllers();
 app.UseStaticFiles();
 app.Run();
+
+/*
+var uset = new UserSet();
+uset.Register("reinir3", "123456",);
+Console.WriteLine(uset.UserInfos.ElementAt(0).Name);
+*/

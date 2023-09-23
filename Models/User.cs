@@ -13,6 +13,8 @@ namespace forum.Models
             public const int GUESS = 3;
             public const int ROLE_COUNT = 4;
         }
+        
+        // Same key as UserInfo
         [BsonElement("_id")]
         public int ID { get; }
 
@@ -65,14 +67,24 @@ namespace forum.Models
         }
 
         // For some reason User_Info and Posts are not saved into the database, will be fixed later
-        public UserInfo User_Info { get; }
+        // Will not save composite oject into the database. Using keys instead.
+        //public UserInfo User_Info { get; }
 
-        public ICollection<Post> Posts {get; } = new List<Post>();
+        //public ICollection<Post> Posts {get; } = new List<Post>();
+
+        // This is usuable
         public User(int id, string username, string password, UserInfo info) {
             this.ID = id;
             this.Username = username;
             this.Password = password;
-            this.User_Info = info;
+            //this.User_Info = info;
         }
+
+        public User(int id, string username, string password)
+        {
+			this.ID = id;
+			this.Username = username;
+			this.Password = password;
+		}
     }
 }
