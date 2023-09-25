@@ -19,6 +19,7 @@ namespace forum.Database
         public UserSet() {
             if(!init)
                 Initiation();
+            init = true;
         }
         public void Initiation()
         {            
