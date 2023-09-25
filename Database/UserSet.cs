@@ -12,11 +12,13 @@ namespace forum.Database
 	}
     public class UserSet
     {
-        public ICollection<User> Userlist { get; private set; } = new List<User>();
-        public ICollection<UserInfo> UserInfos { get; private set; } = new List<UserInfo>();
+        public static ICollection<User> Userlist { get; private set; } = new List<User>();
+        public static ICollection<UserInfo> UserInfos { get; private set; } = new List<UserInfo>();
 
+        private bool init = false;
         public UserSet() {
-            Initiation();
+            if(!init)
+                Initiation();
         }
         public void Initiation()
         {            
