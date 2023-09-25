@@ -24,11 +24,11 @@ nav{
     display: flex;
     align-items: center;
 }
-    .nav-left ul li {
+    .nav-left ul a {
         list-style: none;
         display: inline-block;
     }
-.nav-left ul li i{
+.nav-left ul a i{
     width: 40px;
     height: auto;
     margin: 0 15px;
