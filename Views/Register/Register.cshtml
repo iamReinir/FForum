@@ -1,4 +1,5 @@
-﻿@page
+﻿@model bool
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,22 +7,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="~/css/register.css">
-    <title>Register</title>
+    <title>Register</title>   
+    <style>
+        body {
+            background-color: #cccccc;
+        }
+    </style>
 </head>
-<style>
-    body {
-        background-color: #cccccc;
-    }
-</style>
+
 <body>
-    <form>
+    @if (Model == true)
+    {
+        <script>
+            alert("Register success!");
+            window.location.href = "/login";
+        </script>
+    }
+    <form id="register-form" method="post">
         <div class="container">
             <h1>FForum Register Section</h1>
             <p>Fill all information to register.</p>
             <label for="fullname"><b>Fullname</b></label>
             <input type="text"
                    placeholder="Enter Fullname"
-                   name="fullname"
+                   name="display_name"
                    id="fullname"
                    required />
 
@@ -42,29 +51,29 @@
             <label for="number"><b>Phone Number</b></label>
             <input type="text"
                    placeholder="Enter Phone Number"
-                   name="number"
+                   name="telephone"
                    id="number"
                    required />
 
             <label for="pwd"><b>Password</b></label>
             <input type="password"
                    placeholder="Enter Password"
-                   name="pwd"
+                   name="password"
                    id="pwd"
                    required />
 
             <label for="pwd-repeat"><b>Repeat Password</b></label>
             <input type="password"
                    placeholder="Repeat Password"
-                   name="pwd-repeat"
+                   name="password_repeat"
                    id="pwd-repeat"
                    required />
-            <button type="submit">Register</button>
-        </div>
-        <div>
-            <p>Already have an account? <a href="./login">Log in</a>.</p>
-        </div>
+            <button onclick="form_check_and_submit()">Register</button>
+        </div>        
     </form>
-
+    <div>
+        <p>Already have an account? <a href="./login">Log in</a>.</p>
+    </div>
+    <script src="~/js/register.js"></script>
 </body>
 </html>

@@ -4,14 +4,6 @@ using System.Text;
 
 namespace forum.Controllers
 {
-	public enum LoginState
-	{
-		success,
-		wrong_info,
-		server_failed,
-		locked,
-		none
-	}
 	public class LoginController : Controller
 	{
 		public enum LoginState
@@ -27,6 +19,7 @@ namespace forum.Controllers
 		[HttpGet]
 		public IActionResult Index()
 		{
+			currentState = LoginState.none;
 			return View("Index",currentState);
 		}
 
