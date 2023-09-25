@@ -1,15 +1,33 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using forum.Database;
+using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace forum.Controllers
 {
+	public enum LoginState
+	{
+		success,
+		wrong_info,
+		server_failed,
+		locked,
+		none
+	}
 	public class LoginController : Controller
 	{
+		public enum LoginState
+		{
+			success,
+			wrong_info,
+			server_failed,
+			locked,
+			none
+		}
+		LoginState currentState = LoginState.none;
 		[Route("login")]
 		[HttpGet]
 		public IActionResult Index()
 		{
-			
-			return View("Index");
+			return View("Index",currentState);
 		}
 
 
@@ -17,8 +35,20 @@ namespace forum.Controllers
 		[Route("login")]
 		[HttpPost]
 		public IActionResult Login() {
-			
-			return View("NotFound");
+			UserSet uset = new();
+			string? username = HttpContext.Request.Form["username"];
+			string? password = HttpContext.Request.Form["password"];
+			if (username == null || password == null)
+				return View("NotFound");
+			var user = uset.GetUser(username);
+			if (user == null || user.Password != password)
+			{
+				currentState = LoginState.wrong_info;
+				return View("Index", currentState);
+			}
+			ISession session = HttpContext.Session;
+			session.Set("username", Encoding.UTF8.GetBytes(username));
+			return Redirect("home");
 		}
 	}
 }
