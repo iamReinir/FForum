@@ -1,29 +1,24 @@
 ﻿using forum.Database;
+using forum.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
 namespace forum.Controllers
 {
 	public class Register : Controller
-	{
-        //public enum LoginState
-        //{
-        //    success,
-        //    wrong_info,
-        //    server_failed,
-        //    locked,
-        //    none
-        //}
-        //LoginState currentState = LoginState.none;
+	{              
+        
         [Route("register")]
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult SignupPage()
         {
-            return View("");
+        
+            var uinfor = new UserSet();
+            return View("Register", false);
         }
 
 
-        
+
         [Route("register")]
         [HttpPost]
         public IActionResult Signup()
@@ -31,56 +26,26 @@ namespace forum.Controllers
             UserSet uset = new();
             string? username = HttpContext.Request.Form["username"];
             string? password = HttpContext.Request.Form["password"];
-            public enum LoginState
-		{
-			success,
-			wrong_info,
-			server_failed,
-			locked,
-			none
-		}
-		LoginState currentState = LoginState.none;
-		[Route("login")]
-		[HttpGet]
-		public IActionResult Index()
-		{
-			return View("Index",currentState);
-		}
-
-
-		// Deal with login logic
-		[Route("login")]
-		[HttpPost]
-		public IActionResult Login() {
-			UserSet uset = new();
-			string? username = HttpContext.Request.Form["username"];
-			string? email = HttpContext.Request.Form["email"];
-            string? number = HttpContext.Request.Form["number"];
-            string? pass = HttpContext.Request.Form["pwd"];
-            string? rpass = HttpContext.Request.Form["pwd-repeat"];
-            if (!(rpass).Equals(pass))
-                return Redirect("login");
-            var user = uset.GetUser(username);
-			if (user == null || user.Password != password)
-			{
-				currentState = LoginState.wrong_info;
-				return View("Index", currentState);
-			}
-			ISession session = HttpContext.Session;
-			session.Set("username", Encoding.UTF8.GetBytes(username));
-			return Redirect("home");
-		}
-            if (username == null || password == null)
-                return View("NotFound");
-            var user = uset.GetUser(username);
-            if (user == null || user.Password != password)
+            if(username == null || password == null)
             {
-                currentState = LoginState.wrong_info;
-                return View("Index", currentState);
+                return View("Error");
             }
-            ISession session = HttpContext.Session;
-            session.Set("username", Encoding.UTF8.GetBytes(username));
-            return Redirect("home");
-        }
+            int id = uset.Register(username, password);
+            if(id == -1) return View("Error");
+            UserInfo? info = uset.GetUserInfo(uset.GetUser(id));
+            if(info == null) {
+                return View("Error");
+            }
+            string? displayName = HttpContext.Request.Form["display_name"];
+            string? email = HttpContext.Request.Form["email"];
+            string? telephone = HttpContext.Request.Form["telephone"];
+            string? address = HttpContext.Request.Form["address"];            
+            info.Name = displayName ?? username;
+            info.Email = email;
+            info.Telephone = telephone;
+			info.Address = address;
+            uset.UpdateUserInfo(info);           
+			return View("register", true);
+        }		
     }
 }

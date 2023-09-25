@@ -112,6 +112,13 @@ namespace forum.Database
             return null;
         }
 
+        public bool UpdateUserInfo(UserInfo userInfo)
+        {
+            var uinfos = MongoDB.database.GetCollection<UserInfo>("user_info");
+            uinfos.ReplaceOne(info => info.ID == userInfo.ID, userInfo);
+            return true;
+        }
+
         /// <summary>
         /// 
         /// </summary>
