@@ -10,7 +10,7 @@ namespace forum.Models
         }
 
         [BsonElement("_id")]
-        public int ID { init; get; }
+        public int ID { set; get; }
         public string Name { set; get; }
         public string Email { set; get; } = "";
         public DateTime? Birthdate { set; get; }
