@@ -6,6 +6,8 @@
 @{
     ViewData["title"] = "User profile";
     Layout = "_Layout";
+    var uset = new forum.Database.UserSet();
+    var uinfo = uset.GetUserInfo(Model);
 }
 
 
@@ -14,18 +16,18 @@
     <link rel="stylesheet" href="~/css/user_profile.css" />
     <div class="container">
         <section id="top">
-            <img src="imgs/Self_Hatred (2).png" class="profile_avatar" height="50" width="50"/>
+            <img src="https://i.pravatar.cc/300" class="profile_avatar" height="50" width="50" />
             <h3>Display name</h3>
-            <h4>User name</h4>
+            <h4>@Model.Username</h4>
         </section>
         <section id="bot">
             <h3>User profile:</h3>
-            <div>Username : <span> </span> </div>
-            <div>Display name :  <span>  </span> </div>
-            <div>Email :  <span> </span> </div>
-            <div>Phone number :  <span> </span> </div>
-            <div>Birthday :  <span> </span> </div>
-            <div>Address :  <span> </span> </div>
+            <div>Username : <span>@Model.Username</span> </div>
+            <div>Display name :  <span>@uinfo.Name</span> </div>
+            <div>Email :  <span>@uinfo.Email</span> </div>
+            <div>Phone number :  <span>@uinfo.Telephone</span> </div>
+            @* <div>Birthday :  <span>@uinfo.Birthdate</span> </div> *@
+            <div>Address :  <span>@uinfo.Address</span> </div>
             <button>Edit</button>
         </section>
     </div>
