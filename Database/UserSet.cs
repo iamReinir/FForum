@@ -17,7 +17,18 @@ namespace forum.Database
         public static ICollection<User> Userlist { get; private set; } = new List<User>();
         public static ICollection<UserInfo> UserInfos { get; private set; } = new List<UserInfo>();
 
+
         private bool init = false;
+        private int usableID()
+        {
+            int res = 0;
+            MongoDB.database
+                .GetCollection<User>(MongoDB.USER_TABLE)
+                .Find(all => true)
+                .ToList()
+                .ForEach((user) => { res = Math.Max(res, user.ID); });
+            return res + 1;
+        }
         public UserSet() {
             if(!init)
                 Initiation();
@@ -68,7 +79,7 @@ namespace forum.Database
 		{
 			try
 			{
-                int newId = Userlist.Count;
+                int newId = usableID();
 				User user = new User(newId, username, password);
                 UserInfo uinfo = new UserInfo(newId, username);
 				Userlist.Add(user);
@@ -128,8 +139,9 @@ namespace forum.Database
 
         public bool UpdateUserInfo(UserInfo userInfo)
         {
-            var uinfos = MongoDB.database.GetCollection<UserInfo>(MongoDB.USER_INFO_TABLE);
-            uinfos.ReplaceOne(info => info.ID == userInfo.ID, userInfo);
+            MongoDB.database
+                .GetCollection<UserInfo>(MongoDB.USER_INFO_TABLE)
+                .ReplaceOne(info => info.ID == userInfo.ID, userInfo);
             return true;
         }
 
