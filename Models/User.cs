@@ -16,7 +16,7 @@ namespace forum.Models
         
         // Same key as UserInfo
         [BsonElement("_id")]
-        public int ID { get; }
+        public int ID { get; set; }
 
         private string username;
         public string Username { 

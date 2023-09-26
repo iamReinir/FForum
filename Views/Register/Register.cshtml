@@ -1,5 +1,5 @@
-﻿@model bool
-
+﻿@model forum.Controllers.Register.RegisterState
+@using forum.Controllers
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,11 +16,23 @@
 </head>
 
 <body>
-    @if (Model == true)
+    @if (Model == Register.RegisterState.success)
     {
         <script>
             alert("Register success!");
             window.location.href = "/login";
+        </script>
+    }
+    @if (Model == Register.RegisterState.duplicated_username)
+    {
+        <script>
+            alert("Duplicated username! Please use another.");
+        </script>
+    }
+    @if(Model == Register.RegisterState.password_too_short)
+    {
+        <script>
+            alert("Password is too short! Use at least 6 characters");
         </script>
     }
     <form id="register-form" method="post">
