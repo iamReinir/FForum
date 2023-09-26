@@ -9,13 +9,26 @@ namespace forum.Database
         public static MongoClient dbClient = new MongoClient(connection_string);
         public const string dbName = "fforum_db";
         public static IMongoDatabase database = dbClient.GetDatabase(MongoDB.dbName);
+        public const string USER_TABLE = "user";
+        public const string USER_INFO_TABLE = "user_info";
 	}
     public class UserSet
     {
         public static ICollection<User> Userlist { get; private set; } = new List<User>();
         public static ICollection<UserInfo> UserInfos { get; private set; } = new List<UserInfo>();
 
+
         private bool init = false;
+        private int usableID()
+        {
+            int res = 0;
+            MongoDB.database
+                .GetCollection<User>(MongoDB.USER_TABLE)
+                .Find(all => true)
+                .ToList()
+                .ForEach((user) => { res = Math.Max(res, user.ID); });
+            return res + 1;
+        }
         public UserSet() {
             if(!init)
                 Initiation();
@@ -23,12 +36,12 @@ namespace forum.Database
         }
         public void Initiation()
         {            
-            var collection = MongoDB.database.GetCollection<User>("user");
-            var collection2 = MongoDB.database.GetCollection<UserInfo>("user_info");
-			var filter = Builders<User>.Filter.Empty;
-			var filter2 = Builders<UserInfo>.Filter.Empty;
-            Userlist = collection.Find(filter).ToList();
-            UserInfos = collection2.Find(filter2).ToList();
+   //         var collection = MongoDB.database.GetCollection<User>(MongoDB.USER_TABLE);
+   //         var collection2 = MongoDB.database.GetCollection<UserInfo>(MongoDB.USER_INFO_TABLE);
+			//var filter = Builders<User>.Filter.Empty;
+			//var filter2 = Builders<UserInfo>.Filter.Empty;
+   //         Userlist = collection.Find(filter).ToList();
+   //         UserInfos = collection2.Find(filter2).ToList();
         }
 
         // Not used now. Might be used in the future.
@@ -66,13 +79,19 @@ namespace forum.Database
 		{
 			try
 			{
-                int newId = Userlist.Count;
+                int newId = usableID();
 				User user = new User(newId, username, password);
                 UserInfo uinfo = new UserInfo(newId, username);
 				Userlist.Add(user);
                 UserInfos.Add(uinfo);				
-				MongoDB.database.GetCollection<UserInfo>("user_info").InsertOneAsync(uinfo).Wait();
-				MongoDB.database.GetCollection<User>("user").InsertOneAsync(user).Wait();
+				MongoDB.database
+                    .GetCollection<UserInfo>(MongoDB.USER_INFO_TABLE)
+                    .InsertOneAsync(uinfo)
+                    .Wait();
+				MongoDB.database
+                    .GetCollection<User>(MongoDB.USER_TABLE)
+                    .InsertOneAsync(user)
+                    .Wait();
 				return newId;
 			}
 			catch (Exception)
@@ -89,11 +108,14 @@ namespace forum.Database
         /// Return null if cannot find user. </returns>
 		public User? GetUser(string username)
         {
-            foreach (var user in Userlist)
-            {
-                if(user.Username == username) return user;
-            }
-            return null;
+            var result =
+                MongoDB.database
+                .GetCollection<User>(MongoDB.USER_TABLE)
+                .Find(User => username == User.Username)
+                .ToList();
+            if(result.Count != 1)
+                return null;
+            return result[0];
         }
 
 
@@ -105,17 +127,21 @@ namespace forum.Database
 		/// Return null if cannot find user. </returns>
 		public User? GetUser(int id)
         {
-            foreach (var user in Userlist)
-            {
-                if (user.ID == id) return user;
-            }
-            return null;
+            var result =
+                MongoDB.database
+                .GetCollection<User>(MongoDB.USER_TABLE)
+                .Find(User => id == User.ID)
+                .ToList();
+            if (result.Count != 1)
+                return null;
+            return result[0];
         }
 
         public bool UpdateUserInfo(UserInfo userInfo)
         {
-            var uinfos = MongoDB.database.GetCollection<UserInfo>("user_info");
-            uinfos.ReplaceOne(info => info.ID == userInfo.ID, userInfo);
+            MongoDB.database
+                .GetCollection<UserInfo>(MongoDB.USER_INFO_TABLE)
+                .ReplaceOne(info => info.ID == userInfo.ID, userInfo);
             return true;
         }
 
@@ -126,11 +152,13 @@ namespace forum.Database
         /// <returns>A UserInfo object associate with this <code>user</code> </returns>
         public UserInfo? GetUserInfo(User user)
         {
-            foreach (var userInfo in UserInfos)
-            {
-                if(userInfo.ID == user.ID) return userInfo;
-            }
-            return null;
+            var result =
+                MongoDB.database
+                    .GetCollection<UserInfo>(MongoDB.USER_INFO_TABLE)
+                    .Find(info => info.ID == user.ID).ToList();
+            if(result.Count != 1)
+                return null;
+            return result[0];
         }
 
         public bool ResetPassword(string username, string newPassword)
@@ -138,6 +166,9 @@ namespace forum.Database
             User? cur = GetUser(username);
             if(cur == null) return false;
             cur.Password = newPassword;
+            MongoDB.database
+                .GetCollection<User>(MongoDB.USER_TABLE)
+                .ReplaceOne(user => user.Username == username, cur);
             return true;
         }
 
