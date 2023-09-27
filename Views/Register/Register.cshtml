@@ -1,4 +1,4 @@
-﻿@model forum.Controllers.Register.RegisterState
+﻿@model forum.Controllers.RegisterController.RegisterState
 @using forum.Controllers
 <!DOCTYPE html>
 <html lang="en">
@@ -16,20 +16,20 @@
 </head>
 
 <body>
-    @if (Model == Register.RegisterState.success)
+    @if (Model == RegisterController.RegisterState.success)
     {
         <script>
             alert("Register success!");
             window.location.href = "/login";
         </script>
     }
-    @if (Model == Register.RegisterState.duplicated_username)
+    @if (Model == RegisterController.RegisterState.duplicated_username)
     {
         <script>
             alert("Duplicated username! Please use another.");
         </script>
     }
-    @if(Model == Register.RegisterState.password_too_short)
+    @if(Model == RegisterController.RegisterState.password_too_short)
     {
         <script>
             alert("Password is too short! Use at least 6 characters");

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace forum.Controllers
 {
-	public class Register : Controller
+	public class RegisterController : Controller
 	{              
         
 
