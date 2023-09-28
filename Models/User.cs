@@ -60,7 +60,7 @@ namespace forum.Models
                     Update();
                 is_banned = value;
             } }
-        public DateTime Last_update { get; private set; } = DateTime.Now;
+        public DateTime Last_update { get; set; } = DateTime.Now;
         private void Update()
         {
             Last_update = DateTime.Now;
@@ -81,6 +81,8 @@ namespace forum.Models
             //this.User_Info = info;
         }
         */
+
+        public User() { }
         public User(int id, string username, string password)
         {
 			this.ID = id;

@@ -4,6 +4,7 @@ namespace forum.Models
 {
     public class UserInfo
     {
+        public UserInfo() { }
         public UserInfo(int id, string displayName) {
             ID = id;
             Name = displayName;
