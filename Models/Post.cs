@@ -9,8 +9,10 @@ namespace forum.Models
         public int Poster_id { get; set; }
         public bool Is_hidden {  get; set; } = false;
         
-        public DateTime Last_update { get; } = DateTime.Now;
-        public DateTime Create_date { get; } = DateTime.Now;
+        public DateTime Last_update { get; set; } = DateTime.Now;
+        public DateTime Create_date { get; set; } = DateTime.Now;
+
+        public Post() { }
         public Post(int id, int poster_id)
         {
             ID = id;

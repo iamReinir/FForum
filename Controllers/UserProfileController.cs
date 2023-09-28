@@ -10,7 +10,7 @@ namespace forum.Controllers
         public IActionResult UserProfile()
         {
             ISession session = HttpContext.Session;
-            string username = session.GetString("username");
+            string? username = session.GetString("username");
             if (username == null)
                 return View("NotFound");
             var uset = new UserSet();

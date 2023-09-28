@@ -18,10 +18,17 @@ var app = builder.Build();
 app.UseSession();
 app.MapControllers();
 app.UseStaticFiles();
+
+
+var uset = new UserSet();
+var pset = new PostSet();
+User? user = uset.GetUser("reinir2");
+Post p = pset.NewPost(user);
+var pinfo = pset.GetPostInfo(p);
+pinfo.Content = "Good evening, even tho its 8am rn...";
+pset.UpdatePostInfo(pinfo);
+
+
 app.Run();
 
-/*
-var uset = new UserSet();
-uset.Register("reinir3", "123456",);
-Console.WriteLine(uset.UserInfos.ElementAt(0).Name);
-*/
+

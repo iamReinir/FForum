@@ -23,6 +23,9 @@ namespace forum.Database
             MongoDB.database
                 .GetCollection<Post>(MongoDB.POST_TABLE)
                 .InsertOne(np);
+            MongoDB.database
+                .GetCollection<PostInfo>(MongoDB.POST_INFO_TABLE)
+                .InsertOne(pinfo);
             return np;
         }
 
@@ -65,6 +68,14 @@ namespace forum.Database
         {
             MongoDB.database.GetCollection<Post>(MongoDB.POST_TABLE)
                 .ReplaceOne(cur => post.ID == cur.ID, post);
+            return true;
+        }
+
+        public bool UpdatePostInfo(PostInfo postInfo)
+        {
+            MongoDB.database
+                .GetCollection<PostInfo>(MongoDB.POST_INFO_TABLE)
+                .ReplaceOne((pinfo) => pinfo.ID == postInfo.ID, postInfo);
             return true;
         }
 
