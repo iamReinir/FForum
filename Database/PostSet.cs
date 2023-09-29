@@ -15,6 +15,12 @@ namespace forum.Database
                 .ForEach((post) => { res = Math.Max(res, post.ID); });
             return res + 1;
         }
+
+        /// <summary>
+        /// Create a new post own by this user. Content inside PostInfo need to be change.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>the Post just created.</returns>
         public Post NewPost(User user)
         {
             int newid = usableID();
@@ -29,6 +35,11 @@ namespace forum.Database
             return np;
         }
 
+        /// <summary>
+        /// Get all posts owned by this user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>A List of Post.</returns>
         public ICollection<Post> GetPosts(User user)
         {
             var result = new List<Post>();
@@ -38,6 +49,11 @@ namespace forum.Database
             return result;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="search_string"></param>
+        /// <returns>A List of Post relevant to the search string</returns>
         public ICollection<Post> FindPost(string search_string)
         {                           
             var have_search_string = Builders<PostInfo>.Filter.AnyStringIn(search_string);
@@ -56,6 +72,12 @@ namespace forum.Database
                 .ToList();
         }
 
+
+        /// <summary>
+        /// Hide the post. Equivalent to delete (minus the actual deletion)
+        /// </summary>
+        /// <param name="post"></param>
+        /// <returns></returns>
         public bool HidePost(Post post)
         {
             post.Is_hidden = true;
@@ -64,6 +86,12 @@ namespace forum.Database
             return true;
         }
 
+        /// <summary>
+        /// Save the Post to the database. 
+        /// Only effective if there is a Post with the same ID in the database.
+        /// </summary>
+        /// <param name="post"></param>
+        /// <returns></returns>
         public bool UpdatePost(Post post)
         {
             MongoDB.database.GetCollection<Post>(MongoDB.POST_TABLE)
@@ -71,6 +99,12 @@ namespace forum.Database
             return true;
         }
 
+        /// <summary>
+        /// Save the PostInfo to the database.
+        /// Only effective if there is a PostInfo with the same ID in the database.
+        /// </summary>
+        /// <param name="postInfo"></param>
+        /// <returns></returns>
         public bool UpdatePostInfo(PostInfo postInfo)
         {
             MongoDB.database
@@ -79,6 +113,11 @@ namespace forum.Database
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="post"></param>
+        /// <returns>The PostInfo owned by this post</returns>
         public PostInfo? GetPostInfo(Post post)
         {
             var result = MongoDB.database
