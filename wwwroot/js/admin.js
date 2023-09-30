@@ -14,11 +14,12 @@ function update() {
         let username = row.getElementsByClassName("Username").item(0).innerHTML.trim();
         let e = row.getElementsByClassName("Role").item(0);
         let role = e.options[e.selectedIndex].value;
-        let is_banned = row.getElementsByClassName("Is_banned").item(0).checked;        
+        let is_banned = !row.getElementsByClassName("Active").item(0).checked;        
         var post = new XMLHttpRequest();
         post.open("post", "/update");
-        post.send(`{"Username":"${username}","Role":${role}, "Is_banned":${is_banned}}`);
-        alert("Done!");
+        post.send(`{"Username":"${username}","Role":${role}, "Is_banned":${is_banned}}`);        
     }    
+    alert("Done!");
+    location.reload();
 }
 

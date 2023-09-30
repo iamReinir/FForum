@@ -39,7 +39,7 @@ namespace forum.Controllers
 			if(changeUser != null)
 			{
 				changeUser.Is_banned = obj.Is_banned;
-				changeUser.Role = obj.Role;
+				changeUser.Role = obj.Role;				
 				uset.UpdateUser(changeUser);
 			}
             return StatusCode(200); // ok
