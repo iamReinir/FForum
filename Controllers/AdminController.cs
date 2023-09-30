@@ -14,6 +14,10 @@ namespace forum.Controllers
 
             string? username = session.GetString("username");
             var user = uset.GetUser(username);
+            if(user == null)            
+                return View("Error");            
+            if (user.Role != Models.User.ROLE.ADMIN)
+                return View("Error");
             return View("Admin_page", user);
         }
     }
