@@ -8,81 +8,104 @@ using System.Runtime.CompilerServices;
 
 namespace forum.Controllers
 {
-	public class ForgotController: Controller
+	public class ForgotController : Controller
 	{
-		private readonly IHttpContextAccessor contxt;
-		public ForgotController(IHttpContextAccessor httpContextAccessor)
+		public enum LoginState
 		{
-			contxt = httpContextAccessor;
+			success,
+			notmatch,
+			Otp_notmatch,
+			none
 		}
-
-		UserSet _userSet;
+		LoginState currentState = LoginState.none;
+		UserSet _userSet = new UserSet();
 
 		[Route("Forgot")]
 		public IActionResult Forgot()
 		{
 			return View("Forgot");
 		}
-
+		[Route("Forgot")]
 		[HttpPost]
-		public IActionResult Forgot(String UName)
-		//public ActionResult Forgot(String UName)
+		public IActionResult ForgotPass()
 		{
 			//Verify UserName
 			//Generate OTP
 			//Send Email 
 			string message = "";
-			bool status = false;
-			var user = _userSet.GetUser(UName);
+			string? username = HttpContext.Request.Form["name"];
+			var user = _userSet.GetUser(username);
 			var account = _userSet.GetUserInfo(user);
-			if (account != null)
+			if (account == null)
 			{
-				//Send email for reset password
-				SendOtpToEmail(account.Email, "ResetPassword");
-
-				message = "OTP has been sent to your email id.";
-			}
-			else
-			{
-				message = "Account not found";
+				currentState = LoginState.none;
+				return View("Forgot", currentState);
 			}
 
-			ViewBag.Message = message;
-			return View();
+			//Send email for reset password
+			SendOtpToEmail(account.Email, "ResetPassword");
+			HttpContext.Session.SetString("username", username);
+			return Redirect("/EnterOtp");
 		}
 		//otp
-		[Route("EnterOtp")]
+		[Route("/EnterOtp")]
 		public IActionResult EnterOtp()
 		{
 			return View("EnterOtp");
 		}
 		//moi duoc them vao
-		public IActionResult EnterOtp(int value)
+		[Route("/EnterOtp")]
+		[HttpPost]
+		public IActionResult EnterOTP()
 		{
-			string message = "";
-			int otp = (int)contxt.HttpContext.Session.GetInt32("otp");
-			if (value == otp)
+			//		string message = "";
+			string? valueOtp = HttpContext.Request.Form["value"];
+			int value = int.Parse(valueOtp);
+			int? otpp = HttpContext.Session.GetInt32("otp");
+			if (value != otpp)
 			{
-				message = "Success";
-				return View("ResetPass");
+				currentState = LoginState.Otp_notmatch;
+				return View("EnterOtp", currentState);
+
 			}
-			else
-			{
-				message = "Failed";
-			}
-			ViewBag.Message = message;
-			return View("EnterOtp");
+
+			//		message = "success";//
+			return Redirect("ResetPass");
 		}
 
 
 		//reset
-		[Route("ResetPass")]
+		[Route("/ResetPass")]
 		public IActionResult ResetPass()
 		{
 			return View("ResetPass");
 		}
 
+		[Route("/ResetPass")]
+		[HttpPost]
+		public IActionResult Reset()
+		{
 
+			string? name = HttpContext.Session.GetString("username");
+			string? pass = HttpContext.Request.Form["password"];
+			string? cpass = HttpContext.Request.Form["confPass"];
+			User? users = _userSet.GetUser(name);
+			if (
+				users == null || pass == null || pass != cpass)
+			{
+
+				currentState = LoginState.notmatch;
+				return View("ResetPass", currentState);
+
+			}
+			var edit = _userSet.ResetPassword(name, pass);
+			if (edit == true)
+			{
+				return Redirect("login");
+			}
+
+			return View("ResetPass");
+		}
 
 
 		//Send to Email
@@ -90,9 +113,10 @@ namespace forum.Controllers
 		public void SendOtpToEmail(string email, string emailFor)
 		{
 
-			var fromEmail = new MailAddress("****************@gmail.com", "ADMIN from FFORUM");   //enter admin mail
+			var fromEmail = new MailAddress("sinhhoctebao0903@gmail.com", "ADMIN from FFORUM");
 			var toEmail = new MailAddress(email);
-			var fromEmailPassword = "**** **** **** ****"; // Replace with actual password
+			var fromEmailPassword = "wrzo fbte kkbq cyhx"; // Replace with actual password
+
 
 			string subject = "";
 			string body = "";
@@ -100,13 +124,12 @@ namespace forum.Controllers
 			if (emailFor == "ResetPassword")
 			{
 				Random rand = new Random();
-				otpvalue = rand.Next(999999);
+				otpvalue = rand.Next(100000, 999999);
 				subject = "Reset Password";
+				HttpContext.Session.SetInt32("otp", otpvalue);
 				body = "Hi,<br/>br/>We got request for reset your account password. Please enter otp to reset your password" +
 					"<br/><br/><p>" + otpvalue + "</p>";
 			}
-
-			contxt.HttpContext.Session.SetInt32("otp", otpvalue);
 			var smtp = new SmtpClient
 			{
 				Host = "smtp.gmail.com",
@@ -124,6 +147,9 @@ namespace forum.Controllers
 				IsBodyHtml = true
 			})
 				smtp.Send(message);
+
+
+
 		}
 	}
 }

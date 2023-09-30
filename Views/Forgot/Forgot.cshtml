@@ -15,6 +15,8 @@
 	<script type='text/javascript'
 			src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 	<link rel="stylesheet" href="~/css/ForgotStyle.css">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" href="alert/dist/sweetalert.css"
 </head>
 <body oncontextmenu='return false' class='snippet-body'>
 	<div class="container padding-bottom-3x mb-2 mt-5">
@@ -41,24 +43,41 @@
 						</li>
 					</ol>
 				</div>
-				<form class="card mt-4" action="forgotPassword" method="POST">
+				<form class="card mt-4" id="Forgot-form" method="POST">
 					<div class="card-body">
 						<div class="form-group">
-							<label for="email-for-pass">Enter your name</label> <input class="form-control" type="text" name="email" id="email-for-pass" required=""><small class="form-text text-muted">
+							<label for="email-for-pass">Enter your name</label> <input class="form-control" type="text" name="name" id="name" required=""><small class="form-text text-muted">
 								Enter the registered your name . Then we'll
 								email a OTP to your address.
 							</small>
 						</div>
 					</div>
+					@if (Model == forum.Controllers.ForgotController.LoginState.none)
+					{
+						<script>swal("Error", "Username not have", "error");</script>
+					}
+
+
 					<!-- return login or resetpass -->
 					<div class="card-footer">
-						<a href="#"><input type="button" class="btn btn-success" value="Get new pass" /></a>
-						<a href="#"><input type="button" class="btn btn-danger" value="Back to Login" /></a>
+						<!---<input type="submit" class="btn btn-success" value="Get new pass" />-->
+						<button onclick="form_check_and_submit()">Forgot</button>
+						<a href="Login"><input type="button" class="btn btn-danger" value="Back to Login" /></a>
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
+	<script src="js/main.js"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" href="alert/dist/sweetalert.css" />
+	<script type="text/javascript">
+		var status = document.getElementById("status").value;
+		if (status == "success") {
+			swal("Congrats", "Register successfully", "success");
+		}
 
+	</script>
+	<script src="vendor/jquery/jquery.min.js"></script>
 </body>
 </html>
