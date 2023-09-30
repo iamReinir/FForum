@@ -254,8 +254,7 @@ table.table .avatar {
     line-height: 30px;
     font-size: 14px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-.onoff {
-    
+.onoff {    
     margin-left: -10px;
     display: -moz-inline-stack;
     display: inline-block;

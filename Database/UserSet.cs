@@ -1,5 +1,6 @@
 ﻿using forum.Models;
 using MongoDB.Driver;
+using System.Runtime.ConstrainedExecution;
 
 namespace forum.Database
 {
@@ -162,6 +163,22 @@ namespace forum.Database
                 .ReplaceOne(user => user.Username == username, cur);
             return true;
         }
+
+        public ICollection<User> GetUserList()
+        {
+            return MongoDB.database
+                .GetCollection<User>(MongoDB.USER_TABLE)
+                .Find(all=>true)
+                .ToList();
+        }
+
+        public bool UpdateUser(User user)
+        {
+			MongoDB.database
+			    .GetCollection<User>(MongoDB.USER_TABLE)
+				.ReplaceOne(u => user.Username == u.Username, user);
+            return true;
+		}
 
     }
 }
