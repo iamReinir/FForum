@@ -20,8 +20,4 @@ app.MapControllers();
 app.UseStaticFiles();
 app.Run();
 
-/*
-var uset = new UserSet();
-uset.Register("reinir3", "123456",);
-Console.WriteLine(uset.UserInfos.ElementAt(0).Name);
-*/
+

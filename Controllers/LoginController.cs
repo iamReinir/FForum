@@ -39,6 +39,10 @@ namespace forum.Controllers
 				currentState = LoginState.wrong_info;
 				return View("Index", currentState);
 			}
+			if (user.Is_banned)
+			{
+				return View("Banned");
+			}
 			ISession session = HttpContext.Session;
 			session.Set("username", Encoding.UTF8.GetBytes(username));
 			return Redirect("home");

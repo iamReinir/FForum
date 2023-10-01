@@ -5,16 +5,24 @@ using System.Text;
 
 namespace forum.Controllers
 {
-	public class Register : Controller
+	public class RegisterController : Controller
 	{              
         
+
+        public enum RegisterState
+        {
+            success,
+            password_too_short,
+            duplicated_username,
+            error,
+            none
+        } 
         [Route("register")]
         [HttpGet]
         public IActionResult SignupPage()
         {
-        
             var uinfor = new UserSet();
-            return View("Register", false);
+            return View("Register", RegisterState.none);
         }
 
 
@@ -30,6 +38,7 @@ namespace forum.Controllers
             {
                 return View("Error");
             }
+            if(password.Length < 6) { return View("register", RegisterState.password_too_short); }
             int id = uset.Register(username, password);
             if(id == -1) return View("Error");
             UserInfo? info = uset.GetUserInfo(uset.GetUser(id));
@@ -45,7 +54,7 @@ namespace forum.Controllers
             info.Telephone = telephone;
 			info.Address = address;
             uset.UpdateUserInfo(info);           
-			return View("register", true);
+			return View("register", RegisterState.success);
         }		
     }
 }

@@ -1,5 +1,5 @@
-﻿@model bool
-
+﻿@model forum.Controllers.RegisterController.RegisterState
+@using forum.Controllers
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,23 +10,34 @@
     <title>Register</title>   
     <style>
         body {
-            background-color: #cccccc;
+            background-image: url(https://www.huniarchitectes.com/uploads/images/PROJECT/URBAN/8-FPT%20QUINHON/FPT_QN_UNI_VIEW%2003.jpg);
         }
     </style>
 </head>
 
 <body>
-    @if (Model == true)
+    @if (Model == RegisterController.RegisterState.success)
     {
         <script>
             alert("Register success!");
             window.location.href = "/login";
         </script>
     }
+    @if (Model == RegisterController.RegisterState.duplicated_username)
+    {
+        <script>
+            alert("Duplicated username! Please use another.");
+        </script>
+    }
+    @if(Model == RegisterController.RegisterState.password_too_short)
+    {
+        <script>
+            alert("Password is too short! Use at least 6 characters");
+        </script>
+    }
     <form id="register-form" method="post">
         <div class="container">
-            <h1>FForum Register Section</h1>
-            <p>Fill all information to register.</p>
+            <h1>F_Forum Register Section</h1>
             <label for="fullname"><b>Fullname</b></label>
             <input type="text"
                    placeholder="Enter Fullname"
@@ -53,6 +64,13 @@
                    placeholder="Enter Phone Number"
                    name="telephone"
                    id="number"
+                   required />
+
+            <label for="address"><b>Address</b></label>
+            <input type="text"
+                   placeholder="Enter Address"
+                   name="address"
+                   id="address"
                    required />
 
             <label for="pwd"><b>Password</b></label>

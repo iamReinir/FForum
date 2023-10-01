@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using forum.Database;
+using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
 namespace forum.Controllers
@@ -9,11 +10,11 @@ namespace forum.Controllers
         public IActionResult UserProfile()
         {
             ISession session = HttpContext.Session;
-            session.Set("username", Encoding.UTF8.GetBytes("reinir"));
-            byte[]? username_data = session.Get("username");
-            if (username_data == null)
+            string? username = session.GetString("username");
+            if (username == null)
                 return View("NotFound");
-            return View("UserProfile");
+            var uset = new UserSet();
+            return View("UserProfile", uset.GetUser(username));
         }
     }
 }
