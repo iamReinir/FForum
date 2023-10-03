@@ -57,7 +57,10 @@
 					{
 						<script>swal("Error", "Username not have", "error");</script>
 					}
-
+					@if (Model == forum.Controllers.ForgotController.LoginState.notmatch)
+					{
+						<script>swal("Error", "Registed email is not valid", "error");</script>
+					}
 
 					<!-- return login or resetpass -->
 					<div class="card-footer">

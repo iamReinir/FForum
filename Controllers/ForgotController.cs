@@ -20,13 +20,15 @@ namespace forum.Controllers
 		}
 		LoginState currentState = LoginState.none;
 		UserSet _userSet = new UserSet();
-	/*	private bool IsValidEmail(String Email)
+		private bool IsValidEmail(String Email)
 		{
-			try { var addr = new System.Net.Mail.MailAddress(Email);
+			try
+			{
+				var addr = new System.Net.Mail.MailAddress(Email);
 				return addr.Address == Email;
 			}
 			catch { return false; }
-		}*/
+		}
 		[Route("Forgot")]
 		public IActionResult Forgot()
 		{
@@ -50,7 +52,12 @@ namespace forum.Controllers
 			}
 	
 				var account = _userSet.GetUserInfo(user);
-			
+			if (IsValidEmail(account.Email) == false)
+			{
+
+				currentState = LoginState.notmatch;
+				return View("Forgot", currentState);
+			}
 			//Send email for reset password
 			SendOtpToEmail(account.Email, "ResetPassword");
 			HttpContext.Session.SetString("username", username);
