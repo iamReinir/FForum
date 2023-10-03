@@ -1,0 +1,45 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model forum.Models.User
+@{
+    Layout = "_Layout";
+    ViewData["title"] = "User profile";
+    var uset = new forum.Database.UserSet();
+    var uinfo = uset.GetUserInfo(Model);
+}
+<link rel="stylesheet" href="~/css/user_profile.css" />
+<div class="t_container">
+    <section id="top">
+        <img src="https://i.pravatar.cc/300" class="profile_avatar" height="50" width="50" />
+        <h3>@uinfo.Name</h3>
+        <h4>@Model.Username</h4>
+    </section>
+    <form id="bot" method="post">
+        <h3>User profile:</h3>
+        <div>Username : <span>@Model.Username</span> </div>
+        <div>Display name :  <input 
+            type="text" 
+            name="display_name" value="@(uinfo.Name)" /> </div>
+        <div>Email :  
+            <input value="@(uinfo.Email ?? "")"
+                type="text"
+                name="email"/> </div>
+        <div>Phone number :  
+            <input value="@(uinfo.Telephone ?? "")" 
+                type="text" 
+                name="telephone"/> </div>
+        @* <div>Birthday :  <span>@uinfo.Birthdate</span> </div> *@
+        <div>Address :  
+            <input value="@(uinfo.Address ?? "")" 
+                type="text"
+                name="address"/> </div>
+        <div class="btn-container">
+        <input type="submit" value="Save" class="btn"></input>
+        <button class="btn" 
+            type="button"
+            onclick="if(confirm('You really want to cancel?'))location.href='/profile'">Cancel</button>
+        </div>
+    </form>
+</div>

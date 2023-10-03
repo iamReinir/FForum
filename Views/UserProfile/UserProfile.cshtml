@@ -15,7 +15,7 @@
 
 <body>
     <link rel="stylesheet" href="~/css/user_profile.css" />
-    <div class="container">
+    <div class="t_container">
         <section id="top">
             <img src="https://i.pravatar.cc/300" class="profile_avatar" height="50" width="50" />
             <h3>@uinfo.Name</h3>
@@ -29,7 +29,9 @@
             <div>Phone number :  <span>@uinfo.Telephone</span> </div>
             @* <div>Birthday :  <span>@uinfo.Birthdate</span> </div> *@
             <div>Address :  <span>@uinfo.Address</span> </div>
-            <button>Edit</button>
+            <div class="btn-container">
+            <button class="btn" onclick="location.href='/editProfile'">Edit</button>
+            </div>
         </section>
     </div>
 </body>
