@@ -5,6 +5,7 @@ using System.Net;
 using forum.Models;
 using forum.Database;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace forum.Controllers
 {
@@ -19,7 +20,13 @@ namespace forum.Controllers
 		}
 		LoginState currentState = LoginState.none;
 		UserSet _userSet = new UserSet();
-
+	/*	private bool IsValidEmail(String Email)
+		{
+			try { var addr = new System.Net.Mail.MailAddress(Email);
+				return addr.Address == Email;
+			}
+			catch { return false; }
+		}*/
 		[Route("Forgot")]
 		public IActionResult Forgot()
 		{
@@ -35,13 +42,15 @@ namespace forum.Controllers
 			string message = "";
 			string? username = HttpContext.Request.Form["name"];
 			var user = _userSet.GetUser(username);
-			var account = _userSet.GetUserInfo(user);
-			if (account == null)
+
+			if (user == null)
 			{
 				currentState = LoginState.none;
 				return View("Forgot", currentState);
 			}
-
+	
+				var account = _userSet.GetUserInfo(user);
+			
 			//Send email for reset password
 			SendOtpToEmail(account.Email, "ResetPassword");
 			HttpContext.Session.SetString("username", username);
@@ -115,19 +124,19 @@ namespace forum.Controllers
 
 			var fromEmail = new MailAddress("sinhhoctebao0903@gmail.com", "ADMIN from FFORUM");
 			var toEmail = new MailAddress(email);
+			
 			var fromEmailPassword = "wrzo fbte kkbq cyhx"; // Replace with actual password
-
-
 			string subject = "";
 			string body = "";
 			int otpvalue = 0;
+			
 			if (emailFor == "ResetPassword")
 			{
 				Random rand = new Random();
 				otpvalue = rand.Next(100000, 999999);
 				subject = "Reset Password";
 				HttpContext.Session.SetInt32("otp", otpvalue);
-				body = "Hi,<br/>br/>We got request for reset your account password. Please enter otp to reset your password" +
+				body = "Hi,<br/>We got request for reset your account password. Please enter otp to reset your password" +
 					"<br/><br/><p>" + otpvalue + "</p>";
 			}
 			var smtp = new SmtpClient
