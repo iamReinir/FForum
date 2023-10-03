@@ -40,7 +40,7 @@ namespace forum.Database
         /// </summary>
         /// <param name="user"></param>
         /// <returns>A List of Post.</returns>
-        public ICollection<Post> GetPosts(User user)
+        public ICollection<Post> GetPosts()
         {
             var result = new List<Post>();
             result = MongoDB.database
