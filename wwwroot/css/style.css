@@ -152,6 +152,12 @@ nav {
         color: #626262;
     }
 
+    .user-profile a {
+        width: 50px;
+        margin-right: 15px;
+        margin-left: 350px;
+    }
+
     .user-profile small {
         font-size: 12px;
     }
