@@ -59,5 +59,30 @@ namespace forum.Controllers
         {
             return View("error");
         }
+
+        [Route("deletepost")]
+        [HttpPost]
+        public IActionResult DeletePost()
+        {
+            var uset = new UserSet();
+            var pset = new PostSet();
+            var user = uset.GetUser(HttpContext.Session.GetString("username"));
+            try
+            {
+                StreamReader reader = new StreamReader(HttpContext.Request.Body);
+                var x = reader.ReadLineAsync();
+                x.Wait();
+                var post_id = int.Parse(x.Result);
+                var post = pset.FindPost(post_id);
+                if (post == null || user == null || post.Poster_id != user.ID)
+                    return StatusCode(403); // Not allowed
+                pset.HidePost(post);
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
+            return StatusCode(200); // ok
+        }
     }
 }

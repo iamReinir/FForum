@@ -72,6 +72,15 @@ namespace forum.Database
                 .ToList();
         }
 
+        public Post? FindPost(int id)
+        {
+            var result =  MongoDB.database
+                .GetCollection<Post>(MongoDB.POST_TABLE)
+                .Find((post) => id == post.ID).ToList();
+            if (result.Count == 0)
+                return null; return result[0];
+        }
+
 
         /// <summary>
         /// Hide the post. Equivalent to delete (minus the actual deletion)

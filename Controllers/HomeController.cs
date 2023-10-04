@@ -40,7 +40,7 @@ namespace forum.Controllers
             postSet.UpdatePostInfo(pinfo);
 
             
-            return View("Index", user);
+            return Redirect("/home");
         }
     }
 }

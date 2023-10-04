@@ -24,3 +24,14 @@ else if (localStorage.setItem("theme") == "dark") {
 else {
     localStorage.setItem("theme", "light");
 }
+
+
+function delete_post(postId) {
+    if (!confirm("Do you really want to delete this post?"))
+        return;
+    let req = new XMLHttpRequest();
+    req.open("post", "/deletepost");
+    req.send(postId);
+    alert("Request sent!");
+    location.reload();
+}
