@@ -10,6 +10,8 @@
 		  rel="stylesheet" id="bootstrap-css">
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" href="alert/dist/sweetalert.css"
 	<!------ Include the above in your HEAD tag ---------->
 
 	<link rel="stylesheet"
@@ -41,21 +43,24 @@
 
 							<div class="panel-body">
 
-								<form id="register-form" action="ValidateOtp" role="form" autocomplete="off"
+								<form id="EnterOtp-form"
 									  class="form" method="post">
 
 									<div class="form-group">
 										<div class="input-group">
 											<span class="input-group-addon">
 												<i class="glyphicon glyphicon-envelope color-blue"></i>
-											</span> <input id="opt" name="otp" placeholder="Enter OTP"
-												class="form-control" type="text" required="required">
+											</span> <input id="value" name="value" placeholder="Enter OTP"
+												class="form-control" type="text" autocomplete ="off" required="required">
 										</div>
 									</div>
+									@if (Model == forum.Controllers.ForgotController.LoginState.Otp_notmatch)
+									{
+										<script>swal("Warning", "New password does not match", "warning");</script>
+									}
 									<div class="form-group">
-										<input name="recover-submit"
-											   class="btn btn-lg btn-primary btn-block"
-											   value="Reset Password" type="submit">
+
+										<button onclick="form_check_and_submit()">Forgot</button>
 									</div>
 
 									<input type="hidden" class="hide" name="token" id="token"
