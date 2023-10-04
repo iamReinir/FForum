@@ -1,58 +1,96 @@
-﻿@{
+﻿@model forum.Models.User
+@{
     ViewData["title"] = "Home";
     Layout = "_Layout";
+
 }
 <body>
-        <div class ="container">
-            <!---------left-sidebar--------->
+    <div class="container">
+        <!---------left-sidebar--------->
         <div class="left-sidebar">
-        <div class="imp-links">
-            <a href="#"><i class="fa-solid fa-square-poll-horizontal" style="color: #005eff;"></i>Latest News</a>
-            <a href="#"><i class="fa-solid fa-user-group" style="color: #005eff;"></i>Friends</a>
-            <a href="#"><i class="fa-solid fa-users" style="color: #005eff;"></i>Groups</a>
-        </div>
+            <div class="imp-links">
+                <a href="#"><i class="fa-solid fa-square-poll-horizontal" style="color: #005eff;"></i>Latest News</a>
+                <a href="#"><i class="fa-solid fa-user-group" style="color: #005eff;"></i>Friends</a>
+                <a href="#"><i class="fa-solid fa-users" style="color: #005eff;"></i>Groups</a>
+            </div>
         </div>
         <!---------main-content--------->
         <div class="main-content">
-            <div class="write-post-container">
-                <div class="user-profile">
+            @{
+                var userSet = new forum.Database.UserSet();
+                string? username = Context.Session.GetString("username");
+                forum.Models.User? u;
+                if (username == null)
+                 u = null; 
+                        else 
+                 u = userSet.GetUser(Model.Username);
+            }
+
+            @if (u != null)
+            {
+                <div class="write-post-container">
+                    <div class="user-profile">
                     <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
                     <div>
-                    <p>User Name</p>
-                    <small>Public</small>
+                        <p>@username</p>
+                        <small>Public</small>
                     </div>
                 </div>
-                <div class="post-input-container">
-                <textarea row="3" placeholder="What's on your mind?"></textarea>
-                    <div class="add-post-links">
-                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1375/1375106.png"/>Photo</a>
-                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/5190/5190662.png" />Feeling</a>
-                    </div>
-                </div>
+                    <form method="post" action="post">
+                        <div class="post-input-container">
+                            <textarea row="3" placeholder="What's on your mind?" id="text_content" name="content"></textarea>
+                            <input type="submit"/>
+                            <div class="add-post-links">
+                                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1375/1375106.png" />Photo</a>
+                                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/5190/5190662.png" />Feeling</a>
+                                <a href="/create"></a>
+                            </div>
+                        </div>
+                    </form>
+    
             </div>
-            <div class="post-container">
+
+            }
+
+        <!--Post-->
+        @{
+                 var uset = new forum.Database.UserSet();
+                 var postset = new forum.Database.PostSet();
+                 var allposts = postset.GetPosts();
+    
+        }
+        @foreach(var post in allposts)
+        {
+             var postContent = postset.GetPostInfo(post)?.Content;
+             var user = uset.GetUser(post.Poster_id);
+             var user_displayname = uset.GetUserInfo(user)?.Name;
+             if(post.Is_hidden == false)
+             {
+                <div class="post-container">
                 <div class="user-profile">
                     <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
                     <div>
-                        <p>User Name</p>
-                        <span>September 21 2023, 18:39</span>
+                        <p>@user_displayname</p>
+                        <span>@post.Create_date</span>
                     </div>
                 </div>
-                <p class="post-text">Hôm nay là ngày tuyệt vời cùng bạn bè</p>
-                <img src="https://media.discordapp.net/attachments/975638613431840818/990072623721508915/IMG_0173.jpg?width=908&height=681" class="post-img" />
+                <p class="post-text">@postContent</p>
+                <!--<img src="https://media.discordapp.net/attachments/975638613431840818/990072623721508915/IMG_0173.jpg?width=908&height=681" class="post-img" />-->
                 <div class="post-row">
                     <div class="activity-icons">
                         <div><i class="fa-solid fa-thumbs-up" style="color: #758095;"></i>Like</div>
                         <div><i class="fa-solid fa-message" style="color: #758095;"></i>Comment</div>
                         <div><i class="fa-solid fa-share" style="color: #758095;"></i>Share</div>
                     </div>
-                  
                 </div>
             </div>
+            }
+        }
+        <!--Post-->
         </div>
         <!---------right-sidebar--------->
         <div class="right-sidebar"></div>
-        </div>
+    </div>
     <script src="https://kit.fontawesome.com/eee778a1cd.js" crossorigin="anonymous"></script>
     <script src="~/js/script.js"></script>
-    </body>
+</body>
