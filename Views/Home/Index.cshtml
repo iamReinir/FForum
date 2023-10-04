@@ -2,7 +2,6 @@
 @{
     ViewData["title"] = "Home";
     Layout = "_Layout";
-
 }
 <body>
     <div class="container">
@@ -73,7 +72,8 @@
                         <p>@user_displayname</p>
                         <span>@post.Create_date</span>
                     </div>
-                </div>
+                                <a href="#"><i class="fa-solid fa-trash" style="color: red;"></i></a>
+                        </div>
                 <p class="post-text">@postContent</p>
                 <!--<img src="https://media.discordapp.net/attachments/975638613431840818/990072623721508915/IMG_0173.jpg?width=908&height=681" class="post-img" />-->
                 <div class="post-row">
