@@ -98,8 +98,10 @@ namespace forum.Database
         /// <param name="username"></param>
         /// <returns> Return a User object with this <code>username</code>. 
         /// Return null if cannot find user. </returns>
-		public User? GetUser(string username)
+		public User? GetUser(string? username)
         {
+            if (username == null)
+                return null;
             var result =
                 MongoDB.database
                 .GetCollection<User>(MongoDB.USER_TABLE)
@@ -180,5 +182,14 @@ namespace forum.Database
             return true;
 		}
 
+        public ICollection<User> FindUser(string? search_string)
+        {
+            if(search_string == null)
+                return GetUserList();
+            return MongoDB.database
+                .GetCollection<User>(MongoDB.USER_TABLE)
+                .Find(user=>user.Username.Contains(search_string))
+                .ToList();                
+        }
     }
 }

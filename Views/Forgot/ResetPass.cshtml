@@ -15,6 +15,8 @@
 		  rel='stylesheet'>
 	<script type='text/javascript'
 			src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" href="alert/dist/sweetalert.css" />
 	<style>
 		.placeicon {
 			font-family: fontawesome
@@ -43,23 +45,26 @@
 							</h1>
 						</div>
 						<div class="pt-3 pb-3">
-							<form class="form-horizontal" action="newPassword" method="POST">
-								<!-- User Name Input -->
-								<div class="form-group row justify-content-center px-3">
-									<div class="col-9 px-0">
-										<input type="text" name="password" placeholder="&#xf084; &nbsp; New Password"
-											   class="form-control border-info placeicon">
-									</div>
-								</div>
+							<form class="form-horizontal" id="ResetPass-form" method="POST">
 								<!-- Password Input -->
 								<div class="form-group row justify-content-center px-3">
 									<div class="col-9 px-0">
-										<input type="password" name="confPassword"
+										<input type="password" name="password" id="password"
+											   placeholder="&#xf084; &nbsp; New Password"
+											   class="form-control border-info placeicon">
+									</div>
+								</div>
+								<div class="form-group row justify-content-center px-3">
+									<div class="col-9 px-0">
+										<input type="password" name="confPass" id="confPass"
 											   placeholder="&#xf084; &nbsp; Confirm New Password"
 											   class="form-control border-info placeicon">
 									</div>
 								</div>
-
+								@if (Model == forum.Controllers.ForgotController.LoginState.notmatch)
+								{
+									<script>swal("Warning", "New password does not match", "warning");</script>
+								}
 								<!-- Log in Button -->
 								<div class="form-group row justify-content-center">
 									<div class="col-3 px-3 mt-3">
@@ -81,7 +86,7 @@
 								<div class="row justify-content-center">
 									<h5>
 										Don't have an Account?<span>
-											<a href="#"
+											<a href="Register"
 											   class="text-danger"> Register!</a>
 										</span>
 									</h5>
