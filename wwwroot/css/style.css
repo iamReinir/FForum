@@ -338,3 +338,8 @@ nav {
 textarea {
     resize: none;
 }
+
+#submit-btn{
+    padding:0.4rem;
+    margin-top:0.5rem;
+}

@@ -1,0 +1,98 @@
+﻿@model forum.Controllers.RegisterController.RegisterState
+
+@using forum.Controllers
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/register.css">
+    <title>RegisterController</title>   
+    <style>
+        body {
+            background-image: url(https://www.huniarchitectes.com/uploads/images/PROJECT/URBAN/8-FPT%20QUINHON/FPT_QN_UNI_VIEW%2003.jpg);
+        }
+    </style>
+</head>
+
+<body>
+    @if (Model == RegisterController.RegisterState.success)
+    {
+        <script>
+            alert("Register success!");
+            window.location.href = "/login";
+        </script>
+    }
+    @if (Model == RegisterController.RegisterState.duplicated_username)
+    {
+        <script>
+            alert("Duplicated username! Please use another.");
+        </script>
+    }
+    @if (Model == RegisterController.RegisterState.password_too_short)
+    {
+        <script>
+            alert("Password is too short! Use at least 6 characters");
+        </script>
+    }
+    <form id="register-form" method="post">
+        <div class="container">
+            <h1>F_Forum Register Section</h1>
+            <label for="fullname"><b>Fullname</b></label>
+            <input type="text"
+                   placeholder="Enter Fullname"
+                   name="display_name"
+                   id="fullname"
+                   required />
+
+            <label for="username"><b>Username</b></label>
+            <input type="text"
+                   placeholder="Enter username"
+                   name="username"
+                   id="username"
+                   required />
+
+            <label for="email"><b>Email</b></label>
+            <input type="text"
+                   placeholder="Enter Email"
+                   name="email"
+                   id="email"
+                   required />
+
+            <label for="number"><b>Phone Number</b></label>
+            <input type="text"
+                   placeholder="Enter Phone Number"
+                   name="telephone"
+                   id="number"
+                   required />
+
+            <label for="address"><b>Address</b></label>
+            <input type="text"
+                   placeholder="Enter Address"
+                   name="address"
+                   id="address"
+                   required />
+
+            <label for="pwd"><b>Password</b></label>
+            <input type="password"
+                   placeholder="Enter Password"
+                   name="password"
+                   id="pwd"
+                   required />
+
+            <label for="pwd-repeat"><b>Repeat Password</b></label>
+            <input type="password"
+                   placeholder="Repeat Password"
+                   name="password_repeat"
+                   id="pwd-repeat"
+                   required />
+            <button onclick="form_check_and_submit()">Register</button>
+        </div>        
+    </form>
+    <div>
+        <p>Already have an account? <a href="./login">Log in</a>.</p>
+    </div>
+    <script src="~/js/register.js"></script>
+</body>
+</html>
