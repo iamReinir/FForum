@@ -7,9 +7,9 @@ namespace forum.Models
         [BsonElement("_id")]
         public int ID { get; set; }
 
-        [BsonElement("Content")]
+        //[BsonElement("Content")]
         private string? content;
-        public string Content { 
+        public string? Content { 
             get {
                 return content;
             } 

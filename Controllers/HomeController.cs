@@ -18,5 +18,12 @@ namespace forum.Controllers
             var user = uset.GetUser(username);
             return View("Index",user);  
         }
+
+        [HttpPost]
+        [Route("/home")]
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }
