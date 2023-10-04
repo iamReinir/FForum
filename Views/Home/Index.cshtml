@@ -23,7 +23,7 @@
                 if (username == null)
                  u = null; 
                         else 
-                u = userSet.GetUser(Model.Username);
+                 u = userSet.GetUser(Model.Username);
             }
 
             @if (u != null)
@@ -32,18 +32,22 @@
                     <div class="user-profile">
                     <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
                     <div>
-                        <p>User Name</p>
+                        <p>@username</p>
                         <small>Public</small>
                     </div>
                 </div>
-                <div class="post-input-container">
-                    <textarea row="3" placeholder="What's on your mind?"></textarea>
-                    <div class="add-post-links">
-                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1375/1375106.png" />Photo</a>
-                        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/5190/5190662.png" />Feeling</a>
-                        <a href="/create"></a>
-                    </div>
-                </div>
+                    <form method="post" action="post">
+                        <div class="post-input-container">
+                            <textarea row="3" placeholder="What's on your mind?" id="text_content" name="content"></textarea>
+                            <input type="submit"/>
+                            <div class="add-post-links">
+                                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1375/1375106.png" />Photo</a>
+                                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/5190/5190662.png" />Feeling</a>
+                                <a href="/create"></a>
+                            </div>
+                        </div>
+                    </form>
+    
             </div>
 
             }
