@@ -14,8 +14,8 @@ namespace forum.Database
         private int usableID()
         {
             int res = 0;
-            MongoDB.database
-                .GetCollection<User>(MongoDB.USER_TABLE)
+            MongoDBConst.database
+                .GetCollection<User>(MongoDBConst.USER_TABLE)
                 .Find(all => true)
                 .ToList()
                 .ForEach((user) => { res = Math.Max(res, user.ID); });
@@ -76,12 +76,12 @@ namespace forum.Database
                 UserInfo uinfo = new UserInfo(newId, username);
 				Userlist.Add(user);
                 UserInfos.Add(uinfo);				
-				MongoDB.database
-                    .GetCollection<UserInfo>(MongoDB.USER_INFO_TABLE)
+				MongoDBConst.database
+                    .GetCollection<UserInfo>(MongoDBConst.USER_INFO_TABLE)
                     .InsertOneAsync(uinfo)
                     .Wait();
-				MongoDB.database
-                    .GetCollection<User>(MongoDB.USER_TABLE)
+				MongoDBConst.database
+                    .GetCollection<User>(MongoDBConst.USER_TABLE)
                     .InsertOneAsync(user)
                     .Wait();
 				return newId;
@@ -103,8 +103,8 @@ namespace forum.Database
             if (username == null)
                 return null;
             var result =
-                MongoDB.database
-                .GetCollection<User>(MongoDB.USER_TABLE)
+                MongoDBConst.database
+                .GetCollection<User>(MongoDBConst.USER_TABLE)
                 .Find(User => username == User.Username)
                 .ToList();
             if(result.Count != 1)
@@ -122,8 +122,8 @@ namespace forum.Database
 		public User? GetUser(int id)
         {
             var result =
-                MongoDB.database
-                .GetCollection<User>(MongoDB.USER_TABLE)
+                MongoDBConst.database
+                .GetCollection<User>(MongoDBConst.USER_TABLE)
                 .Find(User => id == User.ID)
                 .ToList();
             if (result.Count != 1)
@@ -133,8 +133,8 @@ namespace forum.Database
 
         public bool UpdateUserInfo(UserInfo userInfo)
         {
-            MongoDB.database
-                .GetCollection<UserInfo>(MongoDB.USER_INFO_TABLE)
+            MongoDBConst.database
+                .GetCollection<UserInfo>(MongoDBConst.USER_INFO_TABLE)
                 .ReplaceOne(info => info.ID == userInfo.ID, userInfo);
             return true;
         }
@@ -147,8 +147,8 @@ namespace forum.Database
         public UserInfo? GetUserInfo(User user)
         {
             var result =
-                MongoDB.database
-                    .GetCollection<UserInfo>(MongoDB.USER_INFO_TABLE)
+                MongoDBConst.database
+                    .GetCollection<UserInfo>(MongoDBConst.USER_INFO_TABLE)
                     .Find(info => info.ID == user.ID).ToList();
             if(result.Count != 1)
                 return null;
@@ -160,24 +160,24 @@ namespace forum.Database
             User? cur = GetUser(username);
             if(cur == null) return false;
             cur.Password = newPassword;
-            MongoDB.database
-                .GetCollection<User>(MongoDB.USER_TABLE)
+            MongoDBConst.database
+                .GetCollection<User>(MongoDBConst.USER_TABLE)
                 .ReplaceOne(user => user.Username == username, cur);
             return true;
         }
 
         public ICollection<User> GetUserList()
         {
-            return MongoDB.database
-                .GetCollection<User>(MongoDB.USER_TABLE)
+            return MongoDBConst.database
+                .GetCollection<User>(MongoDBConst.USER_TABLE)
                 .Find(all=>true)
                 .ToList();
         }
 
         public bool UpdateUser(User user)
         {
-			MongoDB.database
-			    .GetCollection<User>(MongoDB.USER_TABLE)
+			MongoDBConst.database
+			    .GetCollection<User>(MongoDBConst.USER_TABLE)
 				.ReplaceOne(u => user.Username == u.Username, user);
             return true;
 		}
@@ -186,8 +186,8 @@ namespace forum.Database
         {
             if(search_string == null)
                 return GetUserList();
-            return MongoDB.database
-                .GetCollection<User>(MongoDB.USER_TABLE)
+            return MongoDBConst.database
+                .GetCollection<User>(MongoDBConst.USER_TABLE)
                 .Find(user=>user.Username.Contains(search_string))
                 .ToList();                
         }
