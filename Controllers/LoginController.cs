@@ -33,8 +33,8 @@ namespace forum.Controllers
 			string? password = HttpContext.Request.Form["password"];
 			if (username == null || password == null)
 				return View("NotFound");
-			var user = uset.GetUser(username);
-			if (user == null || user.Password != password)
+			var user = uset.Login(username,password);
+			if (user == null)
 			{
 				currentState = LoginState.wrong_info;
 				return View("Index", currentState);

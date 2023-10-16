@@ -51,7 +51,7 @@ namespace forum.Controllers
 				return View("Forgot", currentState);
 			}
 	
-				var account = _userSet.GetUserInfo(user);
+				var account = user.UserInfo;
 			if (IsValidEmail(account.Email) == false)
 			{
 

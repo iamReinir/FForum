@@ -4,8 +4,10 @@ using MongoDB.Driver;
 
 namespace forum.DataDecorator
 {
+    /*
     public class DecoratedComment : DecoratedEntity
     {
+
         public Comment? Core { get; set; }
         public DecoratedComment(Comment core)
         {
@@ -90,5 +92,8 @@ namespace forum.DataDecorator
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        
     }
+    */
 }

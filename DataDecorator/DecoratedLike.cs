@@ -4,8 +4,10 @@ using MongoDB.Driver;
 
 namespace forum.DataDecorator
 {
+    /*
     public class DecoratedLike : DecoratedEntity
     {
+        
         public Like Core { get; set; }
         public DecoratedLike(Like core) { 
             Core = core;
@@ -64,4 +66,5 @@ namespace forum.DataDecorator
             }
         }
     }
+        */
 }

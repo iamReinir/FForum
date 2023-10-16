@@ -1,4 +1,5 @@
 ﻿using forum.Models;
+using Microsoft.Extensions.Hosting;
 using MongoDB.Driver;
 
 namespace forum.Database
@@ -7,12 +8,11 @@ namespace forum.Database
     {
         private int usableID()
         {
+            var all = Builders<Post>.Filter.Empty;
             int res = 0;
-            MongoDBConst.database
+            res = (int)MongoDBConst.database
                 .GetCollection<Post>(MongoDBConst.POST_TABLE)
-                .Find(all => true)
-                .ToList()
-                .ForEach((post) => { res = Math.Max(res, post.ID); });
+                .CountDocuments(all);
             return res + 1;
         }
 
@@ -24,14 +24,10 @@ namespace forum.Database
         public Post NewPost(User user)
         {
             int newid = usableID();
-            var np = new Post(newid, user.ID);
-            var pinfo = new PostInfo(newid, "");
+            var np = new Post(newid, user);
             MongoDBConst.database
                 .GetCollection<Post>(MongoDBConst.POST_TABLE)
-                .InsertOne(np);
-            MongoDBConst.database
-                .GetCollection<PostInfo>(MongoDBConst.POST_INFO_TABLE)
-                .InsertOne(pinfo);
+                .InsertOne(np);                
             return np;
         }
 
@@ -42,10 +38,12 @@ namespace forum.Database
         /// <returns>A List of Post.</returns>
         public ICollection<Post> GetPosts()
         {
+            var all = Builders<Post>.Filter.Empty;
             var result = new List<Post>();
-            result = MongoDBConst.database
-                .GetCollection<Post>(MongoDBConst.POST_TABLE)
-                .Find(all => true).ToList();                
+            var collection = MongoDBConst.database
+                .GetCollection<Post>(MongoDBConst.POST_TABLE);
+            result = collection
+                .Find(all).ToList();                
             return result;
         }
         
@@ -55,30 +53,25 @@ namespace forum.Database
         /// <param name="search_string"></param>
         /// <returns>A List of Post relevant to the search string</returns>
         public ICollection<Post> FindPost(string search_string)
-        {                           
-            var have_search_string = Builders<PostInfo>.Filter.AnyStringIn(search_string);
-            List<int> result_id = new();
-            MongoDBConst.database
-                .GetCollection<PostInfo>(MongoDBConst.POST_INFO_TABLE)
-                .Find(have_search_string)
-                .ToList()
-                .ForEach((info) =>
-                {
-                    result_id.Add(info.ID);
-                });
-            return MongoDBConst.database
-                .GetCollection<Post>(MongoDBConst.POST_TABLE)
-                .Find((post) => result_id.Contains(post.ID))
-                .ToList();
+        { 
+            var posts = GetPosts();
+            var res = new List<Post>();
+            foreach(var post in posts)
+            {
+                if(post.Info.Content.IndexOf(search_string,StringComparison.OrdinalIgnoreCase) >= 0
+                    && !post.Is_hidden)   
+                    res.Add(post);
+            }
+            return res;
         }
 
         public Post? FindPost(int id)
         {
+            var thisID = Builders<Post>.Filter.Eq("_id", id);
             var result =  MongoDBConst.database
                 .GetCollection<Post>(MongoDBConst.POST_TABLE)
-                .Find((post) => id == post.ID).ToList();
-            if (result.Count == 0)
-                return null; return result[0];
+                .Find(thisID).ToList().SingleOrDefault();
+            return result;
         }
 
 
@@ -88,11 +81,9 @@ namespace forum.Database
         /// <param name="post"></param>
         /// <returns></returns>
         public bool HidePost(Post post)
-        {
+        {           
             post.Is_hidden = true;
-            MongoDBConst.database.GetCollection<Post>(MongoDBConst.POST_TABLE)
-                .ReplaceOne(cur => post.ID == cur.ID, post);
-            return true;
+            return UpdatePost(post);
         }
 
         /// <summary>
@@ -103,38 +94,18 @@ namespace forum.Database
         /// <returns></returns>
         public bool UpdatePost(Post post)
         {
+            var thisPost = Builders<Post>.Filter.Eq("_id", post.Id);
             MongoDBConst.database.GetCollection<Post>(MongoDBConst.POST_TABLE)
-                .ReplaceOne(cur => post.ID == cur.ID, post);
+                .ReplaceOne(thisPost, post);
             return true;
         }
 
-        /// <summary>
-        /// Save the PostInfo to the database.
-        /// Only effective if there is a PostInfo with the same ID in the database.
-        /// </summary>
-        /// <param name="postInfo"></param>
-        /// <returns></returns>
-        public bool UpdatePostInfo(PostInfo postInfo)
+        public void UpdateAllPostOfUser(User user)
         {
+            var thisPost = Builders<Post>.Filter.Eq("Poster.Username", user.Username);
+            var update = Builders<Post>.Update.Set("Poster", user);
             MongoDBConst.database
-                .GetCollection<PostInfo>(MongoDBConst.POST_INFO_TABLE)
-                .ReplaceOne((pinfo) => pinfo.ID == postInfo.ID, postInfo);
-            return true;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="post"></param>
-        /// <returns>The PostInfo owned by this post</returns>
-        public PostInfo? GetPostInfo(Post post)
-        {
-            var result = MongoDBConst.database
-                .GetCollection<PostInfo>(MongoDBConst.POST_INFO_TABLE)
-                .Find(postinfo => post.ID == postinfo.ID).ToList();
-            if (result.Count != 1)
-                return null;
-            return result[0];
+                .GetCollection<Post>(MongoDBConst.POST_TABLE).UpdateMany(thisPost,update);
         }
     }
 }

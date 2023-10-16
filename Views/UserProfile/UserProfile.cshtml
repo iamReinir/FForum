@@ -7,7 +7,7 @@
     ViewData["title"] = "User profile";
     Layout = "_Layout";
     var uset = new forum.Database.UserSet();
-    var uinfo = uset.GetUserInfo(Model);
+    var uinfo = Model.UserInfo;
 }
 
 

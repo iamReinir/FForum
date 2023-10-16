@@ -1,4 +1,4 @@
-﻿@model forum.Models.User
+﻿@model forum.Controllers.HomePageModel
 @{
     ViewData["title"] = "Home";
     Layout = "_Layout";
@@ -15,24 +15,14 @@
             </div>
         </div>
         <!---------main-content--------->
-        <div class="main-content">
-            @{
-                var userSet = new forum.Database.UserSet();
-                string? username = Context.Session.GetString("username");
-                forum.Models.User? u;
-                if (username == null)
-                 u = null; 
-                        else 
-                 u = userSet.GetUser(Model.Username);
-            }
-
-            @if (u != null)
+        <div class="main-content">        
+            @if (currentUsername != null)
             {
                 <div class="write-post-container">
                     <div class="user-profile">
                     <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
                     <div>
-                        <p>@username</p>
+                            <p>@currentUsername</p>
                         <small>Public</small>
                     </div>
                 </div>
@@ -51,42 +41,33 @@
 
             }
 
-        <!--Post-->
-        @{
-                 var uset = new forum.Database.UserSet();
-                 var postset = new forum.Database.PostSet();
-                 var allposts = postset.GetPosts();
-    
-        }
-        @foreach(var post in allposts)
-        {
-             var postContent = postset.GetPostInfo(post)?.Content;
-             var user = uset.GetUser(post.Poster_id);
-             var user_displayname = uset.GetUserInfo(user)?.Name;
-             if(post.Is_hidden == false)
-             {
+        <!--Post-->        
+        @foreach(var tpost in Model.post_list)
+            {
+                var post = tpost;
+                var postContent = tpost.Info.Content;                
+                var user_displayname = tpost.Poster.UserInfo.Name;             
                 <div class="post-container">
-                <div class="user-profile">
-                    <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
-                    <div>
-                        <p>@user_displayname</p>
-                        <span>@post.Create_date</span>
-                    </div>
-                    @if(currentUsername == user.Username) {
-                    <a href="" onclick="delete_post(@post.ID)"><i class="fa-solid fa-trash" style="color: red;"></i></a>
-                    }
-                 </div>
-                <p class="post-text">@postContent</p>
-                <!--<img src="https://media.discordapp.net/attachments/975638613431840818/990072623721508915/IMG_0173.jpg?width=908&height=681" class="post-img" />-->
-                <div class="post-row">
-                    <div class="activity-icons">
-                        <div><i class="fa-solid fa-thumbs-up" style="color: #758095;"></i>Like</div>
-                        <div><i class="fa-solid fa-message" style="color: #758095;"></i>Comment</div>
-                        <div><i class="fa-solid fa-share" style="color: #758095;"></i>Share</div>
-                    </div>
+            <div class="user-profile">
+                <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
+                <div>
+                    <p>@user_displayname</p>
+                    <span>@post.Create_date</span>
+                </div>
+                @if(currentUsername != null && currentUsername == tpost.Poster.Username ) {
+                <a href="" onclick="delete_post(@post.Id)"><i class="fa-solid fa-trash" style="color: red;"></i></a>
+                }
+                </div>
+            <p class="post-text">@postContent</p>
+            <!--<img src="https://media.discordapp.net/attachments/975638613431840818/990072623721508915/IMG_0173.jpg?width=908&height=681" class="post-img" />-->
+            <div class="post-row">
+                <div class="activity-icons">
+                    <div><i class="fa-solid fa-thumbs-up" style="color: #758095;"></i>0 Like</div>
+                    <div><i class="fa-solid fa-message" style="color: #758095;"></i>Comment</div>
+                    <div><i class="fa-solid fa-share" style="color: #758095;"></i>Share</div>
                 </div>
             </div>
-            }
+        </div>            
         }
         <!--Post-->
         </div>

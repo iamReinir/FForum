@@ -2,6 +2,7 @@
 
 namespace forum.Models
 {
+    [BsonIgnoreExtraElements]
     public class User
     {
 
@@ -13,55 +14,20 @@ namespace forum.Models
             public const int GUESS = 3;
             public const int ROLE_COUNT = 4;
         }
-        
-        // Same key as UserInfo
-        [BsonElement("_id")]
-        public int ID { get; set; }
+       
+        public string Username { get; set; }
 
-        private string username;
-        public string Username { 
-            get {
-                return username;
-            } 
-            set {
-                string oldName = username;
-                username = value;
-                if (!username.Equals(oldName))
-                    Update();
-            } 
-        }
+        public string Password { get;set;}
 
-        private string password;
-        public string Password {
-            get {
-                return password;
-            } set {
-                password = value;
-                Update();
-            } 
-        }
-
-        private int role = ROLE.POSTER;
-        public int Role { 
-            get {
-                return role;
-            } set { 
-                int oldRole = role;
-                role = value;
-                if(role != oldRole)
-                    Update();
-            } 
-        }
-
-        private bool is_banned = false;
-        public bool Is_banned { 
-            get { return is_banned; } 
-            set { if (is_banned != value)
-                    Update();
-                is_banned = value;
-            } }
+        public int Role
+        {
+            get; set;
+        } = ROLE.POSTER;
+        public bool Is_banned { get; set; } = false;
+        public DateTime Create_Date { get; set; } = DateTime.Now;
         public DateTime Last_update { get; set; } = DateTime.Now;
-        private void Update()
+        public UserInfo UserInfo { get; set; } = new UserInfo();
+        public void Update()
         {
             Last_update = DateTime.Now;
         }
@@ -83,9 +49,8 @@ namespace forum.Models
         */
 
         public User() { }
-        public User(int id, string username, string password)
+        public User(string username, string password)
         {
-			this.ID = id;
 			this.Username = username;
 			this.Password = password;
 		}

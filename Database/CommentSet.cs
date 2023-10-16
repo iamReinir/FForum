@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace forum.Database
 {
+    /*
     public class CommentSet
     {
         private IMongoDatabase database = MongoDBConst.database;        
@@ -31,4 +32,5 @@ namespace forum.Database
             return comment;
         }       
     }
+    */
 }
