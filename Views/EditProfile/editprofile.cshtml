@@ -7,7 +7,7 @@
     Layout = "_Layout";
     ViewData["title"] = "User profile";
     var uset = new forum.Database.UserSet();
-    var uinfo = uset.GetUserInfo(Model);
+    var uinfo = Model.UserInfo;
 }
 <link rel="stylesheet" href="~/css/user_profile.css" />
 <div class="t_container">

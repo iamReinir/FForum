@@ -35,3 +35,9 @@ function delete_post(postId) {
     alert("Request sent!");
     location.reload();
 }
+
+function like_post(postId) {
+    let req = new XMLHttpRequest();
+    req.open("post", `/like`);
+    req.send(postId);
+}

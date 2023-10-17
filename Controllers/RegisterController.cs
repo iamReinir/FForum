@@ -39,9 +39,9 @@ namespace forum.Controllers
                 return View("Error");
             }
             if(password.Length < 6) { return View("register", RegisterState.password_too_short); }
-            int id = uset.Register(username, password);
-            if(id == -1) return View("Error");
-            UserInfo? info = uset.GetUserInfo(uset.GetUser(id));
+            var user = uset.Register(username, password);
+            if(user == null) return View("Error");
+            UserInfo? info = user.UserInfo;
             if(info == null) {
                 return View("Error");
             }
@@ -53,7 +53,7 @@ namespace forum.Controllers
             info.Email = email;
             info.Telephone = telephone;
 			info.Address = address;
-            uset.UpdateUserInfo(info);           
+            uset.UpdateUser(user);           
 			return View("register", RegisterState.success);
         }		
     }
