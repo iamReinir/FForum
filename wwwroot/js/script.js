@@ -36,8 +36,11 @@ function delete_post(postId) {
     location.reload();
 }
 
-function like_post(postId) {
+function likeToggle(postId) {
     let req = new XMLHttpRequest();
-    req.open("post", `/like`);
+    req.open("post", `/like?post=${postId}`);
     req.send(postId);
+    btn = document.getElementById("like-btn");
+    btn.innerHTML += 1;
+    btn.ChildNodes[0].classList.toggle("liked");
 }

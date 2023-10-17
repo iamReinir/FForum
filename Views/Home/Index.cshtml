@@ -42,11 +42,16 @@
             }
 
         <!--Post-->        
-        @foreach(var tpost in Model.post_list)
+        @foreach(var (tpost, liked) in Model.post_list)
             {
                 var post = tpost;
                 var postContent = tpost.Info.Content;                
-                var user_displayname = tpost.Poster.UserInfo.Name;             
+                var user_displayname = tpost.Poster.UserInfo.Name;
+                string likeClass;
+                if(liked) 
+                    likeClass = "liked";
+                else 
+                    likeClass = "";
                 <div class="post-container">
             <div class="user-profile">
                 <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
@@ -54,7 +59,7 @@
                     <p>@user_displayname</p>
                     <span>@post.Create_date</span>
                 </div>
-                @if(currentUsername != null && currentUsername == tpost.Poster.Username ) {
+                @if(currentUsername != null && currentUsername == post.Poster.Username ) {
                 <a href="" onclick="delete_post(@post.Id)"><i class="fa-solid fa-trash" style="color: red;"></i></a>
                 }
                 </div>
@@ -62,14 +67,16 @@
             <!--<img src="https://media.discordapp.net/attachments/975638613431840818/990072623721508915/IMG_0173.jpg?width=908&height=681" class="post-img" />-->
             <div class="post-row">
                 <div class="count">
-                    <div class="like_count">likes</div>
+                    <div class="like_count">@post.Like_count likes</div>
                     <div class="comment-count">comments</div>
                 </div>
                        <hr>
                         <div class="activity-icons">
-                            <div class="like"><i class="fa-solid fa-thumbs-up" style="color: #758095;"></i><span>0 Like</span></div>
+                            <div id="like-btn" class="like"><i class="fa-solid fa-thumbs-up @likeClass" style="color: #758095;"
+                                                 onclick="likeToggle(@post.Id)"></i><span>Like</span></div>
                             <div class="comment"><i class="fa-solid fa-message" style="color: #758095;"></i><span>Comment</span></div>
                             <div class="share"><i class="fa-solid fa-share" style="color: #758095;"></i><span>Share</span></div>
+
                 </div>
             </div>
         </div>            
