@@ -37,16 +37,15 @@ namespace forum.Controllers
                 return StatusCode(404); // Cant found user
 
             /// Shouldnt be null. user already checked.
-            UserInfo? userInfo = uset.GetUserInfo(user);
+            UserInfo? userInfo = user.UserInfo;
 
             userInfo.Name = displayname ?? userInfo.Name;
             userInfo.Address = address ?? userInfo.Address;
             userInfo.Telephone = telephone ?? userInfo.Telephone;
             userInfo.Email = email ?? userInfo.Email;
             // Birthdate is not used yet.
-
-            uset.UpdateUserInfo(userInfo);
-
+            uset.UpdateUser(user);
+            new PostSet().UpdateAllPostOfUser(user);
             return Redirect("/profile");
 
         }

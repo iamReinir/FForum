@@ -44,6 +44,7 @@ namespace forum.Controllers
                     changeUser.Is_banned = obj.Is_banned;
                     changeUser.Role = obj.Role;
                     uset.UpdateUser(changeUser);
+                    new PostSet().UpdateAllPostOfUser(user);
                 }
             }
             catch
@@ -74,7 +75,7 @@ namespace forum.Controllers
                 x.Wait();
                 var post_id = int.Parse(x.Result);
                 var post = pset.FindPost(post_id);
-                if (post == null || user == null || post.Poster_id != user.ID)
+                if (post == null || user == null || post.Poster.Username != user.Username)
                     return StatusCode(403); // Not allowed
                 pset.HidePost(post);
             }

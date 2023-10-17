@@ -4,7 +4,7 @@ namespace forum.Controllers
 {
 	public class LogoutController : Controller
 	{
-		
+				
 		[Route("logout")]
 		public IActionResult Logout()
 		{
