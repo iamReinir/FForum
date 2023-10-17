@@ -42,11 +42,16 @@
             }
 
         <!--Post-->        
-        @foreach(var tpost in Model.post_list)
+        @foreach(var (tpost, liked) in Model.post_list)
             {
                 var post = tpost;
                 var postContent = tpost.Info.Content;                
-                var user_displayname = tpost.Poster.UserInfo.Name;             
+                var user_displayname = tpost.Poster.UserInfo.Name;
+                string likeClass;
+                if(liked) 
+                    likeClass = "liked";
+                else 
+                    likeClass = "";
                 <div class="post-container">
             <div class="user-profile">
                 <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
@@ -54,7 +59,7 @@
                     <p>@user_displayname</p>
                     <span>@post.Create_date</span>
                 </div>
-                @if(currentUsername != null && currentUsername == tpost.Poster.Username ) {
+                @if(currentUsername != null && currentUsername == post.Poster.Username ) {
                 <a href="" onclick="delete_post(@post.Id)"><i class="fa-solid fa-trash" style="color: red;"></i></a>
                 }
                 </div>
@@ -62,7 +67,8 @@
             <!--<img src="https://media.discordapp.net/attachments/975638613431840818/990072623721508915/IMG_0173.jpg?width=908&height=681" class="post-img" />-->
             <div class="post-row">
                 <div class="activity-icons">
-                    <div><i class="fa-solid fa-thumbs-up" style="color: #758095;"></i>0 Like</div>
+                    <div id="like-btn"><i class="fa-solid fa-thumbs-up @likeClass" style="color: #758095;"
+                        onclick="likeToggle(@post.Id)"></i>@post.Like_count</div>
                     <div><i class="fa-solid fa-message" style="color: #758095;"></i>Comment</div>
                     <div><i class="fa-solid fa-share" style="color: #758095;"></i>Share</div>
                 </div>
