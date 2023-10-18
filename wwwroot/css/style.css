@@ -199,7 +199,9 @@ nav {
     width: 100%;
     background: #fff;
     border-radius: 6px;
-    padding: 20px;
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
     color: #626262;
     margin: 20px 0;
 }
@@ -223,23 +225,80 @@ nav {
 }
 
 .post-row {
+    display: inline-block;
+    justify-content: space-between;
+    width: 100%;
+}
+.count {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-
-.activity-icons div i {
-    width: 50px;
-    margin-right: 15px;
-    margin-left: 70px;
-    height: auto
+.like_count .comment_count {
+    display: flex;
+    align-items: center;
 }
-
-.activity-icons {
-    display: inline-flex;
+    .post-row hr {
+        background-color: #DADDE1;
+        height: 1px;
+        border: 0;
+    }
+    .activity-icons div i {
+        margin-right: 15px;
+        margin-left: 70px;
+        height: 5px;
+        margin-bottom: 13px;
+    }
+.activity-icons div {
+    width: 33%;
+    border-radius: 6px;
+    display: flex;
+    height: 30px;  
     align-items: center;
 }
 
+.activity-icons {
+    width:100%;
+    display:flex;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+    .activity-icons .like:visited {
+        background-color: #ffffff
+    }
+
+    .activity-icons .like:hover {
+        background-color: #F2F3F5
+    }
+
+    .activity-icons .like:active {
+        background-color: #d8d8d8
+    }
+
+    .activity-icons .comment:visited {
+        background-color: #ffffff
+    }
+
+    .activity-icons .comment:hover {
+        background-color: #F2F3F5
+    }
+
+    .activity-icons .comment:active {
+        background-color: #d8d8d8
+    }
+
+    .activity-icons .share:visited {
+        background-color: #ffffff
+    }
+
+    .activity-icons .share:hover {
+        background-color: #F2F3F5
+    }
+
+    .activity-icons .share:active {
+        background-color: #d8d8d8
+    }
 .settings-menu {
     position: absolute;
     width: 90%;
