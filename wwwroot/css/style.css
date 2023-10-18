@@ -22,22 +22,32 @@ nav {
 .logo {
     width: 45px;
     margin-right: 45px;
+    display: flex;
 }
 
 .nav-left, .nav-right {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+}
+
+.nav-right {
+    float: right;
+}
+
+.nav-left ul {
+    margin-top: 10px;
 }
 
     .nav-left ul a {
         list-style: none;
-        display: inline-block;
+        display: inline-flex;
     }
 
         .nav-left ul a i {
             width: 40px;
             height: auto;
             margin: 0 15px;
+            display: flex;
         }
 
 .nav-user-icon img {
@@ -53,6 +63,7 @@ nav {
     display: flex;
     align-items: center;
     padding: 0 15px;
+    margin-top: 2px;
 }
 
     .search-box i {
@@ -135,7 +146,7 @@ nav {
     color: #626262;
 }
 
-.user-profile {    
+.user-profile {
     display: flex;
     align-items: center;
 }
@@ -229,26 +240,31 @@ nav {
     justify-content: space-between;
     width: 100%;
 }
+
 .count {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 .like_count .comment_count {
     display: flex;
     align-items: center;
 }
-    .post-row hr {
-        background-color: #DADDE1;
-        height: 1px;
-        border: 0;
-    }
-    .activity-icons div i {
-        margin-right:10px;
-        display:flex;
-        height: 5px;
-        margin-bottom: 10px;
-    }
+
+.post-row hr {
+    background-color: #DADDE1;
+    height: 1px;
+    border: 0;
+}
+
+.activity-icons div i {
+    margin-right: 10px;
+    display: flex;
+    height: 5px;
+    margin-bottom: 10px;
+}
+
 .activity-icons div {
     width: 33%;
     border-radius: 6px;
@@ -259,8 +275,8 @@ nav {
 }
 
 .activity-icons {
-    width:100%;
-    display:flex;
+    width: 100%;
+    display: flex;
     cursor: pointer;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -301,6 +317,7 @@ nav {
     .activity-icons .share:active {
         background-color: #d8d8d8
     }
+
 .content-comment hr {
     background-color: #DADDE1;
     height: 1px;
@@ -309,39 +326,45 @@ nav {
 
 .content-comment {
     max-height: 0px;
-    transition: max-height 0.5s;    
-    overflow:hidden;
+    transition: max-height 0.5s;
+    overflow: hidden;
 }
+
 .content-comment-height {
     max-height: 350px;
 }
+
 .output-comment {
     height: 85%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     font-size: 70%;
-    
 }
-.output-comment img {
-    margin-top:5px;
-    width: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-.output-comment p {
-    margin-bottom: 5px;
-    font-weight: 700
-}
-.output-comment span{
-    color:black
-}
+
+    .output-comment img {
+        margin-top: 5px;
+        width: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .output-comment p {
+        margin-bottom: 5px;
+        font-weight: 700
+    }
+
+    .output-comment span {
+        color: black
+    }
+
 .info-comment {
-    margin-top:8px;
+    margin-top: 8px;
     background-color: #F2F3F5;
-    border-radius:9px;
+    border-radius: 9px;
     padding: 8px;
 }
+
 .input-comment {
     display: flex;
     margin-top: 5px;
@@ -351,40 +374,42 @@ nav {
     border-radius: 6px;
     position: relative;
 }
-.input-comment button{
-    cursor:pointer;
-    border: none;
-    position:absolute;
-    right: 10px;
-    margin: auto 0;
-    border-radius: 6px;
-    top:0;
-    bottom:0;
-    padding: 0px 7px;
-    height: 26px;
-    background-color:transparent;
-    transition-duration:  0.5s;
-    color: black;
-}
-.input-comment button:hover{
-    background-color: #d8d8d8;
-}
-.input-comment button :active  {
-        color: #005eff;
-        
-}
 
-.input-comment textarea{
-    max-height:1rem;
-    white-space:pre-wrap;
-    overflow:hidden;
-    width: 95%;
-    outline: 0;
-    background-color: #F2F3F5;
-    border: 0;
-    resize: none;
-    
-}
+    .input-comment button {
+        cursor: pointer;
+        border: none;
+        position: absolute;
+        right: 10px;
+        margin: auto 0;
+        border-radius: 6px;
+        top: 0;
+        bottom: 0;
+        padding: 0px 7px;
+        height: 26px;
+        background-color: transparent;
+        transition-duration: 0.5s;
+        color: black;
+    }
+
+        .input-comment button:hover {
+            background-color: #d8d8d8;
+        }
+
+        .input-comment button :active {
+            color: #005eff;
+        }
+
+    .input-comment textarea {
+        max-height: 1rem;
+        white-space: pre-wrap;
+        overflow: hidden;
+        width: 95%;
+        outline: 0;
+        background-color: #F2F3F5;
+        border: 0;
+        resize: none;
+    }
+
 .settings-menu {
     position: absolute;
     width: 90%;
@@ -407,7 +432,7 @@ nav {
 .user-profile a {
     font-size: 12px;
     color: #1876f2;
-    text-decoration: none;    
+    text-decoration: none;
 }
 
 .settings-menu-inner {
@@ -491,14 +516,56 @@ textarea {
     resize: none;
 }
 
-#submit-btn{
-    padding:0.4rem;
-    margin-top:0.5rem;
+#submit-btn {
+    padding: 0.4rem;
+    margin-top: 0.5rem;
 }
 
-.like{
-    color:gray;
+.like {
+    color: gray;
 }
-.liked{
-    color:blue;
+
+.liked {
+    color: blue;
+}
+
+/* Modal styles */
+.modal .modal-dialog {
+    max-width: 400px;
+}
+
+.modal .modal-header, .modal .modal-body, .modal .modal-footer {
+    padding: 20px 30px;
+}
+
+.modal .modal-content {
+    border-radius: 3px;
+}
+
+.modal .modal-footer {
+    background: #ecf0f1;
+    border-radius: 0 0 3px 3px;
+}
+
+.modal .modal-title {
+    display: inline-block;
+}
+
+.modal .form-control {
+    border-radius: 2px;
+    box-shadow: none;
+    border-color: #dddddd;
+}
+
+.modal textarea.form-control {
+    resize: vertical;
+}
+
+.modal .btn {
+    border-radius: 2px;
+    min-width: 100px;
+}
+
+.modal form label {
+    font-weight: normal;
 }

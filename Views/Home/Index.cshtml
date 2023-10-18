@@ -61,7 +61,32 @@
                     <span>@post.Create_date</span>
                 </div>
                 @if(currentUsername != null && currentUsername == post.Poster.Username ) {
+                <div>
                 <a href="" onclick="delete_post(@post.Id)"><i class="fa-solid fa-trash" style="color: red;"></i></a>
+                <a href="#editPost"  data-toggle="modal" onclick=""><i class="fa-solid fa-bars" style="color: blue;"></i></a>
+                </div>
+                            <div id="editPost" class="modal fade">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form action="editpost" method="post">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Edit Your Post</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label>@currentUsername</label>
+                                                    <input name="content" type="text" value="@postContent" class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                                <input type="submit" class="btn btn-success" value="Done">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                 }
                 </div>
                 <div class="col-6">
