@@ -99,7 +99,7 @@ namespace forum.Database
             }
             return result;
         }
-
+    
         public Post? FindPost(int id)
         {
             var thisID = Builders<Post>.Filter.Eq("_id", id);

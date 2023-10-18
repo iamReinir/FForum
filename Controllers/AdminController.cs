@@ -27,7 +27,7 @@ namespace forum.Controllers
             UserList list = new UserList();
             if (search_for == null || search_for == "")
                 list.data = uset.GetUserList();
-            else list.data = uset.FindUser(search_for);
+            else list.data = uset.FindUsers(search_for);
             if(user == null)            
                 return View("Error");            
             if (user.Role != Models.User.ROLE.ADMIN)

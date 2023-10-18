@@ -103,5 +103,14 @@ namespace forum.Database
                 .ToList();
             
         }
+        public ICollection<User> FindUsers(string? search_string)
+        {
+            if (search_string == null)
+                return GetUserList();
+            return MongoDBConst.database
+                .GetCollection<User>(MongoDBConst.USER_TABLE)
+                .Find(user => user.Username.Contains(search_string))
+                .ToList();
+        }
     }
 }

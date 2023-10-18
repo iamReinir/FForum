@@ -47,7 +47,24 @@ namespace forum.Controllers
             postSet.UpdatePost(post);
             return Redirect("/home");
         }
+        [HttpPost]
+        [Route("/search")]
+        public IActionResult search()
+        {
+            ISession session = HttpContext.Session;
+            
+            string? username = session.GetString("username");
+            string? search = HttpContext.Request.Form["search_for"];
+             HomePageModel list = new HomePageModel();
+            var uset = new UserSet().GetUserList();
+            var pset = new PostSet().FindPost(search, username);
+            var model = new HomePageModel();
+            model.post_list = pset;
+           
 
+            return View("Index", model);
+
+        }
         [Route("/like")]
         [HttpPost]
         public IActionResult Like()
