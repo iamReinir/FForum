@@ -2,6 +2,7 @@
 
 namespace forum.Models
 {
+    [BsonIgnoreExtraElements]
     public class Post
     {
         [BsonElement("_id")]

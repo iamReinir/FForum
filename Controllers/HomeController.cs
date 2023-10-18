@@ -9,6 +9,7 @@ namespace forum.Controllers
     public class HomePageModel
     {
         public List<Post> post_list = new();
+        public List<User> user_list = new();
     }
     public class HomeController : Controller
     {
@@ -20,9 +21,10 @@ namespace forum.Controllers
             ISession session = HttpContext.Session;
             var uset = new UserSet().GetUserList();
             var pset = new PostSet().FindPost("");
-            string?username = session.GetString("username");
+            string? username = session.GetString("username");
             var model = new HomePageModel();
             model.post_list = pset.ToList();
+            model.user_list = uset.ToList();
             return View("Index", model);  
         }
         [HttpPost]
@@ -46,5 +48,6 @@ namespace forum.Controllers
             postSet.UpdatePost(post);
             return Redirect("/home");
         }
+
     }
 }

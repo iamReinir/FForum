@@ -1,6 +1,8 @@
 ﻿using forum.Database;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
+using static forum.Models.User;
 
 namespace forum.Controllers
 {
@@ -45,6 +47,7 @@ namespace forum.Controllers
 			}
 			ISession session = HttpContext.Session;
 			session.Set("username", Encoding.UTF8.GetBytes(username));
+			session.Set("role", Encoding.ASCII.GetBytes(user.Role.ToString()));
 			return Redirect("home");
 		}
 	}

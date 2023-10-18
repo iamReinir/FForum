@@ -3,6 +3,8 @@
     ViewData["title"] = "Home";
     Layout = "_Layout";
     var currentUsername = Context.Session.GetString("username");
+    var currentRole = Context.Session.GetString("role");
+    if (currentRole == null) currentRole = forum.Models.User.ROLE.GUESS.ToString();
 }
 <body>
     <div class="container">
@@ -47,17 +49,43 @@
                 var post = tpost;
                 var postContent = tpost.Info.Content;                
                 var user_displayname = tpost.Poster.UserInfo.Name;             
-                <div class="post-container">
-            <div class="user-profile">
+    <div id="myPoster" class="post-container">
+     <!-------------------------------------------------------------------------------->
+        <div class="container row pt-2">
+         
+                <div class="user-profile col-6">
                 <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
                 <div>
                     <p>@user_displayname</p>
                     <span>@post.Create_date</span>
                 </div>
-                @if(currentUsername != null && currentUsername == tpost.Poster.Username ) {
-                <a href="" onclick="delete_post(@post.Id)"><i class="fa-solid fa-trash" style="color: red;"></i></a>
-                }
+                
                 </div>
+                <div class="col-6">
+                            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                                <ul class="nav justify-content-end" style="list-style-type:none">
+                                    @if (currentRole.Equals("1"))
+                                    {
+                                        <li class="nav-item">
+                                            <a href="" onclick="hide_post(@post.Id)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-x" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd" d="M6.146 5.146a.5.5 0 0 1 .708 0L8 6.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 7l1.147 1.146a.5.5 0 0 1-.708.708L8 7.707 6.854 8.854a.5.5 0 1 1-.708-.708L7.293 7 6.146 5.854a.5.5 0 0 1 0-.708z" />
+                                                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
+                                                </svg>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (currentUsername != null && currentUsername == tpost.Poster.Username)
+                                    {
+                                        <li class="nav-item">
+                                            <a href="" onclick="delete_post(@post.Id)"><i class="fa-solid fa-trash" style="color: red;"></i></a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                </div>        
+        </div>
+    <!-------------------------------------------------------------------------------->
             <p class="post-text">@postContent</p>
             <!--<img src="https://media.discordapp.net/attachments/975638613431840818/990072623721508915/IMG_0173.jpg?width=908&height=681" class="post-img" />-->
             <div class="post-row">
@@ -67,13 +95,18 @@
                     <div><i class="fa-solid fa-share" style="color: #758095;"></i>Share</div>
                 </div>
             </div>
-        </div>            
+    </div>
         }
         <!--Post-->
-        </div>
+       </div>
         <!---------right-sidebar--------->
         <div class="right-sidebar"></div>
     </div>
     <script src="https://kit.fontawesome.com/eee778a1cd.js" crossorigin="anonymous"></script>
     <script src="~/js/script.js"></script>
 </body>
+
+
+                   
+
+                            
