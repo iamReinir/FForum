@@ -89,7 +89,7 @@ namespace forum.Database
             var allPost = FindPost(search_string);
             Func<int, bool> liked = (post_id) 
                 => like_collection.Find(thisUser & likePost(post_id)).ToList()
-                    .SingleOrDefault() != null; 
+                    .FirstOrDefault() != null; 
             foreach (var item in allPost)
             {
                 if (liked(item.Id))                

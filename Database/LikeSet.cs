@@ -23,11 +23,11 @@ namespace forum.Database
 
             var check = collection
                 .Find(thisLike)
-                .ToList().SingleOrDefault();
+                .ToList().FirstOrDefault();
             if (check == null)
                 collection.InsertOne(like);
             if (check != null)
-                collection.DeleteOne(thisLike);
+                collection.DeleteMany(thisLike); // Race condition
             return like;
         }
 
@@ -36,7 +36,7 @@ namespace forum.Database
             var thisLike = Builders<Like>
                 .Filter.Where(like => like.Username == username && like.Post_id == post_id);
             return database.GetCollection<Like>(MongoDBConst.LIKE_TABLE)
-                .Find(thisLike).SingleOrDefault() != null;
+                .Find(thisLike).FirstOrDefault() != null;
         }
 
         public List<(Post, bool)> FilterLiked(string? username, List<Post> post_list) {
@@ -53,7 +53,8 @@ namespace forum.Database
             post_list.ForEach(post => { post_ids.Add(post.Id); });
             var inList = Builders<Like>.Filter.In("Post_id", post_ids)
                 | Builders<Like>.Filter.Eq("Username", username);
-            var liked_posts = database.GetCollection<Like>(MongoDBConst.LIKE_TABLE).Find(inList).ToList();
+            var liked_posts = database.GetCollection<Like>(MongoDBConst.LIKE_TABLE).Find(inList)
+                .ToList();
             Comparer<Post> x;
             for (int ilist = 0, iliked = 0;
                 ilist < post_list.Count || iliked < liked_posts.Count;

@@ -36,11 +36,34 @@ function delete_post(postId) {
     location.reload();
 }
 
-function likeToggle(postId) {
+function likeToggle(postId, ele) {
     let req = new XMLHttpRequest();
     req.open("post", `/like?post=${postId}`);
     req.send(postId);
-    btn = document.getElementById("like-btn");
-    btn.innerHTML += 1;
-    btn.ChildNodes[0].classList.toggle("liked");
+    ele.classList.toggle("liked");
+    ele.classList.toggle("like");
+
+    node = ele.parentElement.parentElement.childNodes[1].childNodes[1]
+
+    if (ele.classList.contains("liked")) {
+        node.innerHTML = increase(node.innerHTML);
+    }
+    if (ele.classList.contains("like")) {
+        node.innerHTML = decrease(node.innerHTML);
+    }
+    ele.onclick = null;
+    setTimeout(() => {
+        ele.onclick = function () { likeToggle(postId,ele); }
+    }, 1000);
+}
+function increase(str) {
+    tokens = str.split(" ");
+    inc = parseInt(tokens[0]) + 1;
+    return inc + " " + tokens[1];
+}
+
+function decrease(str) {
+    tokens = str.split(" ");
+    inc = parseInt(tokens[0]) - 1;
+    return inc + " " + tokens[1];
 }
