@@ -85,5 +85,31 @@ namespace forum.Controllers
             }
             return StatusCode(200); // ok
         }
+
+        [Route("hidepost")]
+        [HttpPost]
+        public IActionResult HidePost()
+        {
+            var uset = new UserSet();
+            var pset = new PostSet();
+            var user = uset.GetUser(HttpContext.Session.GetString("username"));
+            try
+            {
+                StreamReader reader = new StreamReader(HttpContext.Request.Body);
+                var x = reader.ReadLineAsync();
+                x.Wait();
+                var post_id = int.Parse(x.Result);
+                var post = pset.FindPost(post_id);
+                
+                if (post == null || user == null)
+                    return StatusCode(403); // Not allowed
+                pset.HidePost(post);
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
+            return StatusCode(200); // ok
+        }
     }
 }

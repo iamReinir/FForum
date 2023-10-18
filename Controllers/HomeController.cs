@@ -9,7 +9,6 @@ namespace forum.Controllers
     public class HomePageModel
     {
         public ICollection<(Post,bool)> post_list;
-       
     }
     public class HomeController : Controller
     {
@@ -25,6 +24,7 @@ namespace forum.Controllers
             var model = new HomePageModel();
             model.post_list = pset;
             return View("Index", model);
+
         }
         [HttpPost]
         [Route("/post")]

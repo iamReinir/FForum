@@ -36,6 +36,16 @@ function delete_post(postId) {
     location.reload();
 }
 
+function hide_post(postId) {
+    if (!confirm("Do you really want to hide this post?"))
+        retur0n;
+    let req = new XMLHttpRequest();
+    req.open("post", "/hidepost");
+    req.send(postId);
+    alert("Request sent!");
+    location.reload();
+}
+
 function likeToggle(postId) {
     let req = new XMLHttpRequest();
     req.open("post", `/like?post=${postId}`);
