@@ -47,11 +47,11 @@
                 var post = tpost;
                 var postContent = tpost.Info.Content;                
                 var user_displayname = tpost.Poster.UserInfo.Name;             
-                <div class="post-container">
+         <div class="post-container">
             <div class="user-profile">
                 <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
                 <div>
-                    <p>@user_displayname</p>
+                    <p style="margin-bottom:2px">@user_displayname</p>
                     <span>@post.Create_date</span>
                 </div>
                 @if(currentUsername != null && currentUsername == tpost.Poster.Username ) {
@@ -67,9 +67,27 @@
                 </div>
                        <hr>
                         <div class="activity-icons">
-                            <div class="like"><i class="fa-solid fa-thumbs-up" style="color: #758095;"></i><span>0 Like</span></div>
-                            <div class="comment"><i class="fa-solid fa-message" style="color: #758095;"></i><span>Comment</span></div>
-                            <div class="share"><i class="fa-solid fa-share" style="color: #758095;"></i><span>Share</span></div>
+                            <div class="like"><i class="fa-solid fa-thumbs-up" ></i><span>Like</span></div>
+                            <div class="comment" onclick="commentToggle(@post.Id)"><i class="fa-solid fa-message" style="color: #758095;"></i><span>Comment</span></div>
+                            <div class="share"><i class="fa-solid fa-share" ></i><span>Share</span></div>
+                </div>
+            </div>
+                    <!--Content comment-->
+            <div class="content-comment" id="@post.Id">
+                        <hr>
+                <div class="output-comment">
+                    <div class="user-profile">
+                            <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
+                            <div class="info-comment">
+                                <p style="margin-bottom:2px">@user_displayname</p>
+                                    <span>hello</span>
+                            </div>
+                    </div>
+
+                </div>
+                <div class="input-comment">
+                            <textarea row="1" placeholder="Write your comment here"  wrap="soft"></textarea>
+                            <button>  <i class="fa-solid fa-paper-plane"></i> </button>
                 </div>
             </div>
         </div>            
