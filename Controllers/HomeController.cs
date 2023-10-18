@@ -1,14 +1,13 @@
 ﻿using forum.Database;
-using forum.DataDecorator;
 using forum.Models;
 using Microsoft.AspNetCore.Mvc;
-
+using MongoDB.Driver.Core.Authentication;
 
 namespace forum.Controllers
 {
     public class HomePageModel
     {
-        public List<Post> post_list = new();
+        public ICollection<(Post,bool)> post_list;
     }
     public class HomeController : Controller
     {
@@ -27,12 +26,13 @@ namespace forum.Controllers
         public IActionResult Index()
         {
             ISession session = HttpContext.Session;
+            string? username = session.GetString("username");
             var uset = new UserSet().GetUserList();
-            var pset = new PostSet().FindPost("");
-            string?username = session.GetString("username");
+            var pset = new PostSet().FindPost("",username);           
             var model = new HomePageModel();
-            model.post_list = pset.ToList();
-            return View("Index", model);  
+            model.post_list = pset;
+            return View("Index", model);
+
         }
         [HttpPost]
         [Route("/post")]
@@ -42,7 +42,7 @@ namespace forum.Controllers
             UserSet uset = new UserSet();
             string? username = session.GetString("username");
             var user = uset.GetUser(username);
-            if(user == null)
+            if (user == null)
             {
                 //Unathozied
                 return StatusCode(401);
@@ -51,9 +51,24 @@ namespace forum.Controllers
             var postSet = new forum.Database.PostSet();
             var post = postSet.NewPost(user);
             var pinfo = post.Info;
-            pinfo.Content= content;
+            pinfo.Content = content;
             postSet.UpdatePost(post);
             return Redirect("/home");
+        }
+
+        [Route("/like")]
+        [HttpPost]
+        public IActionResult Like()
+        {
+            
+            int post_id = int.Parse(HttpContext.Request.Query["post"]);            
+            string? username = HttpContext.Session.GetString("username");
+            if(username==null )
+                return StatusCode(401); // Unauthorized 
+            Console.WriteLine($"user {username} liked {post_id}");
+            var likeSet = new LikeSet();
+            likeSet.ToggleLike(username, post_id);
+            return StatusCode(200);
         }
     }
 }

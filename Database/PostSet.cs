@@ -1,4 +1,5 @@
 ﻿using forum.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using MongoDB.Driver;
 
@@ -63,6 +64,40 @@ namespace forum.Database
                     res.Add(post);
             }
             return res;
+        }
+
+        /// <summary>
+        /// Each element is a tuple contain the post 
+        /// and a boolean indicates whether the user liked this post
+        /// </summary>
+        /// <param name="search_string"></param>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public ICollection<(Post,bool)> FindPost(string search_string, string? username)
+        {
+            var result = new List<(Post, bool)>();
+            if (username==null)
+            {
+                foreach (var item in FindPost(search_string))            
+                    result.Add((item, false));                
+                return result;
+            }
+            
+            var thisUser = Builders<Like>.Filter.Eq("Username", username);
+            Func<int,FilterDefinition<Like>> likePost = 
+                (post_id) => Builders<Like>.Filter.Eq("Post_id", post_id);  
+            var like_collection = MongoDBConst.database.GetCollection<Like>(MongoDBConst.LIKE_TABLE);
+            var allPost = FindPost(search_string);
+            Func<int, bool> liked = (post_id) 
+                => like_collection.Find(thisUser & likePost(post_id)).ToList()
+                    .FirstOrDefault() != null; 
+            foreach (var item in allPost)
+            {
+                if (liked(item.Id))                
+                    result.Add((item, true));
+                else result.Add((item, false));
+            }
+            return result;
         }
 
         public Post? FindPost(int id)

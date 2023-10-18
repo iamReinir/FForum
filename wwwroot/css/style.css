@@ -493,3 +493,10 @@ textarea {
     padding:0.4rem;
     margin-top:0.5rem;
 }
+
+.like{
+    color:gray;
+}
+.liked{
+    color:blue;
+}
