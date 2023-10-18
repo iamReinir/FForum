@@ -17,21 +17,21 @@ namespace forum.Controllers
         {
             ISession session = HttpContext.Session;
             UserSet uset = new UserSet();
+            string? username = session.GetString("username");
+            var user = uset.GetUser(username);
+            if (user == null)
+                return View("Error");
+            if (user.Role != Models.User.ROLE.ADMIN)
+                return View("Error");
             Uri url = new Uri(HttpContext.Request.GetDisplayUrl());
             string? search_for = HttpUtility
                 .ParseQueryString(url.Query)
                 .Get("search_for");
-            Console.WriteLine(search_for);
-            string? username = session.GetString("username");
-            var user = uset.GetUser(username);
+            Console.WriteLine(search_for);            
             UserList list = new UserList();
             if (search_for == null || search_for == "")
                 list.data = uset.GetUserList();
-            else list.data = uset.FindUsers(search_for);
-            if(user == null)            
-                return View("Error");            
-            if (user.Role != Models.User.ROLE.ADMIN)
-                return View("Error");
+            else list.data = uset.FindUsers(search_for);                                   
             return View("Admin_page", list);
         }
     }
