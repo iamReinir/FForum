@@ -20,8 +20,7 @@ namespace forum.Database
 
         public Comment NewComment(User username, int postid)
         {
-            int newid = usableID();
-            
+            int newid = usableID();            
             var comment = new Comment(newid, username, postid);
             MongoDBConst.database
                 .GetCollection<Comment>(MongoDBConst.COMMENT_TABLE)
@@ -40,7 +39,13 @@ namespace forum.Database
             return result;
         }
 
-
+        public void UpdateComment(Comment comment)
+        {
+            var collection = MongoDBConst.database
+                .GetCollection<Comment>(MongoDBConst.COMMENT_TABLE);
+            var thisCmt = Builders<Comment>.Filter.Eq("_id", comment.Id);
+            collection.ReplaceOne(thisCmt, comment);
+        }
     }
 }
     /* {

@@ -2,6 +2,7 @@
 using forum.Models;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver.Core.Authentication;
+using System.Runtime.Serialization;
 
 namespace forum.Controllers
 {
@@ -10,16 +11,7 @@ namespace forum.Controllers
         public ICollection<(Post,bool)> post_list;
     }
     public class HomeController : Controller
-    {
-        [Route("/comment")]
-        [HttpGet]
-        public IActionResult Comment()
-        {
-            int postId = int.Parse(HttpContext.Request.Query["id"]);
-            var postlist = new CommentSet().GetComments(postId);
-            return Json(postlist);
-            
-        }
+    {        
         [Route("")]
         [Route("/home")]
         [HttpGet]
@@ -68,6 +60,58 @@ namespace forum.Controllers
             Console.WriteLine($"user {username} liked {post_id}");
             var likeSet = new LikeSet();
             likeSet.ToggleLike(username, post_id);
+            return StatusCode(200);
+        }
+
+        public class MinimalComment
+        {
+            public int? Id { get; set; }
+            public int? Post_id { get; set; }
+            public string? Username { get; set; }
+            public string? Displayname { get; set; }
+            public string? Content { get; set; }
+            public DateTime? Create_date { get; set; }
+        }
+        [Route("/comment")]
+        [HttpGet]
+        public IActionResult Comment()
+        {
+            
+            int postId = int.Parse(HttpContext.Request.Query["id"]);
+            var postlist = new CommentSet().GetComments(postId);
+            var res = new List<MinimalComment>();
+            foreach (var item in postlist)
+            {
+                var x = new MinimalComment();
+                x.Id = item.Id;
+                x.Post_id = item.PostId;
+                x.Username = item.User.Username;
+                x.Displayname = item.User.UserInfo.Name;
+                x.Content = item.Content;
+                x.Create_date = item.Create_date;
+                res.Add(x);
+            }            
+            return Content(System.Text.Json.JsonSerializer.Serialize(res));
+        }
+
+        [Route("/comment")]
+        [HttpPost]
+        public IActionResult PostComment()
+        {
+            string? username = HttpContext.Session.GetString("username");
+            if (username == null) return StatusCode(401); // Not authorized
+            StreamReader reader = new StreamReader(HttpContext.Request.Body);
+            var x = reader.ReadLineAsync();
+            x.Wait();
+            var content = x.Result;
+            int postId = int.Parse(HttpContext.Request.Query["id"]);
+            Console.WriteLine(username + " comment on posts #" + postId);
+           
+            var commentSet = new CommentSet();
+            Comment comment = commentSet
+                .NewComment(new UserSet().GetUser(username), postId);
+            comment.Content = content;
+            commentSet.UpdateComment(comment);
             return StatusCode(200);
         }
     }
