@@ -28,10 +28,14 @@ namespace forum.Database
         /// <param name="password"></param>
         /// <returns> An Integer which is the ID of the user. 
         /// Can be used to get UserInfo. Will return -1 if an error happen.</returns>
-		public User Register(string username, string password)
+		public User? Register(string username, string password)
 		{
 			try
 			{
+                if(MongoDBConst.database
+                    .GetCollection<User>(MongoDBConst.USER_TABLE)
+                    .CountDocuments(user => user.Username == username) > 0)
+                    return null;
                 var salt = Authenticator.GenerateSalt();
 				User user = new User();
                 user.Username = username;

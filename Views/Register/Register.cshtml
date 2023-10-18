@@ -36,17 +36,17 @@
             alert("Password is too short! Use at least 6 characters");
         </script>
     }
-    <form id="register-form" method="post">
+    <form id="register-form" method="post" onsubmit="form_check_and_submit()">
         <div class="container">
             <h1>F_Forum Register Section</h1>
-            <label for="fullname"><b>Fullname</b></label>
+            <label for="fullname"><b>Fullname *</b></label>
             <input type="text"
                    placeholder="Enter Fullname"
                    name="display_name"
                    id="fullname"
                    required />
 
-            <label for="username"><b>Username</b></label>
+            <label for="username"><b>Username *</b></label>
             <input type="text"
                    placeholder="Enter username"
                    name="username"
@@ -58,36 +58,36 @@
                    placeholder="Enter Email"
                    name="email"
                    id="email"
-                   required />
+                   />
 
             <label for="number"><b>Phone Number</b></label>
             <input type="text"
                    placeholder="Enter Phone Number"
                    name="telephone"
                    id="number"
-                   required />
+                   />
 
             <label for="address"><b>Address</b></label>
             <input type="text"
                    placeholder="Enter Address"
                    name="address"
                    id="address"
-                   required />
+                   />
 
-            <label for="pwd"><b>Password</b></label>
+            <label for="pwd"><b>Password *</b></label>
             <input type="password"
                    placeholder="Enter Password"
                    name="password"
                    id="pwd"
                    required />
 
-            <label for="pwd-repeat"><b>Repeat Password</b></label>
+            <label for="pwd-repeat"><b>Repeat Password *</b></label>
             <input type="password"
                    placeholder="Repeat Password"
                    name="password_repeat"
                    id="pwd-repeat"
                    required />
-            <button onclick="form_check_and_submit()">Register</button>
+            <button>Register</button>
         </div>        
     </form>
     <div>

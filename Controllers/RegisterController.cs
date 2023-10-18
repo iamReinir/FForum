@@ -40,11 +40,8 @@ namespace forum.Controllers
             }
             if(password.Length < 6) { return View("register", RegisterState.password_too_short); }
             var user = uset.Register(username, password);
-            if(user == null) return View("Error");
+            if(user == null) return View("register", RegisterState.duplicated_username);                       
             UserInfo? info = user.UserInfo;
-            if(info == null) {
-                return View("Error");
-            }
             string? displayName = HttpContext.Request.Form["display_name"];
             string? email = HttpContext.Request.Form["email"];
             string? telephone = HttpContext.Request.Form["telephone"];
