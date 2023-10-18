@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using static forum.Controllers.UserUpdateController;
 using System.IO;
 using System.Text.Json;
-using forum.DataDecorator;
 
 namespace forum.Controllers
 {    
