@@ -11,6 +11,15 @@ namespace forum.Controllers
     }
     public class HomeController : Controller
     {
+        [Route("/comment")]
+        [HttpGet]
+        public IActionResult Comment()
+        {
+            int postId = int.Parse(HttpContext.Request.Query["id"]);
+            var postlist = new CommentSet().GetComments(postId);
+            return Json(postlist);
+            
+        }
         [Route("")]
         [Route("/home")]
         [HttpGet]

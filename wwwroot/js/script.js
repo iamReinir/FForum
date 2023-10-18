@@ -1,39 +1,21 @@
 var settingsmenu = document.querySelector(".settings-menu");
-var darkBtn = document.getElementById("dark-btn");
+var comment = document.querySelector(".content-comment");
 function settingsMenuToggle() {
     settingsmenu.classList.toggle("settings-menu-height");
 }
-darkBtn.onclick = function () {
-    darkBtn.classList.toggle("dark-btn-on");
-    document.body.classList.toggle("dark-theme");
-    if (localStorage.getItem("theme") == "light") {
-        localStorage.setItem("theme", "dark");
+function commentToggle(element) {
+    var postId = element;
+    var node = document.getElementById(postId);
+    node.classList.toggle("content-comment-height");
+    var getComment = new XMLHttpRequest();
+    getComment.open("get", "/comment?id="+element);
+    getComment.onreadystatechange = function () {
+        if (getComment.readyState === XMLHttpRequest.DONE && getComment.status === 200) { 
+            console.log(getComment.responseText);
+        }
     }
-    else {
-        localStorage.setItem("theme", "light");
-    }
-}
-if (localStorage.setItem("theme") == "light") {
-    darkBtn.classList.remove("dark-btn-on");
-    document.body.classList.remove("dark-theme");
-}
-else if (localStorage.setItem("theme") == "dark") {
-    darkBtn.classList.add("dark-btn-on");
-    document.body.classList.add("dark-theme");
-}
-else {
-    localStorage.setItem("theme", "light");
-}
+    getComment.send();
 
-
-function delete_post(postId) {
-    if (!confirm("Do you really want to delete this post?"))
-        return;
-    let req = new XMLHttpRequest();
-    req.open("post", "/deletepost");
-    req.send(postId);
-    alert("Request sent!");
-    location.reload();
 }
 
 function hide_post(postId) {
