@@ -53,7 +53,7 @@
                 if(liked) 
                     likeClass = "liked";
                 else 
-                    likeClass = "";
+                    likeClass = "like";
                 <div class="post-container">
             <div class="user-profile">
                 <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
@@ -97,12 +97,13 @@
                     <div class="like_count">@post.Like_count likes</div>
                     <div class="comment-count">comments</div>
                 </div>
-                       <hr>
-                        <div class="activity-icons">
-                            <div id="like-btn" class="like"><i class="fa-solid fa-thumbs-up @likeClass" style="color: #758095;"
-                                                 onclick="likeToggle(@post.Id)"></i><span>Like</span></div>
-                            <div class="comment"><i class="fa-solid fa-message" style="color: #758095;"></i><span>Comment</span></div>
-                            <div class="share"><i class="fa-solid fa-share" style="color: #758095;"></i><span>Share</span></div>
+                <hr>
+                <div class="activity-icons">
+                    <div class="@likeClass" onclick="likeToggle(@post.Id, this)">
+                        <i class="fa-solid fa-thumbs-up">
+                        </i><span>Like</span></div>
+                    <div class="comment"><i class="fa-solid fa-message"></i><span>Comment</span></div>
+                    <div class="share"><i class="fa-solid fa-share"></i><span>Share</span></div>
 
                 </div>
             </div>
