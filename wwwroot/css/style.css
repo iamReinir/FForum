@@ -265,7 +265,9 @@ nav {
     margin-top: 5px;
     margin-bottom: 5px;
 }
-
+.activity-icons:hover {
+    background-color: #F2F3F5
+}
     .activity-icons .like:visited {
         background-color: #ffffff
     }
@@ -309,8 +311,9 @@ nav {
 
 .content-comment {
     max-height: 0px;
-    transition: max-height 0.5s;    
-    overflow:hidden;
+    transition: max-height 0.5s;
+    overflow-y: scroll;
+    overflow-x:hidden
 }
 .content-comment-height {
     max-height: 350px;
@@ -320,8 +323,7 @@ nav {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    font-size: 70%;
-    
+    font-size: 70%;    
 }
 .output-comment img {
     margin-top:5px;
@@ -343,7 +345,7 @@ nav {
     padding: 8px;
 }
 .input-comment {
-    display: flex;
+    display: block;
     margin-top: 5px;
     padding: 10px 15px;
     background-color: #F2F3F5;
@@ -375,15 +377,14 @@ nav {
 }
 
 .input-comment textarea{
-    max-height:1rem;
-    white-space:pre-wrap;
-    overflow:hidden;
+    min-height:0.5rem;
+    white-space:pre-wrap;    
     width: 95%;
     outline: 0;
     background-color: #F2F3F5;
     border: 0;
-    resize: none;
-    
+    resize: none;    
+    vertical-align:central;    
 }
 .settings-menu {
     position: absolute;
@@ -501,4 +502,9 @@ textarea {
 }
 .liked{
     color:blue;
+}
+
+.color-hover:hover {
+    color: blue;
+    cursor: pointer;
 }

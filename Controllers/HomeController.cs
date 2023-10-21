@@ -118,15 +118,15 @@ namespace forum.Controllers
             string? username = HttpContext.Session.GetString("username");
             if (username == null) return StatusCode(401); // Not authorized
             StreamReader reader = new StreamReader(HttpContext.Request.Body);
-            var x = reader.ReadLineAsync();
-            x.Wait();
-            var content = x.Result;
+            var x = reader.ReadToEndAsync();            
             int postId = int.Parse(HttpContext.Request.Query["id"]);
             Console.WriteLine(username + " comment on posts #" + postId);
            
             var commentSet = new CommentSet();
             Comment comment = commentSet
                 .NewComment(new UserSet().GetUser(username), postId);
+            x.Wait();
+            var content = x.Result;
             comment.Content = content;
             commentSet.UpdateComment(comment);
             return StatusCode(200);

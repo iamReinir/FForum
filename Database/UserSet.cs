@@ -80,8 +80,7 @@ namespace forum.Database
             cur.Password = Authenticator.Hash(newPassword,salt);
             MongoDBConst.database
                 .GetCollection<User>(MongoDBConst.USER_TABLE)
-                .ReplaceOne(thisUser, cur);
-            new PostSet().UpdateAllPostOfUser(cur);
+                .ReplaceOne(thisUser, cur);            
             return true;
         }
 
