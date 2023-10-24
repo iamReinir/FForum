@@ -34,21 +34,25 @@ function commentClear(postId) {
     setTimeout(() => {
         var node = document.getElementById(postId).getElementsByClassName("output-comment")[0];
         node.innerHTML = null;
-    }, 1000);
+    }, 350);
 }
-function commentPopulate(postId, list) {
+
+function HTMLcomment(item) {
+    return `<div class="user-profile">
+                <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png"/>
+                <div class="info-comment">
+                    <p style="margin-bottom:2px">${item["Displayname"]}</p>
+                    <span>${item["Content"]}</span>
+                </div>
+            </div>`;
+}
+function commentPopulate(postId, list, pageNum = 1, pageCount = 1) {
     var node = document.getElementById(postId).getElementsByClassName("output-comment")[0];
     for (var item of list) {                
         var cmt = document.createElement("div");        
-        cmt.innerHTML = 
-        `<div class="user-profile">
-        <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png"/>
-            <div class="info-comment">
-                <p style="margin-bottom:2px">${item["Displayname"]}</p>
-                <span>${item["Content"]}</span>
-            </div>`;
+        cmt.innerHTML = HTMLcomment(item);        
         node.appendChild(cmt);
-    }
+    }        
     document.getElementById(postId).classList.add("content-comment-height");
 }
 
@@ -64,15 +68,15 @@ function hide_post(postId) {
 }
 
 function sendComment(ele, postID) {
-    let texta = ele.parentElement.childNodes[1];
+    let texta = ele.parentElement.childNodes[1];    
     let cmtRequest = new XMLHttpRequest();
     cmtRequest.open("post", "/comment?id=" + postID);
     cmtRequest.send(texta.value);
+    commentClear(postID);
+    texta.value = null;
     setTimeout(() => {
-        commentClear(postID);
-        commentLoad(postID);
-        texta.value = null;
-    }, 500);
+        commentLoad(postID);                
+    }, 550);
 }
 function likeToggle(postId, ele) {
     let req = new XMLHttpRequest();

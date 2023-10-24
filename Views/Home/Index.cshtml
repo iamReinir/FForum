@@ -131,7 +131,7 @@
             <div class="post-row">
                 <div class="count">
                     <div class="like_count">@post.Like_count likes</div>
-                    <div class="comment-count">comments</div>
+                    <!--<div class="comment-count">comments</div>-->
                 </div>
                        <hr>
                         <div class="activity-icons">
@@ -143,13 +143,15 @@
             <!--Comment section for each post-->
             <div class="content-comment" id="@post.Id">
                 <hr>
-                <div class="output-comment"></div>
-                @if (currentUsername != null) {
-                    <div class="input-comment">
-                        <textarea row="1" placeholder="Write your comment here"  wrap="soft"></textarea>
-                        <button onclick="sendComment(this,@post.Id)">  <i class="fa-solid fa-paper-plane"></i> </button>
-                    </div> }
-            </div> 
+                <div class="output-comment"></div>                
+            </div>
+                    @if (currentUsername != null)
+                    {
+                        <div class="input-comment">
+                            <textarea row="1" placeholder="Write your comment here" wrap="soft"></textarea>
+                            <button onclick="sendComment(this,@post.Id)">  <i class="fa-solid fa-paper-plane"></i> </button>
+                        </div>
+                    }
             <!--End of comment section-->            
         </div> }
         <!--Post-->

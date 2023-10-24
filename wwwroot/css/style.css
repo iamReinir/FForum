@@ -291,7 +291,9 @@ nav {
     margin-top: 5px;
     margin-bottom: 5px;
 }
-
+.activity-icons:hover {
+    background-color: #F2F3F5
+}
     .activity-icons .like:visited {
         background-color: #ffffff
     }
@@ -337,7 +339,8 @@ nav {
 .content-comment {
     max-height: 0px;
     transition: max-height 0.5s;
-    overflow: hidden;
+    overflow-y: scroll;
+    overflow-x:hidden
 }
 
 .content-comment-height {
@@ -376,7 +379,7 @@ nav {
 }
 
 .input-comment {
-    display: flex;
+    display: block;
     margin-top: 5px;
     padding: 10px 15px;
     background-color: #F2F3F5;
@@ -385,41 +388,39 @@ nav {
     position: relative;
 }
 
-    .input-comment button {
-        cursor: pointer;
-        border: none;
-        position: absolute;
-        right: 10px;
-        margin: auto 0;
-        border-radius: 6px;
-        top: 0;
-        bottom: 0;
-        padding: 0px 7px;
-        height: 26px;
-        background-color: transparent;
-        transition-duration: 0.5s;
-        color: black;
-    }
+.input-comment button{
+    cursor:pointer;
+    border: none;
+    position:absolute;
+    right: 10px;
+    margin: auto 0;
+    border-radius: 6px;
+    top:0;
+    bottom:0;
+    padding: 0px 7px;
+    height: 26px;
+    background-color:transparent;
+    transition-duration:  0.5s;
+    color: black;
+}
+.input-comment button:hover{
+    background-color: #d8d8d8;
+}
+.input-comment button :active  {
+        color: #005eff;
+        
+}
 
-        .input-comment button:hover {
-            background-color: #d8d8d8;
-        }
-
-        .input-comment button :active {
-            color: #005eff;
-        }
-
-    .input-comment textarea {
-        max-height: 1rem;
-        white-space: pre-wrap;
-        overflow: hidden;
-        width: 95%;
-        outline: 0;
-        background-color: #F2F3F5;
-        border: 0;
-        resize: none;
-    }
-
+.input-comment textarea{
+    min-height:0.5rem;
+    white-space:pre-wrap;    
+    width: 95%;
+    outline: 0;
+    background-color: #F2F3F5;
+    border: 0;
+    resize: none;    
+    vertical-align:central;    
+}
 .settings-menu {
     position: absolute;
     width: 90%;
@@ -537,5 +538,10 @@ textarea {
 
 .liked {
     color: blue;
+}
+
+.color-hover:hover {
+    color: blue;
+    cursor: pointer;
 }
 
