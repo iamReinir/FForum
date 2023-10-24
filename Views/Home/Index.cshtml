@@ -1,4 +1,7 @@
-﻿@model forum.Controllers.HomePageModel
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using forum.Models;
+@model forum.Controllers.HomePageModel
 @{
     ViewData["title"] = "Home";
     Layout = "_Layout";
@@ -41,9 +44,14 @@
                     </form>    
                 </div>
             }
-
+            @{
+                int page = 1;
+                int pageSize = 5;
+                page = page < 1 ? 1 : page;
+                IPagedList<Post> posts = Model.post_list.Select(item => item.Item1).ToPagedList(page, pageSize);
+            }
         <!--Post-->        
-        @foreach(var (tpost, liked) in Model.post_list)
+        @foreach(var (tpost, liked) in posts)
             {
                 var post = tpost;
                 var postContent = tpost.Info.Content;                
@@ -137,7 +145,10 @@
         </div> }
         <!--Post-->
        </div>
-        <!---------right-sidebar--------->
+        <div style="display:inline">
+            @Html.PagedListPager(posts, page => Url.Action("ShowUserPaging", "Post", new {page = page}))
+        </div>
+       <!---------right-sidebar--------->
         <div class="right-sidebar"></div>
     </div>
     <script src="https://kit.fontawesome.com/eee778a1cd.js" crossorigin="anonymous"></script>

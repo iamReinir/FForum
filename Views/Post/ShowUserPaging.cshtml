@@ -1,0 +1,75 @@
+﻿@model X.PagedList.IPagedList<forum.Models.Post>
+@using X.PagedList.Mvc.Core
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width" charset="utf-8" />
+    <title>@ViewData["Title"] = "ShowPostPaging"</title>
+    <link rel="stylesheet" href="@Url.Content("~/css/main_style.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/css/style.css")" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row pt-4">
+            <div class="col-6"><h2>Post Paging</h2></div>
+        </div>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Poster
+                    </th>
+                    <th>
+                        Like_count
+                    </th>
+                    <th>
+                        Content
+                    </th>
+                    <th>
+                        Create_date
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Poster.Username)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Like_count)
+                        </td>
+                        <td>
+                            <textarea>@Html.DisplayFor(modelItem => item.Info.Content)</textarea>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Create_date)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div style="display:inline">
+        @Html.PagedListPager(Model, page => Url.Action("ShowUserPaging", "Post", new {page = page}))
+    </div>
+</body>
+</html>

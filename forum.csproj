@@ -15,9 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\" />    
+    <Folder Include="wwwroot\images\" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.9" />    
     <PackageReference Include="MongoDB.Driver" Version="2.21.0" />
     <PackageReference Include="MongoDB.Libmongocrypt" Version="1.8.0" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.7" />
   </ItemGroup>
 
 </Project>

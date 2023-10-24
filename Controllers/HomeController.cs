@@ -8,7 +8,7 @@ namespace forum.Controllers
 {
     public class HomePageModel
     {
-        public ICollection<(Post,bool)> post_list;
+        public ICollection<(Post,bool)>? post_list;
     }
     public class HomeController : Controller
     {        
