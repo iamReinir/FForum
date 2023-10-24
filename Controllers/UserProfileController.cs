@@ -16,5 +16,6 @@ namespace forum.Controllers
             var uset = new UserSet();
             return View("UserProfile", uset.GetUser(username));
         }
+        
     }
 }

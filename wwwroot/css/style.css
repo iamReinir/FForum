@@ -4,9 +4,7 @@
     font-family: 'poppins', sans-serif;
 }
 
-body {
-    background: #efefef;
-}
+
 
 nav {
     display: flex;
@@ -22,7 +20,7 @@ nav {
 .logo {
     width: 45px;
     margin-right: 45px;
-    display: flex;
+   
 }
 
 .nav-left, .nav-right {
@@ -40,14 +38,14 @@ nav {
 
     .nav-left ul a {
         list-style: none;
-        display: inline-flex;
+         display: inline-flex;
     }
 
         .nav-left ul a i {
             width: 40px;
             height: auto;
             margin: 0 15px;
-            display: flex;
+           
         }
 
 .nav-user-icon img {
@@ -80,10 +78,18 @@ nav {
 
 .nav-user-icon {
     margin-left: 30px;
+
+}
+.nav-user-icon img {
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+   
 }
 
 .online {
     position: relative;
+
 }
 
     .online::after {
@@ -101,7 +107,8 @@ nav {
 .container {
     display: flex;
     justify-content: space-between;
-    padding: 13px 5%;
+    padding: 15px 5%;
+   
 }
 
 .left-sidebar {
@@ -109,6 +116,7 @@ nav {
     position: sticky;
     top: 70px;
     align-self: flex-start;
+    margin-right: 20px;
 }
 
 .right-sidebar {
@@ -120,7 +128,8 @@ nav {
 }
 
 .main-content {
-    flex-basis: 47%;
+    flex-basis: 50%;
+    margin-left:20px;
 }
 
 .imp-links a {
@@ -153,7 +162,8 @@ nav {
 
     .user-profile img {
         width: 45px;
-        border-radius: 50%;
+        height: 45px;
+        border-radius: 100%;
         margin-right: 10px;
     }
 
@@ -497,7 +507,7 @@ nav {
 .login-button {
     margin-left: 5px;
     width: 120%;
-    height: 2rem;
+    height: 3rem;
     border: none;
     border-radius: 5px;
     font-size: 17px;
@@ -529,43 +539,3 @@ textarea {
     color: blue;
 }
 
-/* Modal styles */
-.modal .modal-dialog {
-    max-width: 400px;
-}
-
-.modal .modal-header, .modal .modal-body, .modal .modal-footer {
-    padding: 20px 30px;
-}
-
-.modal .modal-content {
-    border-radius: 3px;
-}
-
-.modal .modal-footer {
-    background: #ecf0f1;
-    border-radius: 0 0 3px 3px;
-}
-
-.modal .modal-title {
-    display: inline-block;
-}
-
-.modal .form-control {
-    border-radius: 2px;
-    box-shadow: none;
-    border-color: #dddddd;
-}
-
-.modal textarea.form-control {
-    resize: vertical;
-}
-
-.modal .btn {
-    border-radius: 2px;
-    min-width: 100px;
-}
-
-.modal form label {
-    font-weight: normal;
-}
