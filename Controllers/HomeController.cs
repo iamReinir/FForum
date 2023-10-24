@@ -47,6 +47,28 @@ namespace forum.Controllers
             postSet.UpdatePost(post);
             return Redirect("/home");
         }
+
+        [HttpPost]
+        [Route("/editpost")]
+        public IActionResult EditPost()
+        {
+            ISession session = HttpContext.Session;
+            UserSet uset = new UserSet();
+            string? username = session.GetString("username");
+            string? content = HttpContext.Request.Form["content"];
+            var user = uset.GetUser(username);
+            int postId = int.Parse(HttpContext.Request.Query["post"]);
+            var postSet = new forum.Database.PostSet();
+            Post? post = postSet.FindPost(postId);
+            if (post == null)
+                return StatusCode(404);
+            PostInfo? postInfo = post.Info;
+
+            postInfo.Content = content ?? postInfo.Content;
+            postSet.UpdatePost(post);
+            return Redirect("/home");
+        }
+
         [HttpPost]
         [Route("/search")]
         public IActionResult search()

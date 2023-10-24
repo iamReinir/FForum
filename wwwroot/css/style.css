@@ -4,9 +4,7 @@
     font-family: 'poppins', sans-serif;
 }
 
-body {
-    background: #efefef;
-}
+
 
 nav {
     display: flex;
@@ -22,22 +20,32 @@ nav {
 .logo {
     width: 45px;
     margin-right: 45px;
+   
 }
 
 .nav-left, .nav-right {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+}
+
+.nav-right {
+    float: right;
+}
+
+.nav-left ul {
+    margin-top: 10px;
 }
 
     .nav-left ul a {
         list-style: none;
-        display: inline-block;
+         display: inline-flex;
     }
 
         .nav-left ul a i {
             width: 40px;
             height: auto;
             margin: 0 15px;
+           
         }
 
 .nav-user-icon img {
@@ -53,6 +61,7 @@ nav {
     display: flex;
     align-items: center;
     padding: 0 15px;
+    margin-top: 2px;
 }
 
     .search-box i {
@@ -69,10 +78,18 @@ nav {
 
 .nav-user-icon {
     margin-left: 30px;
+
+}
+.nav-user-icon img {
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+   
 }
 
 .online {
     position: relative;
+
 }
 
     .online::after {
@@ -90,7 +107,8 @@ nav {
 .container {
     display: flex;
     justify-content: space-between;
-    padding: 13px 5%;
+    padding: 15px 5%;
+   
 }
 
 .left-sidebar {
@@ -98,6 +116,7 @@ nav {
     position: sticky;
     top: 70px;
     align-self: flex-start;
+    margin-right: 20px;
 }
 
 .right-sidebar {
@@ -109,7 +128,8 @@ nav {
 }
 
 .main-content {
-    flex-basis: 47%;
+    flex-basis: 50%;
+    margin-left:20px;
 }
 
 .imp-links a {
@@ -135,14 +155,15 @@ nav {
     color: #626262;
 }
 
-.user-profile {    
+.user-profile {
     display: flex;
     align-items: center;
 }
 
     .user-profile img {
         width: 45px;
-        border-radius: 50%;
+        height: 45px;
+        border-radius: 100%;
         margin-right: 10px;
     }
 
@@ -229,26 +250,31 @@ nav {
     justify-content: space-between;
     width: 100%;
 }
+
 .count {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 .like_count .comment_count {
     display: flex;
     align-items: center;
 }
-    .post-row hr {
-        background-color: #DADDE1;
-        height: 1px;
-        border: 0;
-    }
-    .activity-icons div i {
-        margin-right:10px;
-        display:flex;
-        height: 5px;
-        margin-bottom: 10px;
-    }
+
+.post-row hr {
+    background-color: #DADDE1;
+    height: 1px;
+    border: 0;
+}
+
+.activity-icons div i {
+    margin-right: 10px;
+    display: flex;
+    height: 5px;
+    margin-bottom: 10px;
+}
+
 .activity-icons div {
     width: 33%;
     border-radius: 6px;
@@ -259,8 +285,8 @@ nav {
 }
 
 .activity-icons {
-    width:100%;
-    display:flex;
+    width: 100%;
+    display: flex;
     cursor: pointer;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -303,6 +329,7 @@ nav {
     .activity-icons .share:active {
         background-color: #d8d8d8
     }
+
 .content-comment hr {
     background-color: #DADDE1;
     height: 1px;
@@ -315,35 +342,42 @@ nav {
     overflow-y: scroll;
     overflow-x:hidden
 }
+
 .content-comment-height {
     max-height: 350px;
 }
+
 .output-comment {
     height: 85%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    font-size: 70%;    
+    font-size: 70%;
 }
-.output-comment img {
-    margin-top:5px;
-    width: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-.output-comment p {
-    margin-bottom: 5px;
-    font-weight: 700
-}
-.output-comment span{
-    color:black
-}
+
+    .output-comment img {
+        margin-top: 5px;
+        width: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .output-comment p {
+        margin-bottom: 5px;
+        font-weight: 700
+    }
+
+    .output-comment span {
+        color: black
+    }
+
 .info-comment {
-    margin-top:8px;
+    margin-top: 8px;
     background-color: #F2F3F5;
-    border-radius:9px;
+    border-radius: 9px;
     padding: 8px;
 }
+
 .input-comment {
     display: block;
     margin-top: 5px;
@@ -353,6 +387,7 @@ nav {
     border-radius: 6px;
     position: relative;
 }
+
 .input-comment button{
     cursor:pointer;
     border: none;
@@ -408,7 +443,7 @@ nav {
 .user-profile a {
     font-size: 12px;
     color: #1876f2;
-    text-decoration: none;    
+    text-decoration: none;
 }
 
 .settings-menu-inner {
@@ -473,7 +508,7 @@ nav {
 .login-button {
     margin-left: 5px;
     width: 120%;
-    height: 2rem;
+    height: 3rem;
     border: none;
     border-radius: 5px;
     font-size: 17px;
@@ -492,19 +527,21 @@ textarea {
     resize: none;
 }
 
-#submit-btn{
-    padding:0.4rem;
-    margin-top:0.5rem;
+#submit-btn {
+    padding: 0.4rem;
+    margin-top: 0.5rem;
 }
 
-.like{
-    color:gray;
+.like {
+    color: gray;
 }
-.liked{
-    color:blue;
+
+.liked {
+    color: blue;
 }
 
 .color-hover:hover {
     color: blue;
     cursor: pointer;
 }
+

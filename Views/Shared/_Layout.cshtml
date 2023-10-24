@@ -1,6 +1,7 @@
 ﻿@{
     ISession? session = Context.Session;
     var cur_user = (new forum.Database.UserSet())
+
     .GetUser(session?.GetString("username"));
 }
 
@@ -12,6 +13,14 @@
     <title>@ViewBag.Title - FForum</title>
     <link rel="stylesheet" href="@Url.Content("~/css/main_style.css")" />
     <link rel="stylesheet" href="@Url.Content("~/css/style.css")" />
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
   
@@ -37,14 +46,29 @@
             @if (cur_user != null)
             {
                 <div class="nav-user-icon online" onclick="settingsMenuToggle()">
-                    <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
+                    @if (cur_user.UserInfo.Base64String != "")
+                    {
+                        <img src="data:image/jpeg;base64,@cur_user.UserInfo.Base64String" />
+                    }
+                    else if (cur_user.UserInfo.Base64String == null || cur_user.UserInfo.Base64String == "")
+                    {
+                        <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png"/>
+                    }
+                  
                 </div>
 
                 <!---------settings-menu--------->
                 <div class="settings-menu">
             <div class="settings-menu-inner">
                 <div class="user-profile">
-                    <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
+                            @if (cur_user.UserInfo.Base64String != "")
+                            {
+                                <img src="data:image/jpeg;base64,@cur_user.UserInfo.Base64String" />
+                            }
+                            else if (cur_user.UserInfo.Base64String == null || cur_user.UserInfo.Base64String == "")
+                            {
+                                <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
+                            }
                     <div>
                         <p>@cur_user.Username</p>
                         <a href="/profile">See your profile</a>
@@ -88,6 +112,7 @@
                 </a>
                 </div>
             }
+            </div>
     </nav>
     <div>
     @RenderBody()
