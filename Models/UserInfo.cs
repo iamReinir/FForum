@@ -4,7 +4,12 @@ namespace forum.Models
 {
     public class UserInfo
     {
-        public UserInfo() { }
+
+        public UserInfo()
+        {
+        }
+
+        public string? Base64String { get; set; } = "";
         public string Name { set; get; }
         public string Email { set; get; } = "";
         public DateTime? Birthdate { set; get; }

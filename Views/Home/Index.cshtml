@@ -1,13 +1,15 @@
 ﻿@model forum.Controllers.HomePageModel
+
 @{
     ViewData["title"] = "Home";
     Layout = "_Layout";
     var currentUsername = Context.Session.GetString("username");
     var currentRole = Context.Session.GetString("role");
     if (currentRole == null) currentRole = forum.Models.User.ROLE.GUESS.ToString();
+    var userinfo = new forum.Database.UserSet().GetUser(currentUsername);
 }
-<body>
-    <div class="container">
+<body style="background-color: #efefef">
+    <div class="container" ">
         <!---------left-sidebar--------->
         <div class="left-sidebar">
             <div class="imp-links">
@@ -22,9 +24,16 @@
             {
                 <div class="write-post-container">
                     <div class="user-profile">
-                    <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
+                        @if (userinfo.UserInfo.Base64String != "")
+                        {
+                            <img src="data:image/jpeg;base64,@userinfo.UserInfo.Base64String" />
+                        }
+                        else if (userinfo.UserInfo.Base64String == null || userinfo.UserInfo.Base64String == "")
+                        {
+                            <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
+                        }
                     <div>
-                            <p>@currentUsername</p>
+                            <p>@userinfo.UserInfo.Name</p>
                         <small>Public</small>
                     </div>
                 </div>
@@ -48,6 +57,7 @@
                 var post = tpost;
                 var postContent = tpost.Info.Content;                
                 var user_displayname = tpost.Poster.UserInfo.Name;
+                var user_icon = tpost.Poster.UserInfo.Base64String;
                 string likeClass;
                 if(liked) 
                     likeClass = "liked";
@@ -55,7 +65,14 @@
                     likeClass = "like";
                 <div class="post-container">
             <div class="user-profile">
-                <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
+                        @if (user_icon != "")
+                        {
+                            <img src="data:image/jpeg;base64,@user_icon" />
+                        }
+                        else if (user_icon == null || user_icon == "")
+                        {
+                            <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
+                        }
                 <div>
                     <p style="margin-bottom:2px">@user_displayname</p>
                     <span>@post.Create_date</span>

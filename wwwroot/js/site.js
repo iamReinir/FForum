@@ -1,4 +1,22 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿const imageUploadInput = document.querySelector('#image-upload');
 
-// Write your JavaScript code.
+// Get the image preview element
+const imagePreview = document.querySelector('#image-preview');
+
+// Add an event listener to the input element
+imageUploadInput.addEventListener('change', () => {
+    // Get the uploaded image file
+    const imageFile = imageUploadInput.files[0];
+
+    // Create a new FileReader object
+    const reader = new FileReader();
+
+    // Read the image file
+    reader.onload = function () {
+        // Set the image preview source to the image data
+        imagePreview.src = reader.result;
+    };
+
+    // Read the image file as a data URL
+    reader.readAsDataURL(imageFile);
+});
