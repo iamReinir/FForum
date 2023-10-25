@@ -37,14 +37,23 @@
                         <small>Public</small>
                     </div>
                 </div>
-                    <form method="post" action="post">
+                    <form method="post" action="post" enctype="multipart/form-data">
                         <div class="post-input-container">
                             <textarea row="3" placeholder="What's on your mind?" id="text_content" name="content"></textarea>
-                                <input type="submit" id="submit-btn" value="Post"/>
+                            <img id="output" />
                             <div class="add-post-links">
-                                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1375/1375106.png" />Photo</a>
-                                <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/5190/5190662.png" />Feeling</a>
-                                <a href="/create"></a>
+                                <input type="file" accept="image/*" onchange="loadFile(event)" name="picture">
+           
+                                <script>
+                                    var loadFile = function (event) {
+                                        var output = document.getElementById('output');
+                                        output.src = URL.createObjectURL(event.target.files[0]);
+                                        output.onload = function () {
+                                            URL.revokeObjectURL(output.src) // free memory
+                                        }
+                                    };
+                                </script>
+                                <input class="btn btn-primary" type="submit" id="submit-btn" value="Post" />
                             </div>
                         </div>
                     </form>    
@@ -55,7 +64,8 @@
         @foreach(var (tpost, liked) in Model.post_list)
             {
                 var post = tpost;
-                var postContent = tpost.Info.Content;                
+                var postContent = tpost.Info.Content;
+                var postImage = tpost.Info.Base64String;
                 var user_displayname = tpost.Poster.UserInfo.Name;
                 var user_icon = tpost.Poster.UserInfo.Base64String;
                 string likeClass;
@@ -126,7 +136,13 @@
                     </div>              
                 </div>
     <!-------------------------------------------------------------------------------->
-            <p class="post-text">@postContent</p>
+            <p class="post-text">@postContent
+                @if (postImage != "")
+                {
+                            <img src="data:image/jpeg;base64,@postImage" style="max-width:100%;height:auto"/>
+                }
+               
+            </p>
             <!--<img src="https://media.discordapp.net/attachments/975638613431840818/990072623721508915/IMG_0173.jpg?width=908&height=681" class="post-img" />-->
             <div class="post-row">
                 <div class="count">
