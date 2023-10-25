@@ -57,11 +57,13 @@ namespace forum.Controllers
             string? username = session.GetString("username");
             string? content = HttpContext.Request.Form["content"];
             var user = uset.GetUser(username);
-            int postId = int.Parse(HttpContext.Request.Query["post"]);
+            if (user == null)
+            {
+                //Unathozied
+                return StatusCode(401);
+            }
             var postSet = new forum.Database.PostSet();
-            Post? post = postSet.FindPost(postId);
-            if (post == null)
-                return StatusCode(404);
+            var post = postSet.NewPost(user);
             PostInfo? postInfo = post.Info;
 
             postInfo.Content = content ?? postInfo.Content;
