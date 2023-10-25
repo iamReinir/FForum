@@ -28,7 +28,7 @@ namespace forum.Controllers
         }
         [HttpPost]
         [Route("/post")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             ISession session = HttpContext.Session;
             UserSet uset = new UserSet();
@@ -40,10 +40,20 @@ namespace forum.Controllers
                 return StatusCode(401);
             }
             string? content = HttpContext.Request.Form["content"];
+            IFormFile? avatar = HttpContext.Request.Form.Files["picture"];
+
             var postSet = new forum.Database.PostSet();
             var post = postSet.NewPost(user);
             var pinfo = post.Info;
             pinfo.Content = content;
+            if (avatar != null && avatar.Length > 0)
+            {
+                // Resize the image to 10MB
+                var resizedImage = await MongoDBConst.ResizeImageTo10MBAsync(avatar);
+
+                // Convert the resized image to Base64
+                pinfo.Base64String = Convert.ToBase64String(resizedImage);
+            }
             postSet.UpdatePost(post);
             return Redirect("/home");
         }
@@ -109,6 +119,7 @@ namespace forum.Controllers
             public string? Username { get; set; }
             public string? Displayname { get; set; }
             public string? Content { get; set; }
+            public string? Base64String { get; set; }
             public DateTime? Create_date { get; set; }
         }
         [Route("/comment")]
@@ -128,6 +139,7 @@ namespace forum.Controllers
                 x.Displayname = item.User.UserInfo.Name;
                 x.Content = item.Content;
                 x.Create_date = item.Create_date;
+                x.Base64String = item.User.UserInfo.Base64String;
                 res.Add(x);
             }            
             return Content(System.Text.Json.JsonSerializer.Serialize(res));
@@ -153,5 +165,7 @@ namespace forum.Controllers
             commentSet.UpdateComment(comment);
             return StatusCode(200);
         }
+
+
     }
 }

@@ -38,8 +38,12 @@ function commentClear(postId) {
 }
 
 function HTMLcomment(item) {
+    let imageSrc = "https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png";
+    if (item["Base64String"] != null && item["Base64String"] !="" ) {
+        imageSrc = `data:image/jpeg;base64,${item["Base64String"]}`
+    }
     return `<div class="user-profile">
-                <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png"/>
+                <img src="${imageSrc}"/>
                 <div class="info-comment">
                     <p style="margin-bottom:2px">${item["Displayname"]}</p>
                     <span>${item["Content"]}</span>

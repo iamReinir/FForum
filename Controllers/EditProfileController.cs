@@ -51,7 +51,7 @@ namespace forum.Controllers
             if (avatar != null && avatar.Length > 0)
             {
                 // Resize the image to 10MB
-                var resizedImage = await ResizeImageTo10MBAsync(avatar);
+                var resizedImage = await MongoDBConst.ResizeImageTo10MBAsync(avatar);
 
                 // Convert the resized image to Base64
                 userInfo.Base64String = Convert.ToBase64String(resizedImage);
@@ -64,33 +64,6 @@ namespace forum.Controllers
             return Redirect("/profile");
         }
 
-        private async Task<byte[]> ResizeImageTo10MBAsync(IFormFile avatar)
-        {
-            // Threshold is 10MB
-            const long desiredSize = 2L * 1024 * 1024;
-
-            using var memoryStream = new MemoryStream();
-            await avatar.CopyToAsync(memoryStream);
-
-            // If the image is already less than 10MB, return it as is
-            if (memoryStream.Length < desiredSize)
-            {
-                return memoryStream.ToArray();
-            }
-
-            // Else, use ImageSharp to resize the image
-            using var image = Image.Load(memoryStream.ToArray());
-            var resizeFactor = Math.Sqrt((double)desiredSize / memoryStream.Length);
-            var newWidth = (int)(image.Width * resizeFactor);
-            var newHeight = (int)(image.Height * resizeFactor);
-
-            // Resize the image
-            image.Mutate(x => x.Resize(newWidth, newHeight));
-
-            using var resultStream = new MemoryStream();
-            await image.SaveAsync(resultStream, new JpegEncoder());
-
-            return resultStream.ToArray();
-        }
+        
     }
 }

@@ -184,8 +184,7 @@ nav {
     }
 
 .post-input-container {
-    padding-left: 55px;
-    padding-top: 20px;
+    padding: 2rem;
 }
 
     .post-input-container textarea {
@@ -197,8 +196,11 @@ nav {
         resize: none;
     }
 
+   
+
 .add-post-links {
     display: flex;
+    justify-content:space-between;
     margin-top: 10px;
 }
 
@@ -291,9 +293,7 @@ nav {
     margin-top: 5px;
     margin-bottom: 5px;
 }
-.activity-icons:hover {
-    background-color: #F2F3F5
-}
+
     .activity-icons .like:visited {
         background-color: #ffffff
     }
@@ -357,7 +357,8 @@ nav {
 
     .output-comment img {
         margin-top: 5px;
-        width: 40px;
+        width: 37px;
+        height: 37px;
         border-radius: 50%;
         margin-right: 10px;
     }
@@ -528,8 +529,9 @@ textarea {
 }
 
 #submit-btn {
-    padding: 0.4rem;
+    padding: 0.4rem 2rem;
     margin-top: 0.5rem;
+    background-color: #1876f2
 }
 
 .like {
@@ -545,3 +547,8 @@ textarea {
     cursor: pointer;
 }
 
+#output {
+    max-width: 100%;
+    height: auto;
+    margin-right: 30px;
+}
