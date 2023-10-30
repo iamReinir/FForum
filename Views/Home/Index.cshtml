@@ -1,4 +1,7 @@
-﻿@model forum.Controllers.HomePageModel
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using forum.Models;
+@model forum.Controllers.HomePageModel
 
 @{
     ViewData["title"] = "Home";
@@ -59,9 +62,13 @@
                     </form>    
                 </div>
             }
-
+    @{
+        int page = 1;
+        int pageSize = 3;
+        IPagedList<(Post, bool)> posts = Model.post_list.ToPagedList(page, pageSize);
+    }
         <!--Post-->        
-        @foreach(var (tpost, liked) in Model.post_list)
+        @foreach(var (tpost, liked) in posts)
             {
                 var post = tpost;
                 var postContent = tpost.Info.Content;
@@ -171,7 +178,11 @@
             <!--End of comment section-->            
         </div> }
         <!--Post-->
+        <div style="text-align:center">
+           @Html.PagedListPager( posts, page => Url.ActionLink("Index", "Home", new{page = page}))
+        </div>
        </div>
+       
         <!---------right-sidebar--------->
         <div class="right-sidebar"></div>
     </div>
