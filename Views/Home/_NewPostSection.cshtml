@@ -1,0 +1,44 @@
+﻿@{
+    var currentUsername = Context.Session.GetString("username");
+    var userinfo = new forum.Database.UserSet().GetUser(currentUsername);
+}
+
+@if (currentUsername != null)
+{
+    <div class="write-post-container">
+        <div class="user-profile">
+            @if (userinfo.UserInfo.Base64String != "")
+            {
+                <img src="data:image/jpeg;base64,@userinfo.UserInfo.Base64String" />
+            }
+            else if (userinfo.UserInfo.Base64String == null || userinfo.UserInfo.Base64String == "")
+            {
+                <img src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png" />
+            }
+            <div>
+                <p>@userinfo.UserInfo.Name</p>
+                <small>Public</small>
+            </div>
+        </div>
+        <form method="post" action="post" enctype="multipart/form-data">
+            <div class="post-input-container">
+                <textarea row="3" placeholder="What's on your mind?" id="text_content" name="content"></textarea>
+                <img id="output" />
+                <div class="add-post-links">
+                    <input type="file" accept="image/*" onchange="loadFile(event)" name="picture">
+
+                    <script>
+                        var loadFile = function (event) {
+                            var output = document.getElementById('output');
+                            output.src = URL.createObjectURL(event.target.files[0]);
+                            output.onload = function () {
+                                URL.revokeObjectURL(output.src) // free memory
+                            }
+                        };
+                    </script>
+                    <input class="btn btn-primary" type="submit" id="submit-btn" value="Post" />
+                </div>
+            </div>
+        </form>
+    </div>
+}        

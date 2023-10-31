@@ -174,14 +174,24 @@ nav {
     }
 
     .user-profile a {
-        width: 50px;
+        
+        width:30%;
         margin-right: 15px;
-        margin-left: 350px;
     }
 
     .user-profile small {
         font-size: 12px;
     }
+
+    .user-profile .name-label{
+        width:50%;
+    }
+.post-control{
+    text-align:right;
+}
+    .post-control i {
+        font-size: 1.2rem;
+    }    
 
 .post-input-container {
     padding: 2rem;
