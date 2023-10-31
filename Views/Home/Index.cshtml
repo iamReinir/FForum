@@ -90,11 +90,11 @@
                     <span>@post.Create_date</span>
                 </div>
                 @if(currentUsername != null && currentUsername == post.Poster.Username ) {
-                <div>
-                                <a href="" onclick="hide_post(@post.Id)"><i class="fa-solid fa-trash" style="color: red;"></i></a>
-                <a href="#editPost"  data-toggle="modal" onclick=""><i class="fa-solid fa-bars" style="color: blue;"></i></a>
-                </div>
-                            <div id="editPost" class="modal fade">
+                <div class="post-control">
+                <a href="" onclick="hide_post(@post.Id)"><i class="fa-solid fa-trash" style="color: red;"></i></a>
+                <a href="#editPost-@post.Id"  data-toggle="modal" onclick=""><i class="fa-solid fa-edit" style="color: blue;"></i></a>
+                </div class="editpost-modal">
+                            <div id="editPost-@post.Id" class="modal fade">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <form action="editpost" method="post">
@@ -104,6 +104,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="form-group">
+                                                    <input name="id" type="hidden" value="@post.Id" />
                                                     <label>@currentUsername</label>
                                                     <input name="content" type="text" value="@postContent" class="form-control" required>
                                                 </div>

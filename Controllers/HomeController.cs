@@ -30,8 +30,7 @@ namespace forum.Controllers
                 page = 1;
             }
             var uset = new UserSet().GetUserList();
-            var pset = new PostSet().FindPost("",username);
-            
+            var pset = new PostSet().FindPost("",username);            
             var model = new HomePageModel();
             model.post_list = pset.ToPagedList(page, pageSize);            
             return View("Index", model);
@@ -78,13 +77,12 @@ namespace forum.Controllers
             string? username = session.GetString("username");
             string? content = HttpContext.Request.Form["content"];
             var user = uset.GetUser(username);
-            int postId = int.Parse(HttpContext.Request.Query["post"]);
+            int postId = int.Parse(HttpContext.Request.Form["id"]);
             var postSet = new forum.Database.PostSet();
             Post? post = postSet.FindPost(postId);
             if (post == null)
                 return StatusCode(404);
             PostInfo? postInfo = post.Info;
-
             postInfo.Content = content ?? postInfo.Content;
             postSet.UpdatePost(post);
             return Redirect("/home");

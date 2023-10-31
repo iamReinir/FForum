@@ -63,7 +63,7 @@ namespace forum.Database
                     && !post.Is_hidden)   
                     res.Add(post);
             }
-            return res;
+            return res.OrderByDescending(post=>post.Create_date).ToList();
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace forum.Database
             Func<int,FilterDefinition<Like>> likePost = 
                 (post_id) => Builders<Like>.Filter.Eq("Post_id", post_id);  
             var like_collection = MongoDBConst.database.GetCollection<Like>(MongoDBConst.LIKE_TABLE);
-            var allPost = FindPost(search_string);
+            var allPost = FindPost(search_string).OrderByDescending(post=>post.Create_date);
             Func<int, bool> liked = (post_id) 
                 => like_collection.Find(thisUser & likePost(post_id)).ToList()
                     .FirstOrDefault() != null; 
