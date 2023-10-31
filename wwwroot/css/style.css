@@ -183,7 +183,7 @@ nav {
         font-size: 12px;
     }
 
-    .user-profile div{
+    .user-profile .name-label{
         width:50%;
     }
 .post-control{
