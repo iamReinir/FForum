@@ -70,7 +70,13 @@ function hide_post(postId) {
     location.reload();
 
 }
+function edit_post(postId) {
+    let req = new XMLHttpRequest();
+    req.open("post", `/editpost?post=${postId}`);
+    req.send(postId);
+    location.reload();
 
+}
 function sendComment(ele, postID) {
     let texta = ele.parentElement.childNodes[1];    
     let cmtRequest = new XMLHttpRequest();

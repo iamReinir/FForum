@@ -8,10 +8,10 @@ namespace forum.Controllers
 {
     public class HomePageModel
     {
-        public ICollection<(Post,bool)> post_list;
+        public ICollection<(Post, bool)> post_list;
     }
     public class HomeController : Controller
-    {        
+    {
         [Route("")]
         [Route("/home")]
         [HttpGet]
@@ -20,7 +20,7 @@ namespace forum.Controllers
             ISession session = HttpContext.Session;
             string? username = session.GetString("username");
             var uset = new UserSet().GetUserList();
-            var pset = new PostSet().FindPost("",username);           
+            var pset = new PostSet().FindPost("", username);
             var model = new HomePageModel();
             model.post_list = pset;
             return View("Index", model);
@@ -28,7 +28,7 @@ namespace forum.Controllers
         }
         [HttpPost]
         [Route("/post")]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             ISession session = HttpContext.Session;
             UserSet uset = new UserSet();
@@ -40,20 +40,10 @@ namespace forum.Controllers
                 return StatusCode(401);
             }
             string? content = HttpContext.Request.Form["content"];
-            IFormFile? avatar = HttpContext.Request.Form.Files["picture"];
-
             var postSet = new forum.Database.PostSet();
             var post = postSet.NewPost(user);
             var pinfo = post.Info;
             pinfo.Content = content;
-            if (avatar != null && avatar.Length > 0)
-            {
-                // Resize the image to 10MB
-                var resizedImage = await MongoDBConst.ResizeImageTo10MBAsync(avatar);
-
-                // Convert the resized image to Base64
-                pinfo.Base64String = Convert.ToBase64String(resizedImage);
-            }
             postSet.UpdatePost(post);
             return Redirect("/home");
         }
@@ -65,6 +55,7 @@ namespace forum.Controllers
             ISession session = HttpContext.Session;
             UserSet uset = new UserSet();
             string? username = session.GetString("username");
+
             string? content = HttpContext.Request.Form["content"];
             var user = uset.GetUser(username);
             if (user == null)
@@ -73,7 +64,10 @@ namespace forum.Controllers
                 return StatusCode(401);
             }
             var postSet = new forum.Database.PostSet();
-            var post = postSet.NewPost(user);
+            int post_id = int.Parse(HttpContext.Request.Query["post"]);
+            var post = postSet.FindPost(post_id);
+            if (post == null || user == null)
+                return StatusCode(403);
             PostInfo? postInfo = post.Info;
 
             postInfo.Content = content ?? postInfo.Content;
@@ -86,15 +80,15 @@ namespace forum.Controllers
         public IActionResult search()
         {
             ISession session = HttpContext.Session;
-            
+
             string? username = session.GetString("username");
             string? search = HttpContext.Request.Form["search_for"];
-             HomePageModel list = new HomePageModel();
+            HomePageModel list = new HomePageModel();
             var uset = new UserSet().GetUserList();
             var pset = new PostSet().FindPost(search, username);
             var model = new HomePageModel();
             model.post_list = pset;
-           
+
 
             return View("Index", model);
 
@@ -103,10 +97,10 @@ namespace forum.Controllers
         [HttpPost]
         public IActionResult Like()
         {
-            
-            int post_id = int.Parse(HttpContext.Request.Query["post"]);            
+
+            int post_id = int.Parse(HttpContext.Request.Query["post"]);
             string? username = HttpContext.Session.GetString("username");
-            if(username==null )
+            if (username == null)
                 return StatusCode(401); // Unauthorized 
             Console.WriteLine($"user {username} liked {post_id}");
             var likeSet = new LikeSet();
@@ -121,14 +115,13 @@ namespace forum.Controllers
             public string? Username { get; set; }
             public string? Displayname { get; set; }
             public string? Content { get; set; }
-            public string? Base64String { get; set; }
             public DateTime? Create_date { get; set; }
         }
         [Route("/comment")]
         [HttpGet]
         public IActionResult Comment()
         {
-            
+
             int postId = int.Parse(HttpContext.Request.Query["id"]);
             var postlist = new CommentSet().GetComments(postId);
             var res = new List<MinimalComment>();
@@ -141,9 +134,8 @@ namespace forum.Controllers
                 x.Displayname = item.User.UserInfo.Name;
                 x.Content = item.Content;
                 x.Create_date = item.Create_date;
-                x.Base64String = item.User.UserInfo.Base64String;
                 res.Add(x);
-            }            
+            }
             return Content(System.Text.Json.JsonSerializer.Serialize(res));
         }
 
@@ -154,10 +146,10 @@ namespace forum.Controllers
             string? username = HttpContext.Session.GetString("username");
             if (username == null) return StatusCode(401); // Not authorized
             StreamReader reader = new StreamReader(HttpContext.Request.Body);
-            var x = reader.ReadToEndAsync();            
+            var x = reader.ReadToEndAsync();
             int postId = int.Parse(HttpContext.Request.Query["id"]);
             Console.WriteLine(username + " comment on posts #" + postId);
-           
+
             var commentSet = new CommentSet();
             Comment comment = commentSet
                 .NewComment(new UserSet().GetUser(username), postId);
@@ -167,7 +159,5 @@ namespace forum.Controllers
             commentSet.UpdateComment(comment);
             return StatusCode(200);
         }
-
-
     }
 }
