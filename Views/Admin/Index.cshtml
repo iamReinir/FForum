@@ -118,7 +118,7 @@
 				<button class="btn btn-primary" onclick="update()">Update</button>
 
 				Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
-				<div>
+				<div style="font-size:12px">
 					@Html.PagedListPager(Model, page => Url.Action("Index", new {page = page}))
 				</div>
 			</div>
