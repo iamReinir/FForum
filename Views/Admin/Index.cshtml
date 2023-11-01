@@ -1,6 +1,6 @@
-﻿@model forum.Controllers.UserList;
-
+﻿@model X.PagedList.IPagedList<forum.Models.User>
 @using forum.Models;
+@using X.PagedList.Mvc.Core
 @{
 	ViewData["title"] = "User Management";
 	Layout = "_Layout";
@@ -51,12 +51,17 @@
 					</thead>
 					<tbody>
 						<tr>
-
+							@* 	@{
+							int page = 1;
+							int pageSize = 5;
+							page = page < 1 ? 1 : page;
+							IPagedList < (User) > userList = Model.data.ToPagedList(page, pageSize);
+							} *@
 							@{
-								var userList = Model.data;
+								// var userList = Model.data;
 								int count = 1;
 
-								foreach (var user in userList)
+								foreach (var user in Model)
 								{
 								<tr>
 									<td>@(count++)</td>
@@ -111,21 +116,11 @@
 
 				</table>
 				<button class="btn btn-primary" onclick="update()">Update</button>
-				@*
-				<div class="clearfix">
-				<div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-				<ul class="pagination">
-				<li class="page-item disabled"><a href="#">Previous</a></li>
-				<li class="page-item"><a href="#" class="page-link">1</a></li>
-				<li class="page-item"><a href="#" class="page-link">2</a></li>
-				<li class="page-item active"><a href="#" class="page-link">3</a></li>
-				<li class="page-item"><a href="#" class="page-link">4</a></li>
-				<li class="page-item"><a href="#" class="page-link">5</a></li>
-				<li class="page-item"><a href="#" class="page-link">Next</a></li>
-				</ul>
-				</div>
-				*@
 
+				Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
+				<div>
+					@Html.PagedListPager(Model, page => Url.Action("Index", new {page = page}))
+				</div>
 			</div>
 		</div>
 	</div>
