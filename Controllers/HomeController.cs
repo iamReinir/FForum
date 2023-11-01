@@ -3,15 +3,17 @@ using forum.Models;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver.Core.Authentication;
 using System.Runtime.Serialization;
+using X.PagedList;
 
 namespace forum.Controllers
 {
     public class HomePageModel
     {
-        public ICollection<(Post,bool)> post_list;
+        public IPagedList<(Post,bool)> post_list;
     }
     public class HomeController : Controller
     {        
+
         [Route("")]
         [Route("/home")]
         [HttpGet]
@@ -19,10 +21,18 @@ namespace forum.Controllers
         {
             ISession session = HttpContext.Session;
             string? username = session.GetString("username");
+            int page;
+            int pageSize = 5;
+            try
+            {
+                page = int.Parse(HttpContext.Request.Query["page"]);
+            } catch(Exception) {
+                page = 1;
+            }
             var uset = new UserSet().GetUserList();
-            var pset = new PostSet().FindPost("",username);           
+            var pset = new PostSet().FindPost("",username);            
             var model = new HomePageModel();
-            model.post_list = pset;
+            model.post_list = pset.ToPagedList(page, pageSize);            
             return View("Index", model);
 
         }
@@ -67,13 +77,15 @@ namespace forum.Controllers
             string? username = session.GetString("username");
             string? content = HttpContext.Request.Form["content"];
             var user = uset.GetUser(username);
-            int postId = int.Parse(HttpContext.Request.Query["post"]);
+            int postId = int.Parse(HttpContext.Request.Form["id"]);
+            if (user == null)
+            {
+                //Unathozied
+                return StatusCode(401);
+            }
             var postSet = new forum.Database.PostSet();
-            Post? post = postSet.FindPost(postId);
-            if (post == null)
-                return StatusCode(404);
+            var post = postSet.NewPost(user);
             PostInfo? postInfo = post.Info;
-
             postInfo.Content = content ?? postInfo.Content;
             postSet.UpdatePost(post);
             return Redirect("/home");
@@ -82,18 +94,25 @@ namespace forum.Controllers
         [HttpPost]
         [Route("/search")]
         public IActionResult search()
-        {
+        {                                                             
             ISession session = HttpContext.Session;
-            
             string? username = session.GetString("username");
             string? search = HttpContext.Request.Form["search_for"];
-             HomePageModel list = new HomePageModel();
+            int page;
+            int pageSize = 5;
+            try
+            {
+                page = int.Parse(HttpContext.Request.Query["page"]);
+            }
+            catch (Exception)
+            {
+                page = 1;
+            }
             var uset = new UserSet().GetUserList();
             var pset = new PostSet().FindPost(search, username);
-            var model = new HomePageModel();
-            model.post_list = pset;
-           
 
+            var model = new HomePageModel();
+            model.post_list = pset.ToPagedList(page, pageSize);
             return View("Index", model);
 
         }
