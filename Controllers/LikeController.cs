@@ -4,33 +4,42 @@ using Microsoft.AspNetCore.Mvc;
 using static forum.Controllers.UserUpdateController;
 using System.IO;
 using System.Text.Json;
+using forum.Models;
+using MongoDB.Driver;
 
 namespace forum.Controllers
 {    
-    /*
     public class LikeController : Controller
     {
+
         [Route("/like")]
         [HttpPost]
-        public IActionResult LikeAction()
+        public IActionResult Like()
         {
-            StreamReader reader = new StreamReader(HttpContext.Request.Body);
-            var x = reader.ReadLineAsync();
-            UserSet uset = new UserSet();
-            PostSet pset = new PostSet();
+
+            int post_id = int.Parse(HttpContext.Request.Query["post"]);
             string? username = HttpContext.Session.GetString("username");
-            var user = uset.GetUser(username);                                 
-            x.Wait();
-            int post_id = int.Parse(x.Result);
-            var like = (new LikeSet()).NewLike(post_id, user.ID);                                        
+            if (username == null)
+                return StatusCode(401); // Unauthorized 
+            Console.WriteLine($"user {username} liked {post_id}");
+            var likeSet = new LikeSet();
+            likeSet.ToggleLike(username, post_id);
             return StatusCode(200);
         }
 
         [Route("like")]
         [HttpGet]
         public IActionResult Get() {
-            return View("Error");
+            string? username = HttpContext.Session.GetString("username");
+            if (username == null) return StatusCode(401); //Not authorized
+            int postID = int.Parse(HttpContext.Request.Query["id"]);
+            string result = "0";
+            var hasLiked = MongoDBConst.database
+                .GetCollection<Like>(MongoDBConst.LIKE_TABLE)
+                .Find(like => like.Post_id == postID).ToList().FirstOrDefault() != null;
+            if (hasLiked)
+                result = "1";
+            return Content(result);
         }
     }
-    */
 }

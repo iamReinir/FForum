@@ -113,3 +113,22 @@ function decrease(str) {
     inc = parseInt(tokens[0]) - 1;
     return inc + " " + tokens[1];
 }
+
+function checkLike(postID) {
+    var req = new XMLHttpRequest();
+    req.open("GET", `/like?id=${postID}`);
+    req.send();
+    req.onreadystatechange = ev => {        
+        if (req.status == 200 && req.responseText == "1")
+            document.getElementById(`like-btn-${postID}`).classList.add("liked");        
+    };
+}
+
+function checkAll() {
+    var docs = document.getElementsByClassName("like-btn");
+    for(var doc of docs)
+    {
+        var id = doc.id.split("-")[2];
+        checkLike(id);
+    }
+}

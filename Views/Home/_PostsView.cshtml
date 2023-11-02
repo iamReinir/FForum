@@ -1,14 +1,13 @@
-﻿@model forum.Controllers.HomePageModel
-@using X.PagedList;
-@using X.PagedList.Mvc.Core;
+﻿@model System.Collections.Generic.ICollection<forum.Models.Post>
+@using X.PagedList.Mvc.Core
+@using X.PagedList
 @{
     var currentUsername = Context.Session.GetString("username");
     var userinfo = new forum.Database.UserSet().GetUser(currentUsername);
     var currentRole = Context.Session.GetString("role");
     if (currentRole == null) currentRole = forum.Models.User.ROLE.GUESS.ToString();
 }
-
-@foreach (var (tpost, liked) in Model.post_list)
+@foreach (var tpost in Model)
 {
     var post = tpost;
     var postContent = tpost.Info.Content;
@@ -16,10 +15,7 @@
     var user_displayname = tpost.Poster.UserInfo.Name;
     var user_icon = tpost.Poster.UserInfo.Base64String;
     string likeClass;
-    if (liked)
-        likeClass = "liked";
-    else
-        likeClass = "like";
+    likeClass = "like";
     <div class="post-container">
         <div class="user-profile">
             @if (user_icon != "")
@@ -101,10 +97,10 @@
             </div>
             <hr>
             <div class="activity-icons">
-                <div class="@likeClass" onclick="likeToggle(@tpost.Id,this)"><i class="fa-solid fa-thumbs-up"></i><span>Like</span></div>
+                <div id="like-btn-@post.Id" class="@likeClass like-btn" onclick="likeToggle(@tpost.Id,this)"><i class="fa-solid fa-thumbs-up"></i><span>Like</span></div>
                 <div class="comment" onclick="commentToggle(@post.Id)"><i class="fa-solid fa-message" style="color: #758095;"></i><span>Comment</span></div>
                 <div class="share"><i class="fa-solid fa-share"></i><span>Share</span></div>
-            </div>
+            </div>           
         </div>
         <!--Comment section for each post-->
         <div class="content-comment" id="@post.Id">
@@ -119,10 +115,18 @@
             </div>
         }
         <!--End of comment section-->
-    </div>
+    </div>   
 }
-<div style="text-align:center">
-    @Html.PagedListPager(
-    Model.post_list.ToPagedList(),
-    page => Url.ActionLink("Index","Home", new {page = page}))
-</div>
+<ul class="pagination" style="display:block;margin-left:18rem;">
+    @if (ViewBag.page != 1) 
+    {
+        <li class="page-item"><a class="page-link" href="/?page=@(ViewBag.page-1)">Previous</a></li>
+    }
+    <li class="page-item"><a class="page-link" href="#"
+        onclick="location.href=`/?page=${prompt('Move to page:')}`"
+        >@(ViewBag.page)</a></li>
+    @if (ViewBag.lastPage == false)
+    {
+        <li class="page-item"><a class="page-link" href="/?page=@(ViewBag.page+1)">Next</a></li>
+    }
+</ul>
