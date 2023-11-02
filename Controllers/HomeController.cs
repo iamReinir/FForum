@@ -203,14 +203,15 @@ namespace forum.Controllers
                 page = int.Parse(HttpContext.Request.Query["page"]);
             }
             catch (Exception) { }
-            var pset = new PostSet().GetPosts(username, page, search ?? "", pageSize);
+            var pset = new PostSet().GetPosts(username, page, search ?? "", pageSize);            
             ViewBag.page = page;
             if (pset.Count < pageSize)
                 ViewBag.lastPage = true;
             else
                 ViewBag.lastPage = false;
             ViewBag.search = search;
-            return View("_PostsView",pset);
+            if (pset.Count < 1) return StatusCode(205); // no content
+            return View("_PostsView",pset.OrderByDescending(p => p.Id).ToList());
         }
 
     }

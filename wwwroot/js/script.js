@@ -20,9 +20,16 @@ function commentLoad(postId) {
     var node = document.getElementById(postId);
     var getComment = new XMLHttpRequest();
     getComment.open("get", "/comment?id=" + postId);
+    var commentButton = document.getElementById(`comment-btn-${postId}`);
+    commentButton.firstElementChild.classList.remove("fa-message");
+    commentButton.firstElementChild.classList.add("fa-spinner");
+    commentButton.firstElementChild.classList.add("fa-spin");
     getComment.onreadystatechange = function () {
         if (getComment.readyState === XMLHttpRequest.DONE && getComment.status === 200) {
             const obj = JSON.parse(getComment.responseText);
+            commentButton.firstElementChild.classList.add("fa-message");
+            commentButton.firstElementChild.classList.remove("fa-spinner");
+            commentButton.firstElementChild.classList.remove("fa-spin");
             commentPopulate(postId, obj);
         }
     }
@@ -114,6 +121,45 @@ function decrease(str) {
     return inc + " " + tokens[1];
 }
 
+let pageCount = 0;
+// Create an IntersectionObserver object
+const observer = new IntersectionObserver((entries, observer) => {
+    // Check if the element is visible
+    if (entries[0].isIntersecting) {
+        // Run the script
+        lazyLoadPosts(++pageCount);
+    }
+});
+
+function lazyLoadPosts(page) {    
+    let req = new XMLHttpRequest();
+    var container = document.getElementById('posts');
+    if (container.classList.contains("dealt")) return;
+    req.open('GET', `/get_post?page=${page}`);
+    req.send();    
+    container.classList.toggle("dealt");
+    req.onreadystatechange = (ev) => {
+        if (req.readyState != XMLHttpRequest.DONE) return;
+        if (req.status == 200 && req.response != "") {
+            console.log("Lazy load page " + page);            
+            container.removeChild(container.lastElementChild);
+            container.innerHTML += req.response;
+            checkAll();
+            var node = document.createElement("div");
+            node.classList.add("loader");
+            //node.scrollIntoView(lazyLoadPosts(page + 1));
+            container.appendChild(node);
+            observer.observe(document.getElementsByClassName("loader")[0]);            
+        }
+        if (req.status == 205) {
+            container.lastElementChild.classList.remove("loader");
+            container.lastElementChild.innerHTML = "No more post..."
+            console.log("End of page");            
+        }
+        container.classList.toggle("dealt");
+    }
+
+}
 function checkLike(postID) {
     var req = new XMLHttpRequest();
     req.open("GET", `/like?id=${postID}`);
@@ -132,3 +178,5 @@ function checkAll() {
         checkLike(id);
     }
 }
+
+observer.observe(document.getElementsByClassName("loader")[0]);

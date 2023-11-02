@@ -21,16 +21,7 @@
         @await Html.PartialAsync("_NewPostSection")    
         <!--Post-->
         <div id="posts">
-            @await Html.PartialAsync("_Loading")
-            <script>
-                let req = new XMLHttpRequest();
-                req.open('GET', @postlink);
-                req.send();
-                req.onreadystatechange = (ev) => {
-                    document.getElementById('posts').innerHTML = req.response;                    
-                    checkAll();
-                }                
-            </script>
+            <div class="loader"></div>
         </div>
         <!--Post-->
        </div>

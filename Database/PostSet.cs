@@ -106,12 +106,14 @@ namespace forum.Database
             string search_string = "",
             int page_size = 5)
         {
+            var latest = Builders<Post>.Sort.Descending(post => post.Create_date);
             var findOption = new FindOptions<Post>()
             {
-                BatchSize = page_size
+                BatchSize = page_size,
+                Sort = latest
             };
             List<Post> posts = new List<Post>();           
-            var builder = Builders<Post>.Filter;
+            var builder = Builders<Post>.Filter;            
             var post_filter 
                 = builder.Regex(post => post.Info.Content, $"^.*{search_string}.*$") 
                 & builder.Eq("Is_hidden",false);
