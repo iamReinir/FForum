@@ -20,12 +20,9 @@ namespace forum.Controllers
         [Route("register")]
         [HttpGet]
         public IActionResult SignupPage()
-        {
-            var uinfor = new UserSet();
+        { 
             return View("Register", RegisterState.none);
         }
-
-
 
         [Route("register")]
         [HttpPost]
@@ -34,7 +31,7 @@ namespace forum.Controllers
             UserSet uset = new();
             string? username = HttpContext.Request.Form["username"];
             string? password = HttpContext.Request.Form["password"];
-            if(username == null || password == null)
+            if(username == null || password == null || username == "" || password == "")
             {
                 return View("Error");
             }

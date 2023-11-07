@@ -119,14 +119,18 @@ namespace forum.Database
                 & builder.Eq("Is_hidden",false);
             var task_posts = MongoDBConst.database.GetCollection<Post>(MongoDBConst.POST_TABLE)
                 .FindAsync(post_filter, findOption);
-            using (var cursor = task_posts.Result) {
+            try
+            {
+                task_posts.Wait();
+                var cursor = task_posts.Result; 
                 for (int i = 0; i < page; ++i)
                     cursor.MoveNext();
                 cursor.Current?.ToList()?.ForEach(post =>
                 {
                     posts.Add(post);
                 });
-            };
+            }
+            catch(Exception ex) { }
             return posts;
         }
         public Post? FindPost(int id)
