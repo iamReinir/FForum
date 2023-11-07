@@ -194,6 +194,7 @@ namespace forum.Controllers
             try
             {
                 search = HttpContext.Request.Query["search"];
+                if (search == "false") search = "";
             }
             catch { }
             int page = 1;

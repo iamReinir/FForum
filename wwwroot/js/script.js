@@ -24,12 +24,15 @@ function commentLoad(postId) {
     commentButton.firstElementChild.classList.remove("fa-message");
     commentButton.firstElementChild.classList.add("fa-spinner");
     commentButton.firstElementChild.classList.add("fa-spin");
+    var temp = commentButton.onclick;
+    commentButton.onclick = null;
     getComment.onreadystatechange = function () {
         if (getComment.readyState === XMLHttpRequest.DONE && getComment.status === 200) {
             const obj = JSON.parse(getComment.responseText);
             commentButton.firstElementChild.classList.add("fa-message");
             commentButton.firstElementChild.classList.remove("fa-spinner");
             commentButton.firstElementChild.classList.remove("fa-spin");
+            commentButton.onclick = temp;
             commentPopulate(postId, obj);
         }
     }
@@ -131,11 +134,21 @@ const observer = new IntersectionObserver((entries, observer) => {
     }
 });
 
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if (pair[0] == variable) { return pair[1]; }
+    }
+    return (false);
+}
 function lazyLoadPosts(page) {    
     let req = new XMLHttpRequest();
     var container = document.getElementById('posts');
+    var search = getQueryVariable("search");
     if (container.classList.contains("dealt")) return;
-    req.open('GET', `/get_post?page=${page}`);
+    req.open('GET', `/get_post?page=${page}&search=${search}`);
     req.send();    
     container.classList.toggle("dealt");
     req.onreadystatechange = (ev) => {
