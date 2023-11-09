@@ -36,7 +36,8 @@ namespace forum.Controllers
             string result = "0";
             var hasLiked = MongoDBConst.database
                 .GetCollection<Like>(MongoDBConst.LIKE_TABLE)
-                .Find(like => like.Post_id == postID).ToList().FirstOrDefault() != null;
+                .Find(like => like.Post_id == postID && like.Username == username)
+                .ToList().FirstOrDefault() != null;
             if (hasLiked)
                 result = "1";
             return Content(result);

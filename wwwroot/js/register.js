@@ -22,7 +22,5 @@ function required_field_checks() {
         return false;
     if (document.getElementById("username").value == null || document.getElementById("username").value == "")
         return false;
-    if (document.getElementById("password").value == "")
-        return false;
     return true;
 }

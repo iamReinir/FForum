@@ -42,7 +42,6 @@ nav {
     }
 
         .nav-left ul a i {
-            width: 40px;
             height: auto;
             margin: 0 15px;
            
@@ -126,10 +125,6 @@ nav {
     align-self: flex-start;
 }
 
-.main-content {
-    flex-basis: 50%;
-    margin-left:20px;
-}
 
 .imp-links a {
     text-decoration: none;
@@ -280,10 +275,7 @@ nav {
 }
 
 .activity-icons div i {
-    margin-right: 10px;
-    display: flex;
-    height: 5px;
-    margin-bottom: 10px;
+    margin-right: 10px;       
 }
 
 .activity-icons div {
@@ -590,6 +582,10 @@ textarea {
 @media only screen and (max-width: 600px) {
     .left-sidebar {
         display: none;
+    }
+
+    #nav-notif{
+        display:none;
     }
     
 }

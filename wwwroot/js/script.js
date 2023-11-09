@@ -85,12 +85,12 @@ function sendComment(ele, postID) {
     let texta = ele.parentElement.childNodes[1];    
     let cmtRequest = new XMLHttpRequest();
     cmtRequest.open("post", "/comment?id=" + postID);
-    cmtRequest.send(texta.value);
-    commentClear(postID);
+    cmtRequest.send(texta.value);   
     texta.value = null;
+    texta.placeholder = "It might take some time before your comment is posted.";
     setTimeout(() => {
-        commentLoad(postID);                
-    }, 550);
+        texta.placeholder = "Write your comment here...";
+    }, 5000);
 }
 function likeToggle(postId, ele) {
     let req = new XMLHttpRequest();
@@ -178,8 +178,11 @@ function checkLike(postID) {
     req.open("GET", `/like?id=${postID}`);
     req.send();
     req.onreadystatechange = ev => {        
-        if (req.status == 200 && req.responseText == "1")
-            document.getElementById(`like-btn-${postID}`).classList.add("liked");        
+        if (req.status == 200 && req.responseText == "1") {
+            document.getElementById(`like-btn-${postID}`).classList.add("liked");
+            document.getElementById(`like-btn-${postID}`).classList.remove("like");
+        }
+
     };
 }
 
