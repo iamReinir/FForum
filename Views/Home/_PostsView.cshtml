@@ -97,7 +97,14 @@
             </div>
             <hr>
             <div class="activity-icons">
-                <div id="like-btn-@post.Id" class="@likeClass like-btn" onclick="likeToggle(@tpost.Id,this)"><i class="fa-solid fa-thumbs-up"></i><span>Like</span></div>
+                @if (currentUsername == null)
+                {
+                    <div class="like-btn @likeClass"><i class="fa-solid fa-thumbs-up"></i><span>Like</span></div>
+                }
+                else
+                {
+                    <div id="like-btn-@post.Id" class="like-btn @likeClass" onclick="likeToggle(@tpost.Id,this)"><i class="fa-solid fa-thumbs-up"></i><span>Like</span></div>
+                }
                 <div id="comment-btn-@post.Id" class="comment" onclick="commentToggle(@post.Id)"><i class="fa-solid fa-message" style="color: #758095;"></i><span>Comment</span></div>
                 <div class="share"><i class="fa-solid fa-share"></i><span>Share</span></div>
             </div>           

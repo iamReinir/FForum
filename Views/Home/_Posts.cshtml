@@ -101,7 +101,13 @@
             </div>
             <hr>
             <div class="activity-icons">
+            @if(currentUsername == null)
+            {
+                    <div class="@likeClass"><i class="fa-solid fa-thumbs-up"></i><span>Like</span></div>
+            }
+            else{
                 <div class="@likeClass" onclick="likeToggle(@tpost.Id,this)"><i class="fa-solid fa-thumbs-up"></i><span>Like</span></div>
+            }
                 <div class="comment" onclick="commentToggle(@post.Id)"><i class="fa-solid fa-message" style="color: #758095;"></i><span>Comment</span></div>
                 <div class="share"><i class="fa-solid fa-share"></i><span>Share</span></div>
             </div>

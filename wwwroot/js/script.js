@@ -177,7 +177,7 @@ function checkLike(postID) {
     var req = new XMLHttpRequest();
     req.open("GET", `/like?id=${postID}`);
     req.send();
-    req.onreadystatechange = ev => {        
+    req.onreadystatechange = ev => {                
         if (req.status == 200 && req.responseText == "1") {
             document.getElementById(`like-btn-${postID}`).classList.add("liked");
             document.getElementById(`like-btn-${postID}`).classList.remove("like");

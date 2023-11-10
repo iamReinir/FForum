@@ -97,9 +97,8 @@ namespace forum.Controllers
                 return StatusCode(401);
             }
             var postSet = new forum.Database.PostSet();
-            var post = postSet.NewPost(user);
-            PostInfo? postInfo = post.Info;
-            postInfo.Content = content ?? postInfo.Content;
+            var post = postSet.FindPost(postId);                        
+            post.Info.Content = content ?? post.Info.Content;
             postSet.UpdatePost(post);
             return Redirect("/home");
         }
