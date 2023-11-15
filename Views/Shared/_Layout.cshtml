@@ -28,7 +28,7 @@
     <nav>
         <div class="nav-left">
             <a href="/home">  <img src="https://www.shareicon.net/data/2015/05/24/43273_logo_512x512.png" class="logo"> </a>
-            <ul>
+            <ul id="nav-notif">
                 <a href="#"><i class="fa-solid fa-bell" style="color: #ffffff;"></i></a>
                 <a href="#"><i class="fa-solid fa-user-plus" style="color: #ffffff;"></i></a>
             </ul>
@@ -36,9 +36,9 @@
         <div class="nav-right">
             <!--Search box-->
             <div class="search-box">
-                <form class="search-box" id="search" action="search" method="post">
+                <form class="search-box" id="search" method="get" action="home">
                     <img src="https://cdn-icons-png.flaticon.com/512/122/122932.png" width="30px" />
-                    <input type="text" name="search_for" id="search_for" placeholder="Search" />
+                    <input type="text" name="search" id="search_for" placeholder="Search" />
                 </form>
 
 
@@ -84,7 +84,7 @@
                 </div>
                 <div class="setting-links">
                     <img src="https://cdn0.iconfinder.com/data/icons/cyber-security-line-threat-protection/512/Change_password-512.png" class="settings-icon" />
-                    <a href="#">
+                    <a href="/Forgot">
                         Change password <i class="fa-solid fa-chevron-right" style="color: #a1a3a5;" width="10px"></i>
                     </a>
                 </div>

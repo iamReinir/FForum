@@ -1,7 +1,7 @@
 ﻿@using X.PagedList.Mvc.Core;
 @using X.PagedList;
 @using forum.Models;
-@model forum.Controllers.HomePageModel
+@model System.Collections.Generic.ICollection<Post>
 
 @{
     ViewData["title"] = "Home";
@@ -10,6 +10,7 @@
     var currentRole = Context.Session.GetString("role");
     if (currentRole == null) currentRole = forum.Models.User.ROLE.GUESS.ToString();
     var userinfo = new forum.Database.UserSet().GetUser(currentUsername);
+    var postlink = $"`/get_post?page={ViewBag.page ?? 1}`";
 }
 <body style="background-color: #efefef">
     <div class="container" ">
@@ -18,18 +19,15 @@
         <!---------main-content--------->
         <div class="main-content">        
         @await Html.PartialAsync("_NewPostSection")    
-        <!--Post-->        
-        @await Html.PartialAsync("_Posts")
+        <!--Post-->
+        <div id="posts">
+            <div class="loader"></div>
+        </div>
         <!--Post-->
        </div>
         <!---------right-sidebar--------->
         <div class="right-sidebar"></div>
-    </div>
-    <div style="text-align:center">
-    @Html.PagedListPager(
-        Model.post_list,
-        page => Url.ActionLink("Index","Home", new {page = page}))
-    </div>
+    </div>    
     <script src="https://kit.fontawesome.com/eee778a1cd.js" crossorigin="anonymous"></script>
     <script src="~/js/script.js"></script>
 </body>

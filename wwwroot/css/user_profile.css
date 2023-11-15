@@ -86,3 +86,13 @@ body {
 .btn:hover {
     background-color: #808080ff;
 }
+
+@media only screen and (max-width: 600px) {
+    .t_container {
+        margin: 1rem;
+        flex-direction:column;
+    }
+    .t_container #top,#bot{
+        width:100%;
+    }
+}

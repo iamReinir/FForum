@@ -1,6 +1,7 @@
 ﻿using forum.Database;
 using forum.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using MongoDB.Driver.Core.Authentication;
 using System.Runtime.Serialization;
 using X.PagedList;
@@ -9,7 +10,7 @@ namespace forum.Controllers
 {
     public class HomePageModel
     {
-        public IPagedList<(Post,bool)> post_list;
+        public List<(Post,bool)> post_list;
     }
     public class HomeController : Controller
     {        
@@ -17,23 +18,35 @@ namespace forum.Controllers
         [Route("")]
         [Route("/home")]
         [HttpGet]
+        [HttpPost]
         public IActionResult Index()
         {
             ISession session = HttpContext.Session;
             string? username = session.GetString("username");
-            int page;
+            string? search = "";
+            try
+            {
+                search = HttpContext.Request.Form["search_for"];
+            }
+            catch {}
+            int page = 1;
             int pageSize = 5;
             try
             {
-                page = int.Parse(HttpContext.Request.Query["page"]);
-            } catch(Exception) {
-                page = 1;
-            }
+                page = int.Parse(HttpContext.Request.Query["page"]);            
+            } catch(Exception) { }
+            ViewBag.page = page;
+            /*
             var uset = new UserSet().GetUserList();
-            var pset = new PostSet().FindPost("",username);            
-            var model = new HomePageModel();
-            model.post_list = pset.ToPagedList(page, pageSize);            
-            return View("Index", model);
+            var pset = new PostSet().GetPosts(username,page,search ?? "",pageSize);
+            ViewBag.page = page;
+            if (pset.Count < pageSize)
+                ViewBag.lastPage = true;
+            else
+                ViewBag.lastPage = false;
+            ViewBag.search = search;
+            */
+            return View("Index");
 
         }
         [HttpPost]
@@ -84,9 +97,8 @@ namespace forum.Controllers
                 return StatusCode(401);
             }
             var postSet = new forum.Database.PostSet();
-            var post = postSet.NewPost(user);
-            PostInfo? postInfo = post.Info;
-            postInfo.Content = content ?? postInfo.Content;
+            var post = postSet.FindPost(postId);                        
+            post.Info.Content = content ?? post.Info.Content;
             postSet.UpdatePost(post);
             return Redirect("/home");
         }
@@ -112,24 +124,11 @@ namespace forum.Controllers
             var pset = new PostSet().FindPost(search, username);
 
             var model = new HomePageModel();
-            model.post_list = pset.ToPagedList(page, pageSize);
-            return View("Index", model);
+            //model.post_list = pset;//.ToPagedList(page, pageSize);
+            return View("Index");//, model);
 
         }
-        [Route("/like")]
-        [HttpPost]
-        public IActionResult Like()
-        {
-            
-            int post_id = int.Parse(HttpContext.Request.Query["post"]);            
-            string? username = HttpContext.Session.GetString("username");
-            if(username==null )
-                return StatusCode(401); // Unauthorized 
-            Console.WriteLine($"user {username} liked {post_id}");
-            var likeSet = new LikeSet();
-            likeSet.ToggleLike(username, post_id);
-            return StatusCode(200);
-        }
+     
 
         public class MinimalComment
         {
@@ -173,8 +172,7 @@ namespace forum.Controllers
             StreamReader reader = new StreamReader(HttpContext.Request.Body);
             var x = reader.ReadToEndAsync();            
             int postId = int.Parse(HttpContext.Request.Query["id"]);
-            Console.WriteLine(username + " comment on posts #" + postId);
-           
+            Console.WriteLine(username + " comment on posts #" + postId);           
             var commentSet = new CommentSet();
             Comment comment = commentSet
                 .NewComment(new UserSet().GetUser(username), postId);
@@ -185,6 +183,36 @@ namespace forum.Controllers
             return StatusCode(200);
         }
 
+        [Route("/get_post")]
+        [HttpGet]
+        public IActionResult Posts()
+        {
+            ISession session = HttpContext.Session;
+            string? username = session.GetString("username");
+            string? search = "";
+            try
+            {
+                search = HttpContext.Request.Query["search"];
+                if (search == "false") search = "";
+            }
+            catch { }
+            int page = 1;
+            int pageSize = 5;
+            try
+            {
+                page = int.Parse(HttpContext.Request.Query["page"]);
+            }
+            catch (Exception) { }
+            var pset = new PostSet().GetPosts(username, page, search ?? "", pageSize);            
+            ViewBag.page = page;
+            if (pset.Count < pageSize)
+                ViewBag.lastPage = true;
+            else
+                ViewBag.lastPage = false;
+            ViewBag.search = search;
+            if (pset.Count < 1) return StatusCode(205); // no content
+            return View("_PostsView",pset.OrderByDescending(p => p.Id).ToList());
+        }
 
     }
 }

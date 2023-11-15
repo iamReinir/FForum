@@ -42,7 +42,6 @@ nav {
     }
 
         .nav-left ul a i {
-            width: 40px;
             height: auto;
             margin: 0 15px;
            
@@ -56,7 +55,6 @@ nav {
 
 .search-box {
     background: #efefef;
-    width: 350px;
     border-radius: 20px;
     display: flex;
     align-items: center;
@@ -127,10 +125,6 @@ nav {
     align-self: flex-start;
 }
 
-.main-content {
-    flex-basis: 50%;
-    margin-left:20px;
-}
 
 .imp-links a {
     text-decoration: none;
@@ -281,10 +275,7 @@ nav {
 }
 
 .activity-icons div i {
-    margin-right: 10px;
-    display: flex;
-    height: 5px;
-    margin-bottom: 10px;
+    margin-right: 10px;       
 }
 
 .activity-icons div {
@@ -338,6 +329,12 @@ nav {
 
     .activity-icons .share:active {
         background-color: #d8d8d8
+    }
+
+    .activity-icons i {
+        display:inline-block;
+        padding:0rem;
+        text-align:center;
     }
 
 .content-comment hr {
@@ -561,4 +558,34 @@ textarea {
     max-width: 100%;
     height: auto;
     margin-right: 30px;
+}
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    margin: auto;
+    width: 80px;
+    height: 80px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .left-sidebar {
+        display: none;
+    }
+
+    #nav-notif{
+        display:none;
+    }
+    
 }

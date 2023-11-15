@@ -99,7 +99,40 @@ namespace forum.Database
             }
             return result;
         }
-    
+
+        public ICollection<Post> GetPosts(
+            string? username = null,
+            int page = 1, 
+            string search_string = "",
+            int page_size = 5)
+        {
+            var latest = Builders<Post>.Sort.Descending(post => post.Create_date);
+            var findOption = new FindOptions<Post>()
+            {
+                BatchSize = page_size,
+                Sort = latest
+            };
+            List<Post> posts = new List<Post>();           
+            var builder = Builders<Post>.Filter;            
+            var post_filter 
+                = builder.Regex(post => post.Info.Content, $"^.*{search_string}.*$") 
+                & builder.Eq("Is_hidden",false);
+            var task_posts = MongoDBConst.database.GetCollection<Post>(MongoDBConst.POST_TABLE)
+                .FindAsync(post_filter, findOption);
+            try
+            {
+                task_posts.Wait();
+                var cursor = task_posts.Result; 
+                for (int i = 0; i < page; ++i)
+                    cursor.MoveNext();
+                cursor.Current?.ToList()?.ForEach(post =>
+                {
+                    posts.Add(post);
+                });
+            }
+            catch(Exception ex) { }
+            return posts;
+        }
         public Post? FindPost(int id)
         {
             var thisID = Builders<Post>.Filter.Eq("_id", id);

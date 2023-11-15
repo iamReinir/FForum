@@ -20,9 +20,19 @@ function commentLoad(postId) {
     var node = document.getElementById(postId);
     var getComment = new XMLHttpRequest();
     getComment.open("get", "/comment?id=" + postId);
+    var commentButton = document.getElementById(`comment-btn-${postId}`);
+    commentButton.firstElementChild.classList.remove("fa-message");
+    commentButton.firstElementChild.classList.add("fa-spinner");
+    commentButton.firstElementChild.classList.add("fa-spin");
+    var temp = commentButton.onclick;
+    commentButton.onclick = null;
     getComment.onreadystatechange = function () {
         if (getComment.readyState === XMLHttpRequest.DONE && getComment.status === 200) {
             const obj = JSON.parse(getComment.responseText);
+            commentButton.firstElementChild.classList.add("fa-message");
+            commentButton.firstElementChild.classList.remove("fa-spinner");
+            commentButton.firstElementChild.classList.remove("fa-spin");
+            commentButton.onclick = temp;
             commentPopulate(postId, obj);
         }
     }
@@ -75,12 +85,12 @@ function sendComment(ele, postID) {
     let texta = ele.parentElement.childNodes[1];    
     let cmtRequest = new XMLHttpRequest();
     cmtRequest.open("post", "/comment?id=" + postID);
-    cmtRequest.send(texta.value);
-    commentClear(postID);
+    cmtRequest.send(texta.value);   
     texta.value = null;
+    texta.placeholder = "It might take some time before your comment is posted.";
     setTimeout(() => {
-        commentLoad(postID);                
-    }, 550);
+        texta.placeholder = "Write your comment here...";
+    }, 5000);
 }
 function likeToggle(postId, ele) {
     let req = new XMLHttpRequest();
@@ -113,3 +123,76 @@ function decrease(str) {
     inc = parseInt(tokens[0]) - 1;
     return inc + " " + tokens[1];
 }
+
+let pageCount = 0;
+// Create an IntersectionObserver object
+const observer = new IntersectionObserver((entries, observer) => {
+    // Check if the element is visible
+    if (entries[0].isIntersecting) {
+        // Run the script
+        lazyLoadPosts(++pageCount);
+    }
+});
+
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if (pair[0] == variable) { return pair[1]; }
+    }
+    return (false);
+}
+function lazyLoadPosts(page) {    
+    let req = new XMLHttpRequest();
+    var container = document.getElementById('posts');
+    var search = getQueryVariable("search");
+    if (container.classList.contains("dealt")) return;
+    req.open('GET', `/get_post?page=${page}&search=${search}`);
+    req.send();    
+    container.classList.toggle("dealt");
+    req.onreadystatechange = (ev) => {
+        if (req.readyState != XMLHttpRequest.DONE) return;
+        if (req.status == 200 && req.response != "") {
+            console.log("Lazy load page " + page);            
+            container.removeChild(container.lastElementChild);
+            container.innerHTML += req.response;
+            checkAll();
+            var node = document.createElement("div");
+            node.classList.add("loader");
+            //node.scrollIntoView(lazyLoadPosts(page + 1));
+            container.appendChild(node);
+            observer.observe(document.getElementsByClassName("loader")[0]);            
+        }
+        if (req.status == 205) {
+            container.lastElementChild.classList.remove("loader");
+            container.lastElementChild.innerHTML = "No more post..."
+            console.log("End of page");            
+        }
+        container.classList.toggle("dealt");
+    }
+
+}
+function checkLike(postID) {
+    var req = new XMLHttpRequest();
+    req.open("GET", `/like?id=${postID}`);
+    req.send();
+    req.onreadystatechange = ev => {                
+        if (req.status == 200 && req.responseText == "1") {
+            document.getElementById(`like-btn-${postID}`).classList.add("liked");
+            document.getElementById(`like-btn-${postID}`).classList.remove("like");
+        }
+
+    };
+}
+
+function checkAll() {
+    var docs = document.getElementsByClassName("like-btn");
+    for(var doc of docs)
+    {
+        var id = doc.id.split("-")[2];
+        checkLike(id);
+    }
+}
+
+observer.observe(document.getElementsByClassName("loader")[0]);
